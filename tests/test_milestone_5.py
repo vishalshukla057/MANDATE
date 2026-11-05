@@ -167,3 +167,4 @@ def test_dispute_copilot_flow():
         )
         assert submit_res.status_code == 200
         assert submit_res.json()["status"] == "RESPONSE_SUBMITTED"
+

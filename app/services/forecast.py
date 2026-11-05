@@ -122,3 +122,4 @@ class CashFlowForecastService:
             },
             "weekly_timeline": weekly_buckets,
         }
+

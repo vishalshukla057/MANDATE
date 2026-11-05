@@ -167,3 +167,4 @@ curl -X GET http://localhost:8000/audit/verify \
 ## 8. Known Limitations
 - Audio ingestion (`/agent/ingest/voice`) parses transcribed strings directly; audio file upload uses pluggable transcription providers.
 - Multi-currency analytics rollups use a static currency exchange rate table (USD, EUR, GBP).
+

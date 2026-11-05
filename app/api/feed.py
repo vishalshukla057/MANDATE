@@ -23,3 +23,4 @@ async def stream_feed():
 def get_feed_history(limit: int = 50):
     """Retrieve recent feed events."""
     return {"items": feed_broker.get_history(limit=limit)}
+

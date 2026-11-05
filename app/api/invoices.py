@@ -283,3 +283,4 @@ def record_external_payment(id: str, payload: ExternalPaymentRequest, db: Sessio
         "invoice_status": inv.status if inv else invoice.status,
         "amount_due": inv.amount_due if inv else invoice.amount_due,
     }
+

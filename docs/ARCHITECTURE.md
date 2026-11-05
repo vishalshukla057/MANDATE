@@ -64,3 +64,4 @@ All application services read the current time via `ClockService.now()`.
 This enables instantaneous time travel during live hackathon judging:
 - `POST /simulate/time-travel { "days": 15 }`
 - Instantly triggers overdue scanning, flips unpaid invoices into overdue status, updates aging buckets, and adapts the reminder tone ladder without waiting on real calendar time.
+

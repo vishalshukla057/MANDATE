@@ -98,3 +98,4 @@ async def run_reminder_runner() -> dict:
         return {"error": str(exc)}
     finally:
         db.close()
+

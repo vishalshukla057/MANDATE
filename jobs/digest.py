@@ -46,3 +46,4 @@ async def run_daily_digest() -> dict:
         return {"error": str(exc)}
     finally:
         db.close()
+

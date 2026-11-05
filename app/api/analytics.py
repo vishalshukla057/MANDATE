@@ -156,3 +156,4 @@ def get_agent_observability_stats(db: Session = Depends(get_db)):
 async def ask_analytics_question(payload: AskRequest, db: Session = Depends(get_db)):
     """Translates NL query into a constrained query plan and returns structured chart data + prose."""
     return await AnalyticsQAEngine.answer_question(db, payload.question)
+

@@ -125,3 +125,4 @@ def test_model_tries_excessive_payout_policy_blocks():
         assert any("exceeds hard cap" in r for r in disc_decision.reasons)
     finally:
         db.close()
+

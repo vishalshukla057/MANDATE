@@ -34,3 +34,4 @@ databases:
   - name: copilot-db
     databaseName: copilot
     user: copilot_user
+

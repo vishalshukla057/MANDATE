@@ -129,3 +129,4 @@ def get_client_risk(id: str, db: Session = Depends(get_db)):
             "late_ratio": (client.late_count / max(1, client.paid_count + client.late_count)),
         },
     )
+

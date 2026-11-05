@@ -384,3 +384,4 @@ TOOL_REGISTRY: Dict[str, ToolDefinition] = {
         handler=handle_send_reminder,
     ),
 }
+

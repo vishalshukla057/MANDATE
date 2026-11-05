@@ -87,7 +87,10 @@ api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 async def verify_api_key(request: Request, api_key: Optional[str] = Security(api_key_header)):
     # Exempt public routes: /health, /webhooks/paypal, root docs & UI
-    public_paths = ["/health", "/docs", "/redoc", "/openapi.json", "/webhooks/paypal", "/", "/ui"]
+    public_paths = [
+        "/health", "/docs", "/redoc", "/openapi.json", "/webhooks/paypal",
+        "/", "/ui", "/ui/light", "/ui/dark"
+    ]
     if request.url.path in public_paths or request.url.path.startswith("/simulate/"):
         return api_key
 
@@ -137,11 +140,43 @@ async def health_check():
 
 @app.get("/", response_class=HTMLResponse, tags=["UI"])
 @app.get("/ui", response_class=HTMLResponse, tags=["UI"])
-async def serve_ui():
-    """Serves the Google Stitch Sovereign Heritage frontend UI."""
+async def serve_ui(request: Request, theme: Optional[str] = None):
+    """Serves the frontend UI with light and dark mode support."""
+    selected_theme = theme or request.cookies.get("copilot_theme") or "light"
+    if selected_theme.lower() == "dark":
+        ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "code.html")
+    else:
+        ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend_light", "code.html")
+
+    if os.path.exists(ui_path):
+        with open(ui_path, "r", encoding="utf-8") as f:
+            resp = HTMLResponse(content=f.read())
+            if theme:
+                resp.set_cookie("copilot_theme", theme, max_age=31536000, path="/")
+            return resp
+    return HTMLResponse("<h2>Collections Copilot UI not found</h2>", status_code=404)
+
+
+@app.get("/ui/light", response_class=HTMLResponse, tags=["UI"])
+async def serve_ui_light():
+    """Serves the PayPal Global Design System Light Mode UI."""
+    ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend_light", "code.html")
+    if os.path.exists(ui_path):
+        with open(ui_path, "r", encoding="utf-8") as f:
+            resp = HTMLResponse(content=f.read())
+            resp.set_cookie("copilot_theme", "light", max_age=31536000, path="/")
+            return resp
+    return HTMLResponse("<h2>Light Mode UI not found</h2>", status_code=404)
+
+
+@app.get("/ui/dark", response_class=HTMLResponse, tags=["UI"])
+async def serve_ui_dark():
+    """Serves the Sovereign Heritage Dark Mode UI."""
     ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "code.html")
     if os.path.exists(ui_path):
         with open(ui_path, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read())
-    return HTMLResponse("<h2>Collections Copilot UI not found</h2>", status_code=404)
+            resp = HTMLResponse(content=f.read())
+            resp.set_cookie("copilot_theme", "dark", max_age=31536000, path="/")
+            return resp
+    return HTMLResponse("<h2>Dark Mode UI not found</h2>", status_code=404)
 

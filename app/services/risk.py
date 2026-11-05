@@ -103,3 +103,4 @@ class RiskScoringService:
         for c in clients:
             cls.recompute_and_save(db, c)
         return len(clients)
+

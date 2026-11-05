@@ -107,3 +107,4 @@ def verify_audit_ledger(db: Session = Depends(get_db)):
     Recalculates every SHA-256 hash in sequence from genesis to verify zero tampering.
     """
     return AuditService.verify_chain(db)
+

@@ -44,3 +44,4 @@ async def trigger_job_manually(name: str, db: Session = Depends(get_db)):
 
     result = await handler()
     return {"job": name, "result": result}
+

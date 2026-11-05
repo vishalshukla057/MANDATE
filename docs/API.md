@@ -110,3 +110,4 @@ Standard Error Format:
 - `POST /simulate/dispute`: Inject simulated dispute.
 - `POST /simulate/seed-demo`: Populate demo dataset (6 clients, 15 invoices, 2 contractors, 1 dispute).
 - `POST /simulate/reset`: Clean database wipe.
+

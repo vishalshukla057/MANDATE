@@ -192,3 +192,4 @@ class AnalyticsQAEngine:
             "data": result["data"],
             "chart_hint": result["chart_hint"],
         }
+

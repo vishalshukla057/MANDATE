@@ -112,3 +112,4 @@ def test_jobs_management_and_daily_digest():
         risk_res = client.post("/jobs/risk_recompute/run", headers=AUTH_HEADERS)
         assert risk_res.status_code == 200
         assert risk_res.json()["result"]["recomputed_clients"] == 6
+

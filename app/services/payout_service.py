@@ -147,3 +147,4 @@ class PayoutService:
             payout.status = "failed"
             db.commit()
             raise pe
+

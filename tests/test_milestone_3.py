@@ -119,3 +119,4 @@ def test_kill_switch_blocks_write_actions():
 
         # Deactivate kill switch
         client.post("/policy/kill-switch", headers=AUTH_HEADERS, json={"active": False})
+

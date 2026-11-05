@@ -89,3 +89,4 @@ def create_payout_rule(payload: PayoutRuleCreateRequest, db: Session = Depends(g
     db.commit()
     db.refresh(rule)
     return rule
+

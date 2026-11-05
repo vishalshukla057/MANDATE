@@ -113,3 +113,4 @@ async def submit_dispute_response(id: str, payload: DisputeSubmitRequest, db: Se
         return {"success": True, "dispute_id": dispute.id, "status": "RESPONSE_SUBMITTED"}
     except PayPalError as pe:
         raise HTTPException(status_code=pe.status_code, detail=pe.to_dict())
+
