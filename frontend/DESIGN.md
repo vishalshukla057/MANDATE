@@ -49,85 +49,81 @@ colors:
   on-background: '#dfe2ef'
   surface-variant: '#31353f'
 typography:
-  display:
-    fontFamily: Newsreader
-    fontSize: 56px
-    fontWeight: '400'
-    lineHeight: 64px
-    letterSpacing: -0.02em
-  display-mobile:
-    fontFamily: Newsreader
-    fontSize: 36px
-    fontWeight: '400'
-    lineHeight: 44px
-    letterSpacing: -0.01em
+  display-hero:
+    fontFamily: Inter
+    fontSize: 48px
+    fontWeight: '700'
+    lineHeight: 56px
+  display-hero-mobile:
+    fontFamily: Inter
+    fontSize: 32px
+    fontWeight: '700'
+    lineHeight: 40px
   headline-lg:
-    fontFamily: Newsreader
-    fontSize: 40px
-    fontWeight: '400'
-    lineHeight: 48px
-    letterSpacing: -0.015em
+    fontFamily: Inter
+    fontSize: 32px
+    fontWeight: '600'
+    lineHeight: 40px
   headline-lg-mobile:
-    fontFamily: Newsreader
-    fontSize: 28px
-    fontWeight: '400'
-    lineHeight: 34px
-    letterSpacing: -0.01em
+    fontFamily: Inter
+    fontSize: 24px
+    fontWeight: '600'
+    lineHeight: 32px
   headline-md:
-    fontFamily: Newsreader
-    fontSize: 28px
-    fontWeight: '400'
-    lineHeight: 36px
-    letterSpacing: -0.01em
+    fontFamily: Inter
+    fontSize: 24px
+    fontWeight: '600'
+    lineHeight: 32px
   headline-sm:
-    fontFamily: Newsreader
-    fontSize: 22px
-    fontWeight: '500'
+    fontFamily: Inter
+    fontSize: 20px
+    fontWeight: '600'
     lineHeight: 28px
   title-lg:
-    fontFamily: Manrope
+    fontFamily: Inter
     fontSize: 18px
     fontWeight: '600'
     lineHeight: 24px
-    letterSpacing: -0.01em
   title-md:
-    fontFamily: Manrope
-    fontSize: 15px
-    fontWeight: '600'
-    lineHeight: 20px
-  body-lg:
-    fontFamily: Manrope
+    fontFamily: Inter
     fontSize: 16px
-    fontWeight: '400'
+    fontWeight: '600'
     lineHeight: 24px
+  body-lg:
+    fontFamily: Inter
+    fontSize: 18px
+    fontWeight: '400'
+    lineHeight: 28px
   body-md:
-    fontFamily: Manrope
-    fontSize: 14px
+    fontFamily: Inter
+    fontSize: 15px
     fontWeight: '400'
-    lineHeight: 20px
+    lineHeight: 22px
   body-sm:
-    fontFamily: Manrope
-    fontSize: 12px
-    fontWeight: '400'
-    lineHeight: 16px
-  label-lg:
-    fontFamily: Space Mono
+    fontFamily: Inter
     fontSize: 13px
-    fontWeight: '700'
-    lineHeight: 16px
-    letterSpacing: 0.06em
+    fontWeight: '400'
+    lineHeight: 18px
+  label-code:
+    fontFamily: JetBrains Mono
+    fontSize: 13px
+    fontWeight: '500'
+    lineHeight: 18px
+  label-lg:
+    fontFamily: JetBrains Mono
+    fontSize: 13px
+    fontWeight: '600'
+    lineHeight: 18px
   label-md:
-    fontFamily: Space Mono
-    fontSize: 11px
-    fontWeight: '400'
-    lineHeight: 14px
-    letterSpacing: 0.08em
+    fontFamily: JetBrains Mono
+    fontSize: 14px
+    fontWeight: '500'
+    lineHeight: 20px
   label-sm:
-    fontFamily: Space Mono
-    fontSize: 9px
-    fontWeight: '400'
-    lineHeight: 12px
-    letterSpacing: 0.1em
+    fontFamily: JetBrains Mono
+    fontSize: 12px
+    fontWeight: '600'
+    lineHeight: 16px
 rounded:
   sm: 0.125rem
   DEFAULT: 0.25rem
