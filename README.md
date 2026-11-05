@@ -94,7 +94,9 @@ docker run -p 8000:8000 --env-file .env collections-copilot
 ```
 
 ### 3. Open the UI & API Documentation
-- **UI Dashboard**: [http://localhost:8000](http://localhost:8000) (Google Stitch *Sovereign Heritage* 3D Dashboard)
+- **UI Dashboard (Dual-Theme)**: [http://localhost:8000](http://localhost:8000) (Supports 1-click toggling between Light and Dark modes)
+  - **Light Mode (PayPal Global Design System)**: [http://localhost:8000/ui/light](http://localhost:8000/ui/light) (Three.js 3D PayPal monogram with orbital calipers and clean institutional glass styling)
+  - **Dark Mode (Sovereign Heritage)**: [http://localhost:8000/ui/dark](http://localhost:8000/ui/dark) (Botanical emerald, champagne gold, and Three.js icosahedron core)
 - **Interactive OpenAPI Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
 - **Health Check**: [http://localhost:8000/health](http://localhost:8000/health)
 
