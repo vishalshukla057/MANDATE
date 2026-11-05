@@ -287,35 +287,68 @@ container._cleanup = function() {
           Empower AI agents to procure mission-critical inventory through real PayPal sandbox rails with deterministic mathematical boundaries, zero prompt drift, real-time threat neutralization, and automated refund escrows.
         </p>
 </div>
-<!-- Hero KPI Banner -->
-<div class="w-full grid grid-cols-2 md:grid-cols-4 gap-space-md pt-space-md" data-testid="spend-summary">
-<div class="p-space-md rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex flex-col">
-<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Session Limit Pool</span>
-<span class="font-headline-sm text-headline-sm text-on-surface mt-1 font-mono font-medium">$500.00 <span class="text-xs text-outline font-normal">USD</span></span>
-<span class="font-body-sm text-body-sm text-primary mt-1 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">shield</span> Immutable hard ceiling
-          </span>
+<!-- Hero KPI Banner (4 Ultra-Premium Glass Cards) -->
+<div class="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md pt-space-md" data-testid="spend-summary">
+<div class="p-space-md rounded-2xl bg-[#0c121e]/85 backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-xs uppercase tracking-[0.14em] text-outline font-bold">Session Spend Pool</span>
+<span class="material-symbols-outlined text-[18px] text-primary">pie_chart</span>
 </div>
-<div class="p-space-md rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex flex-col">
-<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Single Item Hard Cap</span>
-<span class="font-headline-sm text-headline-sm text-secondary mt-1 font-mono font-medium">$30.00 <span class="text-xs text-outline font-normal">USD</span></span>
-<span class="font-body-sm text-body-sm text-secondary-fixed-dim mt-1 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">key</span> Escalation threshold
-          </span>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight tnum">$500.00</span>
+<span class="font-label-sm text-xs text-outline font-medium">USD Max</span>
 </div>
-<div class="p-space-md rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex flex-col">
-<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Prompt Injections Blocked</span>
-<span class="font-headline-sm text-headline-sm text-primary mt-1 font-mono font-medium">100.0%</span>
-<span class="font-body-sm text-body-sm text-on-tertiary-container mt-1 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">check_circle</span> Listing payload sanitize
-          </span>
+<div class="mt-space-sm">
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500 shadow-sm" id="spend-progress-bar" style="width: 26.8%;"></div>
 </div>
-<div class="p-space-md rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 shadow-[0_4px_24px_rgba(0,0,0,0.6)] flex flex-col">
-<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">PayPal Settlement State</span>
-<span class="font-headline-sm text-headline-sm text-on-surface mt-1 font-mono font-medium">REAL-TIME</span>
-<span class="font-body-sm text-body-sm text-primary font-mono text-[11px] mt-1 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]">terminal</span> /v2/checkout/orders
-          </span>
+<div class="flex justify-between items-center mt-1">
+<span class="font-label-sm text-xs text-on-surface-variant">Used: <span class="text-primary font-bold tnum" id="spend-current-text">$134.19</span></span>
+<span class="font-label-sm text-xs text-primary font-semibold tnum" id="headroom-text">Headroom: $365.81 Safe</span>
+</div>
+</div>
+</div>
+<div class="p-space-md rounded-2xl bg-[#0c121e]/85 backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:-translate-y-1 hover:border-secondary/40 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-xs uppercase tracking-[0.14em] text-outline font-bold">Single Item Hard Cap</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">warning</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-secondary font-extrabold tracking-tight tnum">$30.00</span>
+<span class="font-label-sm text-xs text-outline font-medium">USD Threshold</span>
+</div>
+<div class="flex items-center gap-1.5 mt-space-sm">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<p class="font-label-sm text-xs text-on-surface-variant" id="escalation-status-pill">Single items &gt; $30 trigger Dual-Key Sign-off</p>
+</div>
+</div>
+<div class="p-space-md rounded-2xl bg-[#0c121e]/85 backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-xs uppercase tracking-[0.14em] text-outline font-bold">Prompt Injection Shield</span>
+<span class="material-symbols-outlined text-[18px] text-primary">security</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-primary font-extrabold tracking-tight tnum">100.0%</span>
+<span class="font-label-sm text-xs text-outline font-medium">Clean</span>
+</div>
+<div class="flex items-center gap-1.5 mt-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<p class="font-label-sm text-xs text-on-surface-variant">Zero Exploit Execution • AST Sanitized</p>
+</div>
+</div>
+<div class="p-space-md rounded-2xl bg-[#0c121e]/85 backdrop-blur-2xl border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:-translate-y-1 hover:border-primary/40 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-xs uppercase tracking-[0.14em] text-outline font-bold">Settlement Gate</span>
+<span class="material-symbols-outlined text-[18px] text-primary">speed</span>
+</div>
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight tnum">38ms</span>
+<span class="font-label-sm text-xs text-outline font-medium">Deterministic</span>
+</div>
+<div class="flex items-center gap-1.5 mt-space-sm">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+<p class="font-label-sm text-xs text-primary font-mono font-semibold" id="settlement-state-text">ORDERS V2 CONNECTED</p>
+</div>
 </div>
 </div>
 <!-- Action & Preset Trigger Strip -->
@@ -682,6 +715,75 @@ container._cleanup = function() {
 </div>
 </div>
 </section>
+<!-- LIVE IMMUTABLE PAYPAL AUDIT LEDGER TRAIL TABLE -->
+<section class="w-full py-space-xl px-6 lg:px-12 bg-transparent" data-testid="audit-ledger">
+<div class="max-w-7xl mx-auto rounded-2xl bg-[#0c121e]/85 backdrop-blur-2xl border border-white/[0.08] p-space-lg shadow-[0_12px_40px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.06)] hover:border-primary/40 transition-all flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm pb-space-sm border-b border-white/[0.06]">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Immutable PayPal Audit Ledger</h3>
+<p class="font-body-sm text-xs text-on-surface-variant">Real-time Merkle tree blocks for every model evaluation, policy gate, and PayPal settlement transition.</p>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-xs text-primary font-mono font-semibold tracking-wide">Live Sandbox Stream (Block #1,048)</span>
+<button class="ml-2 px-space-md py-1.5 rounded-lg bg-primary-container/80 text-primary hover:bg-primary-container font-label-sm text-xs font-semibold transition-all border border-primary/30" id="verify-ledger-btn-dark" onclick="verifyAuditState()" type="button">Verify Hash Chain</button>
+</div>
+</div>
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left font-label-sm text-xs">
+<thead>
+<tr class="bg-surface-container-high/60 text-on-surface-variant uppercase tracking-[0.14em] font-semibold text-[11px]">
+<th class="p-space-sm rounded-l-lg">Block</th>
+<th class="p-space-sm">Timestamp</th>
+<th class="p-space-sm">Event Type</th>
+<th class="p-space-sm">SKU / Item</th>
+<th class="p-space-sm">Amount</th>
+<th class="p-space-sm">Guard Outcome</th>
+<th class="p-space-sm rounded-r-lg">Merkle Node SHA</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/[0.04]" id="audit-table-body">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors" data-testid="audit-row">
+<td class="p-space-sm font-label-code text-xs font-bold text-primary">#1,048</td>
+<td class="p-space-sm text-on-surface-variant">Just Now</td>
+<td class="p-space-sm font-medium text-on-surface">Escalation Queued</td>
+<td class="p-space-sm">Aria Q1 Studio ANC</td>
+<td class="p-space-sm font-bold text-primary tnum">$49.99 USD</td>
+<td class="p-space-sm">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/80 text-secondary border border-secondary/30 font-bold text-[11px] uppercase tracking-wider">AWAITING_APPROVAL</span>
+</td>
+<td class="p-space-sm font-label-code text-xs text-outline">sha256:4a88b2...e92f</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors" data-testid="audit-row">
+<td class="p-space-sm font-label-code text-xs font-bold text-primary">#1,047</td>
+<td class="p-space-sm text-on-surface-variant">T-14s</td>
+<td class="p-space-sm font-medium text-error">Injection Blocked</td>
+<td class="p-space-sm">Refurbished Studio Buds</td>
+<td class="p-space-sm font-bold text-on-surface-variant tnum">$54.00 USD</td>
+<td class="p-space-sm">
+<span class="px-2 py-0.5 rounded-full bg-error-container text-error font-semibold text-[11px] uppercase tracking-wider">AST_QUARANTINE</span>
+</td>
+<td class="p-space-sm font-label-code text-xs text-outline">sha256:cc9101...77b1</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-high/40 transition-colors" data-testid="audit-row">
+<td class="p-space-sm font-label-code text-xs font-bold text-primary">#1,046</td>
+<td class="p-space-sm text-on-surface-variant">T-2m</td>
+<td class="p-space-sm font-medium text-primary">Orders v2 Capture</td>
+<td class="p-space-sm">Type-C Power Delivery Hub</td>
+<td class="p-space-sm font-bold text-primary tnum">$24.50 USD</td>
+<td class="p-space-sm">
+<span class="px-2 py-0.5 rounded-full bg-primary-container/80 text-primary font-semibold text-[11px] uppercase tracking-wider">AUTO_SETTLED</span>
+</td>
+<td class="p-space-sm font-label-code text-xs text-outline">sha256:77fa82...104c</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 </div>
 <script>
   // Scenario Data Store
@@ -799,7 +901,8 @@ container._cleanup = function() {
     approveBtnLabel.innerText = 'Calling PayPal /v2/checkout/orders...';
     
     setTimeout(() => {
-      approveBtnLabel.innerText = 'Order Captured: PAYPAL-TXN-' + Math.floor(100000 + Math.random() * 900000);
+      const txnId = 'PAYPAL-TXN-' + Math.floor(100000 + Math.random() * 900000);
+      approveBtnLabel.innerText = 'Order Captured: ' + txnId;
       statusBadge.innerText = 'PAYPAL: CAPTURED';
       statusBadge.className = 'font-label-sm text-label-sm text-primary font-mono font-bold';
       
@@ -809,6 +912,32 @@ container._cleanup = function() {
       document.getElementById('escalation-explanation').innerHTML = '<span class="text-primary font-bold">Success:</span> PayPal Sandbox debited ' + data.price + '. Webhook dispatched to Channel3 logistics fulfillment node.';
 
       document.getElementById('chain-hash-display').innerText = 'sha256:' + Math.random().toString(16).substring(2, 10) + '...PAYPAL_SETTLED';
+
+      // Update headroom progress
+      const spendProgress = document.getElementById('spend-progress-bar');
+      const spendCurrentText = document.getElementById('spend-current-text');
+      const headroomText = document.getElementById('headroom-text');
+      if (spendProgress) spendProgress.style.width = '36.8%';
+      if (spendCurrentText) spendCurrentText.textContent = '$184.18';
+      if (headroomText) headroomText.textContent = 'Headroom: $315.82 Safe';
+
+      // Prepend dynamic audit ledger row
+      const auditTableBody = document.getElementById('audit-table-body');
+      if (auditTableBody) {
+        const newRow = document.createElement('tr');
+        newRow.className = 'hover:bg-surface-container-high/40 transition-colors bg-primary-container/10';
+        newRow.setAttribute('data-testid', 'audit-row');
+        newRow.innerHTML = `
+          <td class="p-space-sm font-label-code text-xs font-bold text-primary">#1,049</td>
+          <td class="p-space-sm text-on-surface-variant">Just Now</td>
+          <td class="p-space-sm font-medium text-primary">Orders v2 Capture</td>
+          <td class="p-space-sm">${data.itemName}</td>
+          <td class="p-space-sm font-bold text-primary tnum">${data.price} USD</td>
+          <td class="p-space-sm"><span class="px-2 py-0.5 rounded-full bg-primary-container/80 text-primary font-semibold text-[11px] uppercase tracking-wider">SETTLED</span></td>
+          <td class="p-space-sm font-label-code text-xs text-outline">sha256:99e120...31aa</td>
+        `;
+        auditTableBody.insertBefore(newRow, auditTableBody.firstChild);
+      }
     }, 600);
   }
 
@@ -827,6 +956,7 @@ container._cleanup = function() {
   }
 
   function simulateDeliveryRefund() {
+    const data = scenarios[currentScenarioKey];
     const alertBox = document.getElementById('escalation-alert-box');
     const statusBadge = document.getElementById('paypal-status-badge');
     const approveBtnLabel = document.getElementById('approve-btn-label');
@@ -842,6 +972,24 @@ container._cleanup = function() {
     approveBtnLabel.innerText = 'Refund Settled ($49.99)';
 
     document.getElementById('chain-hash-display').innerText = 'sha256:' + Math.random().toString(16).substring(2, 10) + '...REFUND_CONFIRMED';
+
+    // Prepend dynamic refund audit row
+    const auditTableBody = document.getElementById('audit-table-body');
+    if (auditTableBody) {
+      const newRow = document.createElement('tr');
+      newRow.className = 'hover:bg-surface-container-high/40 transition-colors bg-secondary-container/10';
+      newRow.setAttribute('data-testid', 'audit-row');
+      newRow.innerHTML = `
+        <td class="p-space-sm font-label-code text-xs font-bold text-secondary">#1,049</td>
+        <td class="p-space-sm text-on-surface-variant">Just Now</td>
+        <td class="p-space-sm font-medium text-secondary">Payments v2 Auto-Refund</td>
+        <td class="p-space-sm">${data.itemName}</td>
+        <td class="p-space-sm font-bold text-secondary tnum">-${data.price} USD</td>
+        <td class="p-space-sm"><span class="px-2 py-0.5 rounded-full bg-secondary-container/80 text-secondary font-semibold text-[11px] uppercase tracking-wider">REFUND_ESCROW</span></td>
+        <td class="p-space-sm font-label-code text-xs text-outline">sha256:bb1420...90dd</td>
+      `;
+      auditTableBody.insertBefore(newRow, auditTableBody.firstChild);
+    }
   }
 
   async function verifyAuditState() {
