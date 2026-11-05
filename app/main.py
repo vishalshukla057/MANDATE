@@ -180,3 +180,31 @@ async def serve_ui_dark():
             return resp
     return HTMLResponse("<h2>Dark Mode UI not found</h2>", status_code=404)
 
+
+@app.get("/privacy", response_class=HTMLResponse, tags=["Legal"])
+async def serve_privacy():
+    """Serves the Enterprise Privacy Policy."""
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "privacy.html")
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse("<h2>Privacy Policy not found</h2>", status_code=404)
+
+
+@app.get("/terms", response_class=HTMLResponse, tags=["Legal"])
+async def serve_terms():
+    """Serves the Enterprise Terms and Conditions."""
+    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "terms.html")
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse("<h2>Terms of Service not found</h2>", status_code=404)
+
+
+@app.get("/favicon.ico", tags=["System"])
+async def serve_favicon():
+    """Serves official SVG favicon."""
+    svg_icon = """<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23003087'/><path d='M9 6h7.5c4.5 0 6.5 2.2 5.5 6.5-1.2 5.2-4.5 7.5-9 7.5H11l-1.5 6H7L9 6z' fill='%230079C1'/><path d='M13 10h6.5c3.5 0 5 1.7 4.2 5.2-.9 4.2-3.5 6-7 6H14.5l-1.2 4.8H11l2-16z' fill='%2300457C'/></svg>"""
+    return Response(content=svg_icon, media_type="image/svg+xml")
+
+

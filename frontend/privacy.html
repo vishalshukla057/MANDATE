@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Privacy Policy - PayPal Collections Copilot</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23003087'/%3E%3Cpath d='M9 6h7.5c4.5 0 6.5 2.2 5.5 6.5-1.2 5.2-4.5 7.5-9 7.5H11l-1.5 6H7L9 6z' fill='%230079C1'/%3E%3Cpath d='M13 10h6.5c3.5 0 5 1.7 4.2 5.2-.9 4.2-3.5 6-7 6H14.5l-1.2 4.8H11l2-16z' fill='%2300457C'/%3E%3C/svg%3E" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #020b18; color: #e2e8f0; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+  <!-- Header -->
+  <header class="w-full bg-[#001435]/95 border-b border-white/[0.08] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded bg-[#003087] flex items-center justify-center font-bold text-white text-sm">PP</div>
+          <span class="font-bold text-white tracking-tight">PayPal Collections Copilot</span>
+        </a>
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#001e4a] border border-sky-400/30 text-sky-200 mono text-xs">
+          <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+          <span>copilot.enterprise.paypal.com</span>
+        </div>
+      </div>
+      <nav class="flex items-center gap-4 text-sm text-sky-200/80">
+        <a href="/" class="hover:text-white transition-colors">Console</a>
+        <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a>
+        <a href="/docs" class="hover:text-white transition-colors">API Docs</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-4xl mx-auto px-6 py-12 flex-1">
+    <div class="mb-8 pb-6 border-b border-white/[0.08]">
+      <span class="px-2 py-0.5 rounded bg-sky-500/10 border border-sky-400/30 text-sky-300 mono text-xs font-semibold uppercase tracking-wider">Enterprise Compliance</span>
+      <h1 class="text-3xl font-extrabold text-white mt-3">Enterprise Privacy Policy</h1>
+      <p class="text-sm text-sky-200/70 mt-1">Effective Date: November 6, 2026 • Version 2.4.0</p>
+    </div>
+
+    <div class="space-y-8 text-sm leading-relaxed text-slate-300">
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">1. Scope and Architecture</h2>
+        <p>This Privacy Policy describes how the Collections Copilot autonomous accounts receivable system ("Collections Copilot", "the Service") processes, stores, and protects transaction data, merchant information, and client communications within enterprise deployments integrated with the PayPal Orders v2 and Payments v2 APIs.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">2. Data Processed by the Autonomous Engine</h2>
+        <ul class="list-disc pl-5 space-y-1.5">
+          <li><strong>Accounts Receivable Records:</strong> Invoice identifiers, outstanding balances, currencies, due dates, aging buckets, and settlement receipts.</li>
+          <li><strong>Client Communication Metadata:</strong> Delivery timestamps, recipient addresses, chasing channel records (Email, SMS, Webhook), and adaptive tone ladder history.</li>
+          <li><strong>Dispute Evidence Artifacts:</strong> Signed merchant fulfillment documents, carrier tracking digests, delivery attestations, and cryptographic evidence manifests.</li>
+          <li><strong>Contractor Disbursement Records:</strong> Tax identifiers, verified payout handles, revenue allocation percentages, and batch settlement logs.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">3. Cryptographic Merkle Audit Ledger</h2>
+        <p>All automated decisions, policy escalations, and human approvals are permanently recorded in an append-only cryptographic Merkle audit chain with SHA-256 hash chaining. Ledger entries contain zero raw credentials or unencrypted payment card information and are retained for enterprise compliance and auditability.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">4. Third-Party API Integration and Data Sharing</h2>
+        <p>The Service communicates exclusively with authenticated PayPal REST endpoints using mutual TLS and bearer token credentials. Data is never sold, shared with advertising networks, or transferred to unvetted external systems.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">5. Data Retention and Deletion</h2>
+        <p>In accordance with financial compliance mandates, operational transaction logs are maintained for seven (7) years following invoice settlement. Tenant organizations maintain sovereign rights to request complete data extraction upon termination of service.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">6. Security and Access Governance</h2>
+        <p>Dual-key authorization is mandatory for disbursements, settlement write-offs exceeding threshold ceilings, and policy modifications. All operator access requires multi-factor authentication and role-based access control (RBAC).</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">7. Contact and Data Protection Officer</h2>
+        <p>For inquiries regarding enterprise data privacy, cryptographic ledger verification, or compliance certifications, contact our Data Protection Office at <span class="mono text-sky-400">dpo@collections.paypal.com</span>.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full bg-[#001435] border-t border-white/[0.08] py-8 text-xs text-sky-200/60">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span>&copy; 2026 PayPal Inc. All rights reserved.</span>
+        <span>•</span>
+        <span>Connected Domain: <span class="mono text-sky-300">copilot.enterprise.paypal.com</span></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/" class="hover:text-white transition-colors">Console</a>
+        <a href="/privacy" class="text-white font-semibold">Privacy Policy</a>
+        <a href="/terms" class="hover:text-white transition-colors">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms and Conditions - PayPal Collections Copilot</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23003087'/%3E%3Cpath d='M9 6h7.5c4.5 0 6.5 2.2 5.5 6.5-1.2 5.2-4.5 7.5-9 7.5H11l-1.5 6H7L9 6z' fill='%230079C1'/%3E%3Cpath d='M13 10h6.5c3.5 0 5 1.7 4.2 5.2-.9 4.2-3.5 6-7 6H14.5l-1.2 4.8H11l2-16z' fill='%2300457C'/%3E%3C/svg%3E" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #020b18; color: #e2e8f0; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+  <!-- Header -->
+  <header class="w-full bg-[#001435]/95 border-b border-white/[0.08] sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="/" class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded bg-[#003087] flex items-center justify-center font-bold text-white text-sm">PP</div>
+          <span class="font-bold text-white tracking-tight">PayPal Collections Copilot</span>
+        </a>
+        <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-[#001e4a] border border-sky-400/30 text-sky-200 mono text-xs">
+          <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
+          <span>copilot.enterprise.paypal.com</span>
+        </div>
+      </div>
+      <nav class="flex items-center gap-4 text-sm text-sky-200/80">
+        <a href="/" class="hover:text-white transition-colors">Console</a>
+        <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="/docs" class="hover:text-white transition-colors">API Docs</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-4xl mx-auto px-6 py-12 flex-1">
+    <div class="mb-8 pb-6 border-b border-white/[0.08]">
+      <span class="px-2 py-0.5 rounded bg-sky-500/10 border border-sky-400/30 text-sky-300 mono text-xs font-semibold uppercase tracking-wider">Enterprise Terms</span>
+      <h1 class="text-3xl font-extrabold text-white mt-3">Terms and Conditions of Service</h1>
+      <p class="text-sm text-sky-200/70 mt-1">Effective Date: November 6, 2026 • Version 2.4.0</p>
+    </div>
+
+    <div class="space-y-8 text-sm leading-relaxed text-slate-300">
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">1. Acceptance of Terms</h2>
+        <p>By connecting to or operating the Collections Copilot autonomous engine ("the Platform"), your organization ("Tenant") agrees to be bound by these Enterprise Terms and Conditions. These terms govern autonomous invoice chasing, payment reconciliation, contractor payouts, and dispute defense workflows conducted through PayPal REST APIs.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">2. Autonomous Invariant Mandates</h2>
+        <p>The Platform executes transactions subject to deterministic invariant policies:
+          <ul class="list-disc pl-5 mt-2 space-y-1">
+            <li><strong>Velocity Limits:</strong> Spending and disbursement limits are mathematically hardcoded and cannot be bypassed by autonomous model proposals.</li>
+            <li><strong>Dual-Key Approvals:</strong> Any action classified as high risk or exceeding configured thresholds requires explicit cryptographic sign-off by a designated human administrator before execution.</li>
+            <li><strong>Idempotency Guarantees:</strong> Every disbursement and payment capture carries a unique SHA-256 idempotency key to prevent duplicate charges or double payouts.</li>
+          </ul>
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">3. PayPal REST API Integration Obligations</h2>
+        <p>Tenant is responsible for maintaining active, verified PayPal Sandbox and Live credentials in compliance with PayPal's Acceptable Use Policy and Developer Guidelines. The Platform operates as an authorized orchestrator and does not hold or custody merchant funds directly.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">4. Dispute Defense and Evidence Attestation</h2>
+        <p>Dispute defense manifests compiled by the Platform reflect data retrieved from enterprise carrier records and merchant fulfillment systems. Tenant warrants that all operational fulfillment records supplied to the Platform are accurate, verifiable, and legally attested.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">5. Cryptographic Non-Repudiation</h2>
+        <p>All system actions, including policy triggers, escalation approvals, and settlement receipts, are hashed and sealed into an immutable audit chain. Both parties acknowledge that Merkle root attestations constitute definitive records of system activity.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">6. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by applicable financial regulations, Collections Copilot shall not be liable for indirect, incidental, or punitive damages resulting from banking network delays, third-party carrier reporting lag, or external payment processor outages.</p>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-white mb-2">7. Governing Law and Dispute Resolution</h2>
+        <p>These terms shall be governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to conflict of law principles. Formal inquiries may be directed to <span class="mono text-sky-400">legal@collections.paypal.com</span>.</p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full bg-[#001435] border-t border-white/[0.08] py-8 text-xs text-sky-200/60">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span>&copy; 2026 PayPal Inc. All rights reserved.</span>
+        <span>•</span>
+        <span>Connected Domain: <span class="mono text-sky-300">copilot.enterprise.paypal.com</span></span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/" class="hover:text-white transition-colors">Console</a>
+        <a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="/terms" class="text-white font-semibold">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

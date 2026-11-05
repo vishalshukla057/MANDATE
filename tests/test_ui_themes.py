@@ -37,3 +37,24 @@ def test_ui_query_param_theme_switch():
     assert res_light.status_code == 200
     assert "ANIMATION_63" in res_light.text or "PayPal Developer" in res_light.text
 
+
+def test_privacy_policy_page():
+    res = client.get("/privacy")
+    assert res.status_code == 200
+    assert "Privacy Policy" in res.text
+    assert "copilot.enterprise.paypal.com" in res.text
+
+
+def test_terms_and_conditions_page():
+    res = client.get("/terms")
+    assert res.status_code == 200
+    assert "Terms and Conditions" in res.text
+    assert "copilot.enterprise.paypal.com" in res.text
+
+
+def test_favicon_served():
+    res = client.get("/favicon.ico")
+    assert res.status_code == 200
+    assert "image/svg+xml" in res.headers.get("content-type", "")
+
+
