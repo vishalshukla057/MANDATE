@@ -350,7 +350,26 @@ container._cleanup = function() {
         <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="docs" href="#">Docs</a>
       </nav>
     </div>
-    <div class="flex items-center gap-2">
+    <!-- LOGGED-OUT PUBLIC CONTROLS (Default) -->
+    <div id="logged-out-header-controls" class="flex items-center gap-2">
+      <a href="/?theme=dark" id="theme-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all">
+        <span class="material-symbols-outlined text-[15px] text-sky-300">dark_mode</span>
+        <span class="hidden md:inline">Dark Mode</span>
+      </a>
+      <div class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/80 border border-sky-400/30 text-sky-200 text-xs">
+        <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400 animate-pulse"></span>
+        <span class="font-mono text-[11px]">Orders v2</span>
+      </div>
+      <button id="open-paypal-login-btn" type="button" class="flex items-center gap-2 px-3 py-1.5 rounded bg-[#ffc439] hover:bg-[#f5b324] text-[#00174b] font-bold text-xs shadow-md transition-all border border-amber-300 active:scale-[0.98]">
+        <div class="flex items-center font-black tracking-tighter text-xs">
+          <span class="text-[#003087]">P</span><span class="text-[#0079c1] -ml-0.5">P</span>
+        </div>
+        <span>Sign In with PayPal</span>
+      </button>
+    </div>
+
+    <!-- AUTHENTICATED MERCHANT CONTROLS (Hidden until login) -->
+    <div id="merchant-auth-controls" class="hidden items-center gap-2">
       <button id="voice-dictate-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all" title="Audio / Voice Dictation Ingestion" type="button">
         <span class="material-symbols-outlined text-[15px] text-sky-300">mic</span>
         <span class="hidden sm:inline">Voice Invoicing</span>
@@ -363,14 +382,20 @@ container._cleanup = function() {
         <span class="material-symbols-outlined text-[15px] text-emerald-300">timer</span>
         <span class="font-mono text-[11px]">Undo: <span id="undo-top-timer">04:48</span></span>
       </button>
-      <a href="/?theme=dark" id="theme-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all">
-        <span class="material-symbols-outlined text-[15px] text-sky-300">dark_mode</span>
-        <span class="hidden md:inline">Dark Mode</span>
-      </a>
-      <div class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/80 border border-sky-400/30 text-sky-200 text-xs">
-        <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400 animate-pulse"></span>
-        <span class="font-mono text-[11px]">Orders v2</span>
+      <div class="hidden lg:flex items-center gap-2 px-2 py-0.5 rounded bg-[#001e4a] border border-sky-400/40 text-xs shadow-sm">
+        <div class="w-5 h-5 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center font-bold text-[10px]">ER</div>
+        <div class="flex flex-col text-left leading-none">
+          <span class="text-white font-semibold text-[11px]">Elena Rostova</span>
+          <span class="text-[9px] text-sky-300/80 font-mono">#M_SONIC_881</span>
+        </div>
       </div>
+      <a href="/?theme=dark" id="theme-toggle-btn-auth" class="flex items-center gap-1.5 px-2 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all">
+        <span class="material-symbols-outlined text-[15px] text-sky-300">dark_mode</span>
+      </a>
+      <button id="merchant-logout-btn" type="button" class="flex items-center gap-1 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-rose-950/70 border border-rose-400/30 text-rose-200 text-xs shadow-sm transition-all" title="Sign Out of Merchant Cockpit">
+        <span class="material-symbols-outlined text-[14px]">logout</span>
+        <span class="hidden md:inline">Sign Out</span>
+      </button>
     </div>
   </div>
 </header><main class="w-full pt-16 relative z-10 min-h-[calc(100vh-280px)]"><div class="flex flex-col w-full">
@@ -1287,6 +1312,65 @@ container._cleanup = function() {
   </div>
 </div>
 
+<!-- PAYPAL BUSINESS SANDBOX LOGIN MODAL -->
+<div id="paypal-login-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-sky-100 flex flex-col gap-4 text-on-surface animate-in fade-in zoom-in-95 duration-200">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-md bg-[#003087] text-white flex items-center justify-center font-black text-sm">
+          <span>P<span class="text-sky-300">P</span></span>
+        </div>
+        <div>
+          <h3 class="font-title-md font-bold text-primary flex items-center gap-1.5">
+            <span>PayPal Sandbox Login</span>
+            <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold">SECURE</span>
+          </h3>
+          <p class="text-[11px] text-on-surface-variant font-mono">Sign in to unlock full Merchant Operator Cockpit</p>
+        </div>
+      </div>
+      <button id="close-login-modal-btn" type="button" class="text-on-surface-variant hover:text-primary">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <div class="bg-surface-container-low p-3.5 rounded-xl border border-sky-100 space-y-2 text-xs">
+      <div class="flex items-center justify-between">
+        <span class="text-on-surface-variant font-medium">Merchant Identity:</span>
+        <span class="font-bold text-primary font-mono">elena.rostova@apexventures.io</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-on-surface-variant font-medium">Merchant ID:</span>
+        <span class="font-mono text-secondary font-bold">#M_SONIC_881</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-on-surface-variant font-medium">Authorized Rails:</span>
+        <span class="font-mono text-emerald-700 font-semibold text-[11px]">Orders v2 • Payments v2 • Disputes</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-on-surface-variant font-medium">Dual-Key Consensus:</span>
+        <span class="font-mono text-primary font-semibold text-[11px]">Enabled (Threshold &gt; $50)</span>
+      </div>
+    </div>
+
+    <div class="p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-900 flex items-start gap-2">
+      <span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">verified_user</span>
+      <p class="leading-relaxed">Signing in authenticates you as the merchant operator, unlocking <strong>Voice Invoicing</strong>, <strong>Claude AI MCP Server</strong>, <strong>5-Minute Undo Cancellation</strong>, and custom scenario testing.</p>
+    </div>
+
+    <div class="flex flex-col gap-2 pt-2">
+      <button id="confirm-login-btn" type="button" class="w-full h-11 rounded-md bg-[#ffc439] hover:bg-[#f5b324] text-[#00174b] font-title-md text-sm font-extrabold flex items-center justify-center gap-2 shadow-md border border-amber-300 transition-all active:scale-[0.99]">
+        <div class="flex items-center font-black tracking-tighter text-sm">
+          <span class="text-[#003087]">P</span><span class="text-[#0079c1] -ml-0.5">P</span>
+        </div>
+        <span>Sign In to Merchant Console</span>
+      </button>
+      <button id="cancel-login-btn" type="button" class="w-full py-2 rounded text-xs font-semibold text-on-surface-variant hover:text-primary">
+        Continue as Guest (Public Mode)
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- MODEL CONTEXT PROTOCOL (MCP) SERVER MODAL -->
 <div id="mcp-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-sky-100 flex flex-col gap-4 text-on-surface">
@@ -1342,6 +1426,63 @@ container._cleanup = function() {
 <!-- INTERACTIVE SCENARIOS JAVASCRIPT LOGIC -->
 <script>
     (function initMandateDemo() {
+      // Auth Handlers & Merchant Session Management
+      const loggedOutControls = document.getElementById('logged-out-header-controls');
+      const merchantControls = document.getElementById('merchant-auth-controls');
+      const loginModal = document.getElementById('paypal-login-modal');
+      const openLoginBtn = document.getElementById('open-paypal-login-btn');
+      const closeLoginBtn = document.getElementById('close-login-modal-btn');
+      const cancelLoginBtn = document.getElementById('cancel-login-btn');
+      const confirmLoginBtn = document.getElementById('confirm-login-btn');
+      const logoutBtn = document.getElementById('merchant-logout-btn');
+
+      function updateAuthUI() {
+        const isLoggedIn = localStorage.getItem('copilot_logged_in') === 'true';
+        if (isLoggedIn) {
+          if (loggedOutControls) loggedOutControls.classList.add('hidden');
+          if (merchantControls) {
+            merchantControls.classList.remove('hidden');
+            merchantControls.classList.add('flex');
+          }
+        } else {
+          if (loggedOutControls) loggedOutControls.classList.remove('hidden');
+          if (merchantControls) {
+            merchantControls.classList.add('hidden');
+            merchantControls.classList.remove('flex');
+          }
+        }
+      }
+
+      if (openLoginBtn) {
+        openLoginBtn.addEventListener('click', () => {
+          if (loginModal) loginModal.classList.remove('hidden');
+        });
+      }
+      if (closeLoginBtn) {
+        closeLoginBtn.addEventListener('click', () => {
+          if (loginModal) loginModal.classList.add('hidden');
+        });
+      }
+      if (cancelLoginBtn) {
+        cancelLoginBtn.addEventListener('click', () => {
+          if (loginModal) loginModal.classList.add('hidden');
+        });
+      }
+      if (confirmLoginBtn) {
+        confirmLoginBtn.addEventListener('click', () => {
+          localStorage.setItem('copilot_logged_in', 'true');
+          if (loginModal) loginModal.classList.add('hidden');
+          updateAuthUI();
+        });
+      }
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+          localStorage.removeItem('copilot_logged_in');
+          updateAuthUI();
+        });
+      }
+      updateAuthUI();
+
       const scenario1Btn = document.getElementById('scenario-1-btn');
       const scenario2Btn = document.getElementById('scenario-2-btn');
       const scenario3Btn = document.getElementById('scenario-3-btn');
