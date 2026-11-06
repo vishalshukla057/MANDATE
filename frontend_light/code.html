@@ -938,6 +938,9 @@ container._cleanup = function() {
 </section>
 <!-- 6 FULL-SCREEN EDITORIAL SCENARIO CHAPTERS (NON-BOXED, PREMIUM SPATIAL ARCHITECTURE) -->
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
   .scenario-chapter {
     opacity: 0;
     transform: translateY(48px);
@@ -948,9 +951,66 @@ container._cleanup = function() {
     opacity: 1;
     transform: translateY(0);
   }
+  @keyframes scannerSweep {
+    0% { top: 0%; opacity: 0; }
+    20% { opacity: 0.9; }
+    80% { opacity: 0.9; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .animate-scanner-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #38bdf8, #ffc439, transparent);
+    box-shadow: 0 0 14px #38bdf8;
+    animation: scannerSweep 3.2s infinite ease-in-out;
+  }
+  @keyframes pulseRadarRing {
+    0% { transform: scale(0.9); opacity: 0.9; }
+    100% { transform: scale(2.3); opacity: 0; }
+  }
+  .animate-radar-ring {
+    animation: pulseRadarRing 2.4s infinite cubic-bezier(0.2, 0.8, 0.4, 1);
+  }
+  @keyframes bobFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .animate-bob {
+    animation: bobFloat 2.6s infinite ease-in-out;
+  }
 </style>
 
 <div id="scenarios-showcase" class="w-full relative bg-[#001435]">
+
+  <!-- Fixed Scroll Spy Chapter Navigator (Right Rail) -->
+  <nav id="scroll-spy-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-end gap-3.5 transition-all duration-300 opacity-0 pointer-events-none">
+    <a href="#chapter-1" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-1" title="01: Fraud Block">
+      <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">01 Fraud Block</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
+    </a>
+    <a href="#chapter-2" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-2" title="02: Auto-Refund">
+      <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">02 Auto-Refund</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
+    </a>
+    <a href="#chapter-3" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-3" title="03: Cancel Window">
+      <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">03 Cancel Window</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
+    </a>
+    <a href="#chapter-4" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-4" title="04: Delivery Proof">
+      <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">04 Delivery Proof</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
+    </a>
+    <a href="#chapter-5" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-5" title="05: Cash Runway">
+      <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">05 Cash Runway</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
+    </a>
+    <a href="#chapter-6" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-6" title="06: Currency Rates">
+      <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">06 Currency Rates</span>
+      <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
+    </a>
+  </nav>
 
   <!-- CHAPTER 01: FRAUD BLOCK -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-1">
@@ -986,15 +1046,16 @@ container._cleanup = function() {
         </div>
       </div>
 
-      <!-- Right Visual Component: AST Sanitizer Live Stream -->
+      <!-- Right Visual Component: AST Sanitizer Live Stream with Animated Laser Scanner -->
       <div class="lg:col-span-6 flex flex-col justify-center">
-        <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-sky-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
+        <div class="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-sky-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
+          <div class="animate-scanner-line pointer-events-none"></div>
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <div class="flex items-center gap-2">
               <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
               <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
               <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
-              <span class="ml-2 text-sky-300 font-semibold text-[11px] uppercase tracking-wider">AST Invariant Compiler</span>
+              <span class="ml-2 text-sky-300 font-semibold text-[11px] uppercase tracking-wider">AST Invariant Compiler Active</span>
             </div>
             <span class="text-emerald-400 font-bold text-[10px] bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">ZERO LEAKS</span>
           </div>
@@ -1019,6 +1080,14 @@ container._cleanup = function() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Scroll Down Prompt to 02 -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(1)">
+      <span class="text-[9px] font-mono tracking-widest text-sky-300 uppercase group-hover:text-white transition-colors">Scroll Down to 02</span>
+      <div class="w-4 h-7 rounded-full border border-sky-400/50 flex items-start justify-center p-0.5 group-hover:border-sky-300">
+        <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
   </section>
@@ -1057,12 +1126,15 @@ container._cleanup = function() {
         </div>
       </div>
 
-      <!-- Right Visual Component: SLA Breach Timeline -->
+      <!-- Right Visual Component: SLA Breach Timeline with Active Pulse -->
       <div class="lg:col-span-6 flex flex-col justify-center">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-sky-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <span class="text-sky-300 font-semibold uppercase tracking-wider text-[11px]">SLA Fulfillment Ledger</span>
-            <span class="text-amber-400 font-mono text-[11px] font-bold">24H DEADLINE EXPIRED</span>
+            <span class="text-amber-400 font-mono text-[11px] font-bold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <span>24H DEADLINE EXPIRED</span>
+            </span>
           </div>
           <div class="relative pl-6 space-y-4 border-l border-sky-800/80">
             <div class="relative">
@@ -1082,6 +1154,14 @@ container._cleanup = function() {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Scroll Down Prompt to 03 -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(2)">
+      <span class="text-[9px] font-mono tracking-widest text-sky-300 uppercase group-hover:text-white transition-colors">Scroll Down to 03</span>
+      <div class="w-4 h-7 rounded-full border border-sky-400/50 flex items-start justify-center p-0.5 group-hover:border-sky-300">
+        <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
   </section>
@@ -1120,7 +1200,7 @@ container._cleanup = function() {
         </div>
       </div>
 
-      <!-- Right Visual Component: Grace Countdown Display -->
+      <!-- Right Visual Component: Grace Countdown Display with Ticking Seconds -->
       <div class="lg:col-span-6 flex flex-col justify-center">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-emerald-500/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-5">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
@@ -1130,7 +1210,7 @@ container._cleanup = function() {
           <div class="p-4 rounded-2xl bg-black/40 border border-emerald-500/30 flex items-center justify-between">
             <div>
               <div class="text-[10px] text-sky-400 uppercase tracking-widest font-bold">Grace Countdown Remaining</div>
-              <div class="text-3xl font-black text-emerald-400 font-mono tracking-tight mt-1">04:48.2</div>
+              <div id="live-grace-countdown" class="text-3xl font-black text-emerald-400 font-mono tracking-tight mt-1">04:48.2</div>
             </div>
             <div class="w-12 h-12 rounded-full border-2 border-emerald-400/40 border-t-emerald-400 animate-spin flex items-center justify-center">
               <span class="material-symbols-outlined text-emerald-400 text-[20px]">timer</span>
@@ -1144,6 +1224,14 @@ container._cleanup = function() {
             <p class="text-[10px] text-sky-300/70">Action ID: act-escrow-8821 • Staged by Claude 3.5 Sonnet • 1-Click Rollback Authorized</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Scroll Down Prompt to 04 -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(3)">
+      <span class="text-[9px] font-mono tracking-widest text-emerald-300 uppercase group-hover:text-white transition-colors">Scroll Down to 04</span>
+      <div class="w-4 h-7 rounded-full border border-emerald-400/50 flex items-start justify-center p-0.5 group-hover:border-emerald-300">
+        <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
   </section>
@@ -1182,11 +1270,17 @@ container._cleanup = function() {
         </div>
       </div>
 
-      <!-- Right Visual Component: Carrier Satellite GPS Attestation -->
+      <!-- Right Visual Component: Carrier Satellite GPS Attestation with Pulsing Radar Ring -->
       <div class="lg:col-span-6 flex flex-col justify-center">
-        <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
+        <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4 relative overflow-hidden">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
-            <span class="text-cyan-300 font-semibold uppercase tracking-wider text-[11px]">Carrier Telemetry Evidence Pack</span>
+            <span class="text-cyan-300 font-semibold uppercase tracking-wider text-[11px] flex items-center gap-2">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-radar-ring absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              </span>
+              <span>Carrier Telemetry Evidence Pack</span>
+            </span>
             <span class="text-cyan-400 font-mono text-[11px] font-bold">API STATUS: ATTESTED</span>
           </div>
           <div class="grid grid-cols-2 gap-3 text-[11px]">
@@ -1209,6 +1303,14 @@ container._cleanup = function() {
             <p class="font-mono text-[11px] leading-relaxed">Evidence Hash: sha256:7791a8...carrier_proof. Invariant verified: delivery within 50 meters of order destination.</p>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Scroll Down Prompt to 05 -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(4)">
+      <span class="text-[9px] font-mono tracking-widest text-cyan-300 uppercase group-hover:text-white transition-colors">Scroll Down to 05</span>
+      <div class="w-4 h-7 rounded-full border border-cyan-400/50 flex items-start justify-center p-0.5 group-hover:border-cyan-300">
+        <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
   </section>
@@ -1273,6 +1375,14 @@ container._cleanup = function() {
         </div>
       </div>
     </div>
+
+    <!-- Scroll Down Prompt to 06 -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(5)">
+      <span class="text-[9px] font-mono tracking-widest text-amber-300 uppercase group-hover:text-white transition-colors">Scroll Down to 06</span>
+      <div class="w-4 h-7 rounded-full border border-amber-400/50 flex items-start justify-center p-0.5 group-hover:border-amber-300">
+        <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
+      </div>
+    </div>
   </section>
 
   <!-- CHAPTER 06: CURRENCY RATES -->
@@ -1333,6 +1443,14 @@ container._cleanup = function() {
             "2.5% discount offered to European logistics partner if paid within 48h. Eliminates 14-day FX currency slip exposure while speeding up operating cash flow."
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Scroll Down Prompt to Return to Sandbox -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(6)">
+      <span class="text-[9px] font-mono tracking-widest text-indigo-300 uppercase group-hover:text-white transition-colors">Test All in Sandbox ↑</span>
+      <div class="w-4 h-7 rounded-full border border-indigo-400/50 flex items-center justify-center p-0.5 group-hover:border-indigo-300">
+        <span class="material-symbols-outlined text-[13px] text-[#ffc439]">north</span>
       </div>
     </div>
   </section>
@@ -2288,6 +2406,17 @@ container._cleanup = function() {
         if (btn) btn.click();
       };
 
+      // Scroll to Next Chapter Helper
+      window.scrollToNextChapter = function(currentChapterNum) {
+        if (currentChapterNum < 6) {
+          const nextChap = document.getElementById('chapter-' + (currentChapterNum + 1));
+          if (nextChap) nextChap.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          const sandbox = document.getElementById('dual-state-sandbox') || document.getElementById('interactive-simulator');
+          if (sandbox) sandbox.scrollIntoView({ behavior: 'smooth' });
+        }
+      };
+
       // Scroll-Down Reveal Animation for 6 Full-Screen Scenario Chapters
       const scenarioChapters = document.querySelectorAll('.scenario-chapter');
       if ('IntersectionObserver' in window) {
@@ -2301,6 +2430,37 @@ container._cleanup = function() {
         scenarioChapters.forEach(chapter => chapterObserver.observe(chapter));
       } else {
         scenarioChapters.forEach(chapter => chapter.classList.add('is-visible'));
+      }
+
+      // Scroll Spy Nav Indicator
+      const spyNav = document.getElementById('scroll-spy-nav');
+      const showcaseSec = document.getElementById('scenarios-showcase');
+      const spyDots = document.querySelectorAll('.spy-dot');
+      if (spyNav && showcaseSec && spyDots.length > 0) {
+        window.addEventListener('scroll', () => {
+          const sRect = showcaseSec.getBoundingClientRect();
+          if (sRect.top <= window.innerHeight * 0.4 && sRect.bottom >= window.innerHeight * 0.2) {
+            spyNav.classList.remove('opacity-0', 'pointer-events-none');
+            spyNav.classList.add('opacity-100');
+          } else {
+            spyNav.classList.add('opacity-0', 'pointer-events-none');
+            spyNav.classList.remove('opacity-100');
+          }
+
+          scenarioChapters.forEach((ch, idx) => {
+            const r = ch.getBoundingClientRect();
+            if (r.top <= window.innerHeight * 0.5 && r.bottom >= window.innerHeight * 0.3) {
+              spyDots.forEach(d => {
+                const dot = d.querySelector('span:last-child');
+                if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 transition-all';
+              });
+              if (spyDots[idx]) {
+                const activeDot = spyDots[idx].querySelector('span:last-child');
+                if (activeDot) activeDot.className = 'w-3 h-3 rounded-full bg-[#ffc439] shadow-[0_0_12px_#ffc439] scale-125 transition-all';
+              }
+            }
+          });
+        });
       }
     })();
   </script>
