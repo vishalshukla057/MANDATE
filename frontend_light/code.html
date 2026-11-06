@@ -350,18 +350,27 @@ container._cleanup = function() {
         <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="docs" href="#">Docs</a>
       </nav>
     </div>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2">
+      <button id="voice-dictate-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all" title="Audio / Voice Dictation Ingestion" type="button">
+        <span class="material-symbols-outlined text-[15px] text-sky-300">mic</span>
+        <span class="hidden sm:inline">Voice Ingest</span>
+      </button>
+      <button id="mcp-server-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-amber-400/40 text-amber-200 text-xs shadow-sm transition-all" title="Model Context Protocol (MCP) Server" type="button">
+        <span class="material-symbols-outlined text-[15px] text-[#ffc439]">hub</span>
+        <span class="hidden sm:inline">MCP Server</span>
+      </button>
+      <button id="undo-drawer-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-emerald-400/40 text-emerald-200 text-xs shadow-sm transition-all" title="5-Minute Grace / Undo Window" type="button">
+        <span class="material-symbols-outlined text-[15px] text-emerald-300">timer</span>
+        <span class="font-mono text-[11px]" id="undo-top-timer">04:48</span>
+      </button>
       <a href="/?theme=dark" id="theme-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all">
         <span class="material-symbols-outlined text-[15px] text-sky-300">dark_mode</span>
-        <span>Dark Mode</span>
+        <span class="hidden md:inline">Dark Mode</span>
       </a>
       <div class="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/80 border border-sky-400/30 text-sky-200 text-xs">
         <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400 animate-pulse"></span>
-        <span class="font-mono text-[11px]">Orders v2 Connected</span>
+        <span class="font-mono text-[11px]">Orders v2</span>
       </div>
-      <button class="h-8 px-3 rounded bg-secondary hover:bg-primary-container text-white text-xs font-medium transition-all shadow-sm border border-sky-400/30" type="button">
-        Launch Console
-      </button>
     </div>
   </div>
 </header><main class="w-full pt-16 relative z-10 min-h-[calc(100vh-280px)]"><div class="flex flex-col w-full">
@@ -386,15 +395,27 @@ container._cleanup = function() {
       <span class="text-xs text-sky-200/90 font-semibold tracking-wider uppercase mr-1">Quick Scenarios:</span>
       <button class="scenario-btn active px-2.5 py-1 rounded bg-secondary text-white text-xs shadow-sm border border-sky-300/40 transition-all flex items-center gap-1 font-medium" id="scenario-1-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">shield</span>
-        <span>1: Injection Defense</span>
+        <span>1: Injection</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-2-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">history</span>
-        <span>2: Auto-Refund Escrow</span>
+        <span>2: Escrow</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-3-btn" type="button">
-        <span class="material-symbols-outlined text-[14px]">gavel</span>
-        <span>3: Hard Rejection</span>
+        <span class="material-symbols-outlined text-[14px]">timer</span>
+        <span>3: 5-Min Undo</span>
+      </button>
+      <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-4-btn" type="button">
+        <span class="material-symbols-outlined text-[14px]">local_shipping</span>
+        <span>4: Carrier Proof</span>
+      </button>
+      <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-5-btn" type="button">
+        <span class="material-symbols-outlined text-[14px]">trending_up</span>
+        <span>5: Runway / DSO</span>
+      </button>
+      <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-6-btn" type="button">
+        <span class="material-symbols-outlined text-[14px]">currency_exchange</span>
+        <span>6: FX Risk</span>
       </button>
     </div>
   </div>
@@ -539,6 +560,8 @@ container._cleanup = function() {
 </div>
 <span class="material-symbols-outlined text-secondary text-[20px]" title="Telemetry verified">verified</span>
 </div>
+<!-- STANDARD SCENARIOS (1 & 2) -->
+<div id="propose-panel-scenarios" class="flex flex-col gap-space-sm">
 <!-- Prompt Directive Box -->
 <div class="bg-surface-container-low p-space-md rounded-DEFAULT flex flex-col gap-space-xs border border-surface-container-high/60 shadow-inner">
 <span class="font-label-sm text-xs uppercase tracking-[0.16em] text-on-surface-variant font-bold flex items-center gap-1">
@@ -612,6 +635,111 @@ container._cleanup = function() {
 </div>
 </div>
 </div>
+
+<!-- SCENARIO 3: 5-MIN UNDO SAFETY WINDOW PROPOSE PANEL -->
+<div id="propose-panel-undo" class="hidden flex flex-col gap-space-sm">
+  <div class="bg-surface-container-low p-space-md rounded-DEFAULT flex flex-col gap-space-xs border border-surface-container-high/60 shadow-inner">
+    <span class="font-label-sm text-xs uppercase tracking-[0.16em] text-on-surface-variant font-bold flex items-center gap-1">
+      <span class="material-symbols-outlined text-[16px] text-emerald-600">timer</span> Agent Action Staged (5-Minute Grace Window)
+    </span>
+    <p class="font-body-md text-body-md text-primary font-medium tracking-tight">
+      “Release milestone payment of $1,250.00 USD to Vanguard Logistics upon delivery verification.”
+    </p>
+  </div>
+  <div class="bg-white p-space-md rounded-DEFAULT border border-sky-100 shadow-sm flex flex-col gap-space-xs">
+    <div class="flex items-center justify-between">
+      <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-mono text-xs font-bold border border-amber-300">STATUS: STAGED_PENDING_COMMIT</span>
+      <span class="font-mono text-xs text-on-surface-variant">Action ID: act_escrow_8821</span>
+    </div>
+    <div class="mt-2 text-xs text-on-surface-variant space-y-1">
+      <p><strong>Payload Target:</strong> Vanguard Logistics (contractor_09)</p>
+      <p><strong>Disbursement Amount:</strong> $1,250.00 USD</p>
+      <p><strong>Safety Mandate:</strong> 5-Minute Grace Buffer enforces uncommitted holding. If the human operator halts execution, zero funds touch the settlement rail.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SCENARIO 4: CARRIER DISPUTE PROOF PROPOSE PANEL -->
+<div id="propose-panel-carrier" class="hidden flex flex-col gap-space-sm">
+  <div class="bg-surface-container-low p-space-md rounded-DEFAULT flex flex-col gap-space-xs border border-surface-container-high/60 shadow-inner">
+    <span class="font-label-sm text-xs uppercase tracking-[0.16em] text-on-surface-variant font-bold flex items-center gap-1">
+      <span class="material-symbols-outlined text-[16px] text-secondary">gavel</span> Inbound PayPal Dispute Claim
+    </span>
+    <p class="font-body-md text-body-md text-primary font-medium tracking-tight">
+      Buyer claims: “Package never arrived at address. Chargeback requested for $249.00 USD.”
+    </p>
+  </div>
+  <div class="bg-white p-space-md rounded-DEFAULT border border-sky-100 shadow-sm flex flex-col gap-space-sm">
+    <label class="font-label-sm text-xs font-bold text-primary">Carrier Tracking Number (FedEx / UPS):</label>
+    <div class="flex items-center gap-2">
+      <input type="text" id="carrier-tracking-input" value="789234891023" class="flex-1 px-3 py-1.5 rounded border border-sky-200 text-xs font-mono text-primary bg-sky-50/50" />
+      <button id="carrier-verify-btn" type="button" class="px-3 py-1.5 rounded bg-secondary text-white text-xs font-bold hover:bg-primary-container transition-all shadow-sm">
+        Verify Carrier API
+      </button>
+    </div>
+    <div class="p-2 rounded bg-surface-container-low text-xs text-on-surface-variant space-y-1">
+      <div class="flex justify-between"><span>Carrier: <strong>FedEx Express</strong></span><span>Status: <strong class="text-emerald-700">DELIVERED</strong></span></div>
+      <div>Delivery: <strong>Nov 5, 14:22 UTC • Front Door</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCENARIO 5: RUNWAY & DSO SIMULATOR PROPOSE PANEL -->
+<div id="propose-panel-runway" class="hidden flex flex-col gap-space-sm">
+  <div class="bg-surface-container-low p-space-md rounded-DEFAULT flex flex-col gap-space-xs border border-surface-container-high/60 shadow-inner">
+    <span class="font-label-sm text-xs uppercase tracking-[0.16em] text-on-surface-variant font-bold flex items-center gap-1">
+      <span class="material-symbols-outlined text-[16px] text-secondary">trending_up</span> Predictive DSO &amp; Runway Stress Model
+    </span>
+    <p class="font-body-md text-body-md text-primary font-medium tracking-tight">
+      Simulate liquidity resilience if enterprise clients delay accounts receivable payments.
+    </p>
+  </div>
+  <div class="bg-white p-space-md rounded-DEFAULT border border-sky-100 shadow-sm flex flex-col gap-space-sm">
+    <div class="flex justify-between items-center text-xs">
+      <span class="font-bold text-primary">Simulated Client Payment Delay:</span>
+      <span class="font-mono font-bold text-secondary text-sm" id="runway-delay-display">+14 Days</span>
+    </div>
+    <input type="range" id="runway-delay-slider" min="0" max="60" value="14" step="1" class="w-full accent-[#005ab6] cursor-pointer" />
+    <div class="flex justify-between text-[11px] text-on-surface-variant font-mono">
+      <span>0d (On-Time)</span>
+      <span>+14d (Expected)</span>
+      <span>+30d (Severe)</span>
+      <span>+60d (Extreme)</span>
+    </div>
+    <div class="pt-2 border-t border-sky-100 flex justify-between items-center text-xs text-on-surface-variant">
+      <span>Fixed Monthly Burn: <strong class="text-primary font-mono">$12,000 / mo</strong></span>
+      <span>Receivables: <strong class="text-primary font-mono">$34,200</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- SCENARIO 6: MULTI-CURRENCY FX RISK PROPOSE PANEL -->
+<div id="propose-panel-fx" class="hidden flex flex-col gap-space-sm">
+  <div class="bg-surface-container-low p-space-md rounded-DEFAULT flex flex-col gap-space-xs border border-surface-container-high/60 shadow-inner">
+    <span class="font-label-sm text-xs uppercase tracking-[0.16em] text-on-surface-variant font-bold flex items-center gap-1">
+      <span class="material-symbols-outlined text-[16px] text-secondary">currency_exchange</span> Cross-Border Currency Exposure
+    </span>
+    <p class="font-body-md text-body-md text-primary font-medium tracking-tight">
+      Foreign invoice: Acme EU GmbH (Berlin) • €2,500.00 EUR outstanding.
+    </p>
+  </div>
+  <div class="bg-white p-space-md rounded-DEFAULT border border-sky-100 shadow-sm flex flex-col gap-space-xs">
+    <div class="flex justify-between items-center text-xs">
+      <span class="font-bold text-primary">EUR/USD Spot Rate:</span>
+      <span class="font-mono font-bold text-primary">1.0900 USD</span>
+    </div>
+    <div class="flex justify-between items-center text-xs">
+      <span class="text-on-surface-variant">Invoice Nominal Value:</span>
+      <span class="font-mono font-bold text-primary">$2,725.00 USD</span>
+    </div>
+    <div class="flex justify-between items-center text-xs pt-1 border-t border-sky-100">
+      <span class="text-error font-medium">30-Day Volatility Risk Band (±3.2%):</span>
+      <span class="font-mono font-bold text-error">-$87.50 USD Downside</span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
 <!-- RIGHT CARD: CODE DECIDES (Deterministic PayPal Policy Engine) -->
 <div class="lg:col-span-6 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_12px_40px_rgba(0,35,90,0.08),inset_0_1px_1px_rgba(255,255,255,0.95)] border border-sky-100 hover:-translate-y-1 hover:shadow-2xl hover:border-sky-400/40 transition-all duration-300 p-space-lg flex flex-col gap-space-md">
 <div class="flex items-center justify-between pb-space-sm border-b border-surface-container">
@@ -632,6 +760,8 @@ container._cleanup = function() {
               Deterministic Guard Active
             </span>
 </div>
+<!-- STANDARD SCENARIOS (1 & 2) CODE VIEW -->
+<div id="code-panel-scenarios" class="flex flex-col gap-space-sm">
 <!-- Dual-Key Escalation Alert Banner -->
 <div class="bg-surface-container-high p-space-md rounded-DEFAULT shadow-sm border border-surface-container-highest/80 flex items-start gap-space-sm" id="escalation-alert-banner">
 <div class="w-8 h-8 rounded-md bg-amber-400 text-tertiary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
@@ -732,6 +862,120 @@ container._cleanup = function() {
 <span class="material-symbols-outlined text-[16px]">sync_problem</span>
 <span>Simulate Delay &amp; Auto-Refund</span>
 </button>
+</div>
+</div>
+</div>
+
+<!-- SCENARIO 3: 5-MIN UNDO SAFETY WINDOW CODE VIEW -->
+<div id="code-panel-undo" class="hidden flex flex-col gap-space-sm">
+  <div class="bg-emerald-50 p-space-md rounded-DEFAULT border border-emerald-200 flex items-start gap-space-sm">
+    <span class="material-symbols-outlined text-emerald-600 text-[24px]">shield_with_heart</span>
+    <div class="flex flex-col gap-1 w-full">
+      <div class="flex justify-between items-center">
+        <span class="font-title-md text-title-md text-emerald-900 font-bold">5-Minute Grace Window Active</span>
+        <span class="px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 font-mono text-xs font-bold" id="undo-countdown-badge">04:48</span>
+      </div>
+      <p class="text-xs text-emerald-800 leading-relaxed">
+        Agent disbursement action staged into buffer. Operator can freely reverse or halt payment with zero transaction fees.
+      </p>
+      <div class="w-full bg-emerald-200 h-2 rounded-full overflow-hidden mt-1">
+        <div id="undo-progress-bar" class="bg-emerald-600 h-full rounded-full transition-all duration-1000" style="width: 95%;"></div>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-col gap-space-xs pt-2">
+    <button id="trigger-undo-action-btn" type="button" class="w-full h-11 rounded-md bg-error text-white font-title-md text-sm font-bold hover:bg-red-700 transition-all shadow-md flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">undo</span>
+      <span id="undo-btn-text">Undo / Cancel Staged Action (Call POST /agent/actions/{id}/undo)</span>
+    </button>
+    <button id="commit-staged-btn" type="button" class="w-full h-10 rounded-md bg-surface-container text-primary font-label-md text-xs font-semibold hover:bg-surface-container-high transition-all">
+      Commit Immediately &amp; Bypass Remaining Grace Window
+    </button>
+  </div>
+  <div id="undo-result-toast" class="hidden p-space-md rounded-DEFAULT bg-emerald-100 text-emerald-900 text-xs border border-emerald-300">
+    <strong>Action Reverted!</strong> Action act_escrow_8821 cancelled within 5-min window. Zero funds moved.
+  </div>
+</div>
+
+<!-- SCENARIO 4: CARRIER DISPUTE PROOF CODE VIEW -->
+<div id="code-panel-carrier" class="hidden flex flex-col gap-space-sm">
+  <div class="bg-surface-container-high p-space-md rounded-DEFAULT border border-sky-200 flex flex-col gap-space-xs">
+    <div class="flex justify-between items-center">
+      <span class="font-title-md text-title-md text-primary font-bold">Cryptographic Carrier Delivery Proof</span>
+      <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono text-[11px] font-bold">VERIFIED DELIVERED</span>
+    </div>
+    <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+      <div class="p-2 rounded bg-white border border-sky-100">
+        <span class="text-on-surface-variant block text-[10px] uppercase font-bold">Dropoff GPS Coordinates</span>
+        <span class="font-mono font-bold text-primary" id="carrier-gps-text">37.7749° N, 122.4194° W</span>
+      </div>
+      <div class="p-2 rounded bg-white border border-sky-100">
+        <span class="text-on-surface-variant block text-[10px] uppercase font-bold">Signature on Glass</span>
+        <span class="font-mono font-bold text-primary" id="carrier-sig-text">J. Doe (Electronic Verified)</span>
+      </div>
+    </div>
+    <div class="p-2 rounded bg-emerald-50 border border-emerald-200 flex justify-between items-center mt-1">
+      <span class="text-xs text-emerald-900 font-medium">Algorithmic Win Probability:</span>
+      <span class="font-headline-sm text-sm font-extrabold text-emerald-700 font-mono" id="carrier-win-prob">94.0% (+49% with Proof)</span>
+    </div>
+  </div>
+  <div class="flex flex-col gap-space-xs pt-1">
+    <button id="carrier-submit-dispute-btn" type="button" class="w-full h-11 rounded-md bg-[#ffc439] text-[#00174b] font-bold text-sm hover:bg-[#f5b324] transition-all shadow flex items-center justify-center gap-1 border border-amber-300">
+      <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+      <span>Submit Signed Evidence to PayPal Dispute API</span>
+    </button>
+    <button id="carrier-download-pack-btn" type="button" class="w-full h-10 rounded-md bg-secondary text-white font-semibold text-xs hover:bg-primary-container transition-all flex items-center justify-center gap-1 shadow-sm">
+      <span class="material-symbols-outlined text-[16px]">download</span>
+      <span>Download Evidence Pack (.JSON)</span>
+    </button>
+  </div>
+</div>
+
+<!-- SCENARIO 5: RUNWAY & DSO SIMULATOR CODE VIEW -->
+<div id="code-panel-runway" class="hidden flex flex-col gap-space-sm">
+  <div class="grid grid-cols-2 gap-2">
+    <div class="p-space-sm rounded-DEFAULT bg-white border border-sky-100 shadow-sm flex flex-col">
+      <span class="text-[11px] text-on-surface-variant uppercase font-bold">Baseline DSO</span>
+      <span class="text-headline-sm font-extrabold text-primary font-mono mt-1" id="runway-base-dso">34.2 Days</span>
+    </div>
+    <div class="p-space-sm rounded-DEFAULT bg-amber-50 border border-amber-200 shadow-sm flex flex-col">
+      <span class="text-[11px] text-amber-900 uppercase font-bold">Stressed DSO</span>
+      <span class="text-headline-sm font-extrabold text-amber-700 font-mono mt-1" id="runway-stressed-dso">48.2 Days</span>
+    </div>
+  </div>
+  <div class="p-space-sm rounded-DEFAULT bg-sky-50 border border-sky-200 text-xs text-sky-900 flex justify-between items-center">
+    <span>Predicted Cash Runway: <strong class="font-mono text-sm" id="runway-days-text">88.4 Days</strong></span>
+    <span class="px-2 py-0.5 rounded bg-sky-200 font-bold font-mono text-[11px]">SOLVENT</span>
+  </div>
+  <div class="p-space-sm rounded-DEFAULT bg-amber-50 border border-amber-200 text-xs text-amber-900 flex flex-col gap-1">
+    <span class="font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">auto_fix_high</span> Proactive AI Recommendation:</span>
+    <p id="runway-recommendation-text">
+      DSO stress exceeds 45-day threshold. Activate automated 5% early-pay discount ladder on high-value accounts to unlock $12,400 in early liquidity.
+    </p>
+  </div>
+  <button id="runway-apply-discount-btn" type="button" class="w-full h-10 rounded-md bg-secondary text-white font-bold text-xs hover:bg-primary-container transition-all shadow-sm">
+    Apply Automated Early-Pay Discount Rule
+  </button>
+</div>
+
+<!-- SCENARIO 6: MULTI-CURRENCY FX RISK CODE VIEW -->
+<div id="code-panel-fx" class="hidden flex flex-col gap-space-sm">
+  <div class="p-space-md rounded-DEFAULT bg-white border border-sky-100 shadow-sm flex flex-col gap-space-xs">
+    <div class="flex justify-between items-center">
+      <span class="font-title-md text-sm text-primary font-bold">Dynamic Discount Hedging Engine</span>
+      <span class="px-2 py-0.5 rounded bg-sky-100 text-secondary font-mono text-[11px] font-bold">RECOMMENDED</span>
+    </div>
+    <div class="text-xs text-on-surface-variant space-y-1 pt-1">
+      <p><strong>Proposed Early Discount:</strong> 2.5% if settled within 48 Hours</p>
+      <p><strong>Discount Cost:</strong> $68.12 USD</p>
+      <p><strong>Avoided FX Downside Risk:</strong> -$87.50 USD</p>
+      <p class="text-emerald-700 font-bold"><strong>Net Business Advantage:</strong> +$19.38 USD + Cash accelerated by 28 days</p>
+    </div>
+  </div>
+  <button id="fx-apply-hedge-btn" type="button" class="w-full h-11 rounded-md bg-[#ffc439] text-[#00174b] font-bold text-sm hover:bg-[#f5b324] transition-all shadow flex items-center justify-center gap-1 border border-amber-300">
+    <span class="material-symbols-outlined text-[18px]">bolt</span>
+    <span>Issue 48h Dynamic Discount &amp; Lock FX ($2,656.88 USD)</span>
+  </button>
 </div>
 <!-- Hash & Block Info -->
 <div class="flex items-center justify-between text-on-surface-variant font-label-sm text-xs px-1 pt-1">
@@ -984,12 +1228,138 @@ container._cleanup = function() {
 </div>
 </div>
 </section>
+<!-- VOICE DICTATION INGESTION MODAL -->
+<div id="voice-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-sky-100 flex flex-col gap-4 text-on-surface">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-md bg-[#001d59] text-white flex items-center justify-center">
+          <span class="material-symbols-outlined text-[18px]">mic</span>
+        </div>
+        <div>
+          <h3 class="font-title-md font-bold text-primary">Acoustic Voice Dictation Pipeline</h3>
+          <p class="text-[11px] text-on-surface-variant font-mono">POST /agent/ingest/audio • Natural Speech to Invoice</p>
+        </div>
+      </div>
+      <button id="close-voice-modal-btn" type="button" class="text-on-surface-variant hover:text-primary">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <div class="flex flex-col items-center justify-center py-4 bg-sky-50/60 rounded-xl border border-sky-100">
+      <div id="voice-record-pulse" class="w-16 h-16 rounded-full bg-secondary text-white flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition-all">
+        <span class="material-symbols-outlined text-[28px]">mic</span>
+      </div>
+      <span class="text-xs font-semibold text-secondary mt-2" id="voice-mic-status">Click to Dictate Audio Memo</span>
+      <div class="flex gap-1 items-center mt-3 h-4">
+        <span class="w-1 h-3 bg-secondary rounded animate-pulse"></span>
+        <span class="w-1 h-5 bg-sky-400 rounded animate-pulse" style="animation-delay: 150ms"></span>
+        <span class="w-1 h-2 bg-secondary rounded animate-pulse" style="animation-delay: 300ms"></span>
+        <span class="w-1 h-6 bg-sky-500 rounded animate-pulse" style="animation-delay: 75ms"></span>
+        <span class="w-1 h-4 bg-secondary rounded animate-pulse" style="animation-delay: 200ms"></span>
+      </div>
+    </div>
+    <div class="flex flex-col gap-1">
+      <span class="text-xs font-bold text-primary">Quick Voice Memo Presets:</span>
+      <div class="flex flex-wrap gap-1.5 text-xs">
+        <button type="button" class="voice-preset-chip px-2.5 py-1 rounded bg-surface-container hover:bg-sky-100 text-primary border border-sky-200 transition-all text-left text-[11px]" data-transcript="Bill Vanguard Logistics $3,400.00 for the Kubernetes cloud migration, due in 15 days, and allocate 20% to Elena Rostova once settled.">
+          "Bill Vanguard $3,400 due in 15d..."
+        </button>
+        <button type="button" class="voice-preset-chip px-2.5 py-1 rounded bg-surface-container hover:bg-sky-100 text-primary border border-sky-200 transition-all text-left text-[11px]" data-transcript="Invoice Cyberdyne Systems 25 hours at 120 dollars an hour net 15 for hardware audit.">
+          "Invoice Cyberdyne 25h @ $120/hr..."
+        </button>
+      </div>
+    </div>
+    <div class="flex flex-col gap-1">
+      <label class="text-xs font-bold text-primary">Transcribed Speech Payload:</label>
+      <textarea id="voice-transcript-input" rows="2" class="w-full text-xs font-mono p-2 rounded border border-sky-200 bg-surface-container-low text-primary focus:outline-none focus:ring-1 focus:ring-secondary">Bill Vanguard Logistics $3,400.00 for the Kubernetes cloud migration, due in 15 days, and allocate 20% to Elena Rostova once settled.</textarea>
+    </div>
+    <div id="voice-output-card" class="hidden p-3 rounded-xl bg-surface-container text-xs space-y-1 font-mono border border-sky-200 max-h-36 overflow-y-auto">
+      <div class="text-secondary font-bold flex justify-between"><span>INVOICE DRAFT EXTRACTED</span><span id="voice-confidence-badge" class="text-emerald-700">96.0% Match</span></div>
+      <pre id="voice-json-output" class="text-[11px] text-primary whitespace-pre-wrap font-mono"></pre>
+    </div>
+    <div class="flex justify-end gap-2 pt-2 border-t border-surface-container">
+      <button id="cancel-voice-btn" type="button" class="px-3 py-1.5 rounded bg-surface-container hover:bg-surface-container-high text-xs font-semibold text-primary">Cancel</button>
+      <button id="submit-voice-btn" type="button" class="px-4 py-1.5 rounded bg-secondary hover:bg-primary-container text-white text-xs font-bold shadow-sm transition-all flex items-center gap-1">
+        <span class="material-symbols-outlined text-[15px]">send</span>
+        <span>Process Dictation via API</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODEL CONTEXT PROTOCOL (MCP) SERVER MODAL -->
+<div id="mcp-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-sky-100 flex flex-col gap-4 text-on-surface">
+    <div class="flex items-center justify-between pb-3 border-b border-surface-container">
+      <div class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-md bg-[#ffc439] text-[#00174b] flex items-center justify-center font-bold">
+          <span class="material-symbols-outlined text-[18px]">hub</span>
+        </div>
+        <div>
+          <h3 class="font-title-md font-bold text-primary">Model Context Protocol (MCP) Server</h3>
+          <p class="text-[11px] text-on-surface-variant font-mono">Real-time MCP v1.0 Connection for Claude Desktop &amp; External Agents</p>
+        </div>
+      </div>
+      <button id="close-mcp-modal-btn" type="button" class="text-on-surface-variant hover:text-primary">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+    <div class="bg-[#001435] text-sky-200 p-3 rounded-xl font-mono text-xs space-y-2 border border-sky-900 shadow-inner">
+      <div class="flex justify-between items-center text-[11px] text-sky-400">
+        <span>OFFICIAL MCP INSPECTOR COMMAND</span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      </div>
+      <div class="bg-black/50 p-2 rounded text-emerald-300 font-mono text-xs flex justify-between items-center">
+        <code>npx -y @modelcontextprotocol/inspector http://localhost:8000/mcp/sse</code>
+        <button id="copy-mcp-cmd-btn" type="button" class="px-2 py-0.5 rounded bg-secondary text-white text-[10px] hover:bg-sky-400">Copy</button>
+      </div>
+      <div class="text-[11px] text-sky-300">
+        SSE Transport Active: <span class="text-white font-bold">http://127.0.0.1:8000/mcp/sse</span>
+      </div>
+    </div>
+    <div class="flex flex-col gap-1.5 text-xs">
+      <span class="font-bold text-primary">5 Available Tools Registered in MCP Server:</span>
+      <div class="grid grid-cols-2 gap-2 text-[11px]">
+        <div class="p-2 rounded bg-surface-container-low border border-sky-100"><code class="text-secondary font-bold font-mono">check_carrier_proof</code><p class="text-on-surface-variant text-[10px]">Verify FedEx/UPS GPS coordinates &amp; delivery signatures</p></div>
+        <div class="p-2 rounded bg-surface-container-low border border-sky-100"><code class="text-secondary font-bold font-mono">simulate_runway</code><p class="text-on-surface-variant text-[10px]">Predictive DSO &amp; cash flow runway under delay stress</p></div>
+        <div class="p-2 rounded bg-surface-container-low border border-sky-100"><code class="text-secondary font-bold font-mono">stage_agent_action</code><p class="text-on-surface-variant text-[10px]">Stage agent disbursements in 5-min safety window</p></div>
+        <div class="p-2 rounded bg-surface-container-low border border-sky-100"><code class="text-secondary font-bold font-mono">undo_agent_action</code><p class="text-on-surface-variant text-[10px]">Instant zero-cost rollback of uncommitted staged action</p></div>
+        <div class="col-span-2 p-2 rounded bg-surface-container-low border border-sky-100"><code class="text-secondary font-bold font-mono">analyze_fx_risk</code><p class="text-on-surface-variant text-[10px]">Cross-border EUR/GBP invoice volatility exposure &amp; dynamic discounts</p></div>
+      </div>
+    </div>
+    <div id="mcp-test-output" class="hidden p-3 rounded-xl bg-surface-container text-xs font-mono max-h-32 overflow-y-auto border border-sky-200">
+      <pre id="mcp-test-json" class="text-[11px] text-primary whitespace-pre-wrap"></pre>
+    </div>
+    <div class="flex justify-end gap-2 pt-2 border-t border-surface-container">
+      <button id="test-mcp-call-btn" type="button" class="px-4 py-1.5 rounded bg-secondary hover:bg-primary-container text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1">
+        <span class="material-symbols-outlined text-[15px]">play_arrow</span>
+        <span>Test Tool Call via MCP JSON-RPC</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- INTERACTIVE SCENARIOS JAVASCRIPT LOGIC -->
 <script>
     (function initMandateDemo() {
       const scenario1Btn = document.getElementById('scenario-1-btn');
       const scenario2Btn = document.getElementById('scenario-2-btn');
       const scenario3Btn = document.getElementById('scenario-3-btn');
+      const scenario4Btn = document.getElementById('scenario-4-btn');
+      const scenario5Btn = document.getElementById('scenario-5-btn');
+      const scenario6Btn = document.getElementById('scenario-6-btn');
+
+      const proposeScenarios = document.getElementById('propose-panel-scenarios');
+      const proposeUndo = document.getElementById('propose-panel-undo');
+      const proposeCarrier = document.getElementById('propose-panel-carrier');
+      const proposeRunway = document.getElementById('propose-panel-runway');
+      const proposeFx = document.getElementById('propose-panel-fx');
+
+      const codeScenarios = document.getElementById('code-panel-scenarios');
+      const codeUndo = document.getElementById('code-panel-undo');
+      const codeCarrier = document.getElementById('code-panel-carrier');
+      const codeRunway = document.getElementById('code-panel-runway');
+      const codeFx = document.getElementById('code-panel-fx');
 
       const injectionCard = document.getElementById('injection-alert-card');
       const escalationBanner = document.getElementById('escalation-alert-banner');
@@ -1011,78 +1381,365 @@ container._cleanup = function() {
       const settlementStateText = document.getElementById('settlement-state-text');
       const escalationStatusPill = document.getElementById('escalation-status-pill');
 
-      let currentScenario = 1;
+      function hideAllPanels() {
+        [proposeScenarios, proposeUndo, proposeCarrier, proposeRunway, proposeFx].forEach(el => el && el.classList.add('hidden'));
+        [codeScenarios, codeUndo, codeCarrier, codeRunway, codeFx].forEach(el => el && el.classList.add('hidden'));
+      }
 
       function resetScenarioButtons() {
-        [scenario1Btn, scenario2Btn, scenario3Btn].forEach(btn => {
-          btn.className = 'scenario-btn px-space-sm py-1 rounded-DEFAULT bg-white/95 backdrop-blur-md text-primary hover:bg-white font-label-sm text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 hover:scale-105 font-medium';
+        [scenario1Btn, scenario2Btn, scenario3Btn, scenario4Btn, scenario5Btn, scenario6Btn].forEach(btn => {
+          if (btn) btn.className = 'scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium';
         });
       }
 
       function setActiveScenario(btn) {
         resetScenarioButtons();
-        btn.className = 'scenario-btn active px-space-sm py-1 rounded-DEFAULT bg-secondary text-on-secondary font-label-sm text-xs shadow-md border border-sky-300/40 transition-all flex items-center gap-1 hover:scale-105 font-medium';
+        if (btn) btn.className = 'scenario-btn active px-2.5 py-1 rounded bg-secondary text-white text-xs shadow-sm border border-sky-300/40 transition-all flex items-center gap-1 font-medium';
       }
 
-      // Scenario 1: Injection Defense & Purchase ($49.99)
-      scenario1Btn.addEventListener('click', () => {
-        currentScenario = 1;
-        setActiveScenario(scenario1Btn);
-        injectionCard.classList.remove('hidden');
-        escalationBanner.classList.remove('hidden');
-        directiveText.innerHTML = '“Find high-fidelity noise-canceling wireless headphones under $60 for office engineering focus.”';
-        candidateTitle.textContent = 'Aria Q1 Wireless Studio ANC';
-        candidatePrice.textContent = '$49.99';
-        approveCtaText.textContent = 'Approve via PayPal Sandbox ($49.99)';
-        approveBtn.disabled = false;
-        approveBtn.className = 'w-full h-12 rounded-md bg-[#ffc439] text-[#00174b] font-title-md text-title-md font-extrabold hover:bg-[#f5b324] transition-all shadow-[0_8px_20px_rgba(255,196,57,0.35),inset_0_1px_1px_rgba(255,255,255,0.7)] hover:shadow-[0_10px_24px_rgba(255,196,57,0.45),inset_0_1px_1px_rgba(255,255,255,0.8)] border border-amber-300 flex items-center justify-center gap-space-xs group active:scale-[0.99] tracking-tight';
-        statusToast.classList.add('hidden');
-        spendProgress.style.width = '67.1%';
-        spendCurrentText.textContent = '$134.19';
-        headroomText.textContent = 'Headroom: $65.81 Safe';
-        settlementStateText.textContent = 'ORDERS V2 CAPTURE';
-        escalationStatusPill.innerHTML = 'Current Item (<span class="tnum font-semibold text-primary">$49.99</span>) triggers Dual-Key Escalation';
+      // Scenario 1: Injection Defense
+      if (scenario1Btn) {
+        scenario1Btn.addEventListener('click', () => {
+          hideAllPanels();
+          setActiveScenario(scenario1Btn);
+          proposeScenarios.classList.remove('hidden');
+          codeScenarios.classList.remove('hidden');
+          injectionCard.classList.remove('hidden');
+          escalationBanner.classList.remove('hidden');
+          directiveText.innerHTML = '“Find high-fidelity noise-canceling wireless headphones under $60 for office engineering focus.”';
+          candidateTitle.textContent = 'Aria Q1 Wireless Studio ANC';
+          candidatePrice.textContent = '$49.99';
+          approveCtaText.textContent = 'Approve via PayPal Sandbox ($49.99)';
+          approveBtn.disabled = false;
+          approveBtn.className = 'w-full h-12 rounded-md bg-[#ffc439] text-[#00174b] font-title-md text-title-md font-extrabold hover:bg-[#f5b324] transition-all shadow-[0_8px_20px_rgba(255,196,57,0.35)] border border-amber-300 flex items-center justify-center gap-space-xs group active:scale-[0.99] tracking-tight';
+          statusToast.classList.add('hidden');
+          spendProgress.style.width = '67.1%';
+          spendCurrentText.textContent = '$134.19';
+          headroomText.textContent = 'Headroom: $65.81 Safe';
+          settlementStateText.textContent = 'ORDERS V2 CAPTURE';
+          escalationStatusPill.innerHTML = 'Current Item (<span class="tnum font-semibold text-primary">$49.99</span>) triggers Dual-Key Escalation';
+        });
+      }
+
+      // Scenario 2: Delivery Delay & Auto-Refund
+      if (scenario2Btn) {
+        scenario2Btn.addEventListener('click', () => {
+          hideAllPanels();
+          setActiveScenario(scenario2Btn);
+          proposeScenarios.classList.remove('hidden');
+          codeScenarios.classList.remove('hidden');
+          injectionCard.classList.add('hidden');
+          escalationBanner.classList.add('hidden');
+          directiveText.innerHTML = '“Procure urgent replacement thermal camera sensor with guaranteed 24h delivery.”';
+          candidateTitle.textContent = 'FLIR Precision Core 120 (Dispatched)';
+          candidatePrice.textContent = '$28.50';
+          approveCtaText.textContent = 'Order Auto-Approved via PayPal ($28.50)';
+          approveBtn.disabled = true;
+          approveBtn.className = 'w-full h-12 rounded-md bg-surface-container text-on-surface-variant font-title-md text-title-md font-bold transition-all shadow-sm flex items-center justify-center gap-space-xs cursor-not-allowed';
+          settlementStateText.textContent = 'PAYMENTS V2 DISPUTE ESCROW';
+          escalationStatusPill.textContent = 'Under $30 limit: Auto-Approved with Escrow Watch';
+          triggerRefundAction();
+        });
+      }
+
+      // Scenario 3: 5-Minute Undo Safety Window
+      let undoSeconds = 288;
+      let undoInterval = null;
+      function startUndoCountdown() {
+        if (undoInterval) clearInterval(undoInterval);
+        undoInterval = setInterval(() => {
+          if (undoSeconds > 0) {
+            undoSeconds--;
+            const mins = Math.floor(undoSeconds / 60);
+            const secs = undoSeconds % 60;
+            const str = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+            const badge = document.getElementById('undo-countdown-badge');
+            const topTimer = document.getElementById('undo-top-timer');
+            if (badge) badge.innerText = str;
+            if (topTimer) topTimer.innerText = str;
+            const bar = document.getElementById('undo-progress-bar');
+            if (bar) bar.style.width = ((undoSeconds / 300) * 100) + '%';
+          } else {
+            clearInterval(undoInterval);
+          }
+        }, 1000);
+      }
+
+      if (scenario3Btn) {
+        scenario3Btn.addEventListener('click', () => {
+          hideAllPanels();
+          setActiveScenario(scenario3Btn);
+          proposeUndo.classList.remove('hidden');
+          codeUndo.classList.remove('hidden');
+          startUndoCountdown();
+          settlementStateText.textContent = 'STAGED IN 5-MIN GRACE WINDOW';
+        });
+      }
+
+      // Undo Drawer top button
+      const undoDrawerBtn = document.getElementById('undo-drawer-btn');
+      if (undoDrawerBtn) {
+        undoDrawerBtn.addEventListener('click', () => {
+          if (scenario3Btn) scenario3Btn.click();
+        });
+      }
+
+      // Trigger Undo Action (calling POST /agent/actions/{id}/undo)
+      const triggerUndoBtn = document.getElementById('trigger-undo-action-btn');
+      if (triggerUndoBtn) {
+        triggerUndoBtn.addEventListener('click', async () => {
+          triggerUndoBtn.disabled = true;
+          document.getElementById('undo-btn-text').innerText = 'Calling POST /agent/actions/act-escrow-8821/undo...';
+          try {
+            const res = await fetch('/agent/actions/act-escrow-8821/undo', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-API-Key': 'copilot-secret-key-12345' },
+              body: JSON.stringify({ reason: 'Manual operator cancellation within 5-min window' })
+            });
+          } catch (e) {}
+
+          setTimeout(() => {
+            const toast = document.getElementById('undo-result-toast');
+            if (toast) toast.classList.remove('hidden');
+            document.getElementById('undo-btn-text').innerText = 'Action Reverted (Cancelled)';
+            triggerUndoBtn.className = 'w-full h-11 rounded-md bg-surface-container text-on-surface-variant font-title-md text-sm font-bold flex items-center justify-center gap-2 cursor-not-allowed';
+
+            // Add row to audit table
+            const newRow = document.createElement('tr');
+            newRow.className = 'hover:bg-surface-container-low transition-colors';
+            newRow.setAttribute('data-testid', 'audit-row');
+            newRow.innerHTML = `
+              <td class="p-space-sm font-label-code text-xs font-bold text-primary">#1,049</td>
+              <td class="p-space-sm text-on-surface-variant">Just Now</td>
+              <td class="p-space-sm font-medium text-error">Action Rollback (Undo Window)</td>
+              <td class="p-space-sm">Milestone #2 Vanguard ($1,250)</td>
+              <td class="p-space-sm font-bold text-on-surface-variant tnum">$0.00 Void</td>
+              <td class="p-space-sm"><span class="px-2 py-0.5 rounded-md bg-error-container text-on-error-container font-semibold text-[11px] uppercase tracking-wider">CANCELLED_GRACE</span></td>
+              <td class="p-space-sm font-label-code text-xs text-on-surface-variant">sha256:88e011...undo</td>
+            `;
+            auditTableBody.insertBefore(newRow, auditTableBody.firstChild);
+          }, 600);
+        });
+      }
+
+      // Scenario 4: Carrier Dispute Proof Verification
+      if (scenario4Btn) {
+        scenario4Btn.addEventListener('click', () => {
+          hideAllPanels();
+          setActiveScenario(scenario4Btn);
+          proposeCarrier.classList.remove('hidden');
+          codeCarrier.classList.remove('hidden');
+          settlementStateText.textContent = 'CARRIER CRYPTOGRAPHIC ATTESTATION';
+        });
+      }
+
+      const carrierVerifyBtn = document.getElementById('carrier-verify-btn');
+      if (carrierVerifyBtn) {
+        carrierVerifyBtn.addEventListener('click', async () => {
+          const trackNum = document.getElementById('carrier-tracking-input').value || '789234891023';
+          carrierVerifyBtn.innerText = 'Verifying API...';
+          try {
+            const res = await fetch('/disputes/disp-carrier-001/carrier-verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-API-Key': 'copilot-secret-key-12345' },
+              body: JSON.stringify({ tracking_number: trackNum })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              document.getElementById('carrier-gps-text').innerText = data.carrier_proof.delivery_location || '37.7749° N, 122.4194° W';
+              document.getElementById('carrier-sig-text').innerText = data.carrier_proof.recipient_signature || 'J. Doe (Electronic Verified)';
+              document.getElementById('carrier-win-prob').innerText = (data.new_win_probability_pct || 94.0) + '% (Proof Attached)';
+            }
+          } catch (e) {}
+          carrierVerifyBtn.innerText = 'Verified';
+        });
+      }
+
+      const carrierDownloadBtn = document.getElementById('carrier-download-pack-btn');
+      if (carrierDownloadBtn) {
+        carrierDownloadBtn.addEventListener('click', () => {
+          window.open('/disputes/disp-carrier-001/evidence-pack/download', '_blank');
+        });
+      }
+
+      // Scenario 5: Runway & DSO Simulator
+      if (scenario5Btn) {
+        scenario5Btn.addEventListener('click', () => {
+          hideAllPanels();
+          setActiveScenario(scenario5Btn);
+          proposeRunway.classList.remove('hidden');
+          codeRunway.classList.remove('hidden');
+          settlementStateText.textContent = 'PREDICTIVE DSO SIMULATOR';
+        });
+      }
+
+      const delaySlider = document.getElementById('runway-delay-slider');
+      if (delaySlider) {
+        delaySlider.addEventListener('input', async (e) => {
+          const days = e.target.value;
+          document.getElementById('runway-delay-display').innerText = '+' + days + ' Days';
+          try {
+            const res = await fetch('/analytics/runway-simulator?client_delay_days=' + days + '&monthly_burn_rate=12000', {
+              headers: { 'X-API-Key': 'copilot-secret-key-12345' }
+            });
+            if (res.ok) {
+              const data = await res.json();
+              document.getElementById('runway-base-dso').innerText = data.baseline_dso_days + ' Days';
+              document.getElementById('runway-stressed-dso').innerText = data.stressed_dso_days + ' Days';
+              document.getElementById('runway-days-text').innerText = data.baseline_runway_days + ' Days';
+              if (data.proactive_recommendations && data.proactive_recommendations[0]) {
+                document.getElementById('runway-recommendation-text').innerText = data.proactive_recommendations[0];
+              }
+            }
+          } catch (err) {
+            // Offline math fallback
+            const stressed = (34.2 * (1 + days / 90)).toFixed(1);
+            document.getElementById('runway-stressed-dso').innerText = stressed + ' Days';
+          }
+        });
+      }
+
+      // Scenario 6: Multi-Currency FX Risk
+      if (scenario6Btn) {
+        scenario6Btn.addEventListener('click', () => {
+          hideAllPanels();
+          setActiveScenario(scenario6Btn);
+          proposeFx.classList.remove('hidden');
+          codeFx.classList.remove('hidden');
+          settlementStateText.textContent = 'DYNAMIC DISCOUNT FX HEDGE';
+        });
+      }
+
+      const fxApplyBtn = document.getElementById('fx-apply-hedge-btn');
+      if (fxApplyBtn) {
+        fxApplyBtn.addEventListener('click', () => {
+          fxApplyBtn.disabled = true;
+          fxApplyBtn.innerText = 'Locking 48h Discount via PayPal Rails...';
+          setTimeout(() => {
+            fxApplyBtn.className = 'w-full h-11 rounded-md bg-secondary text-white font-bold text-sm cursor-default flex items-center justify-center gap-1';
+            fxApplyBtn.innerHTML = '<span class="material-symbols-outlined text-[18px]">verified</span> 2.5% Early Discount Offered: Hedged against FX Slip';
+          }, 600);
+        });
+      }
+
+      // Voice Modal Trigger & Handler
+      const voiceModal = document.getElementById('voice-modal');
+      const voiceBtn = document.getElementById('voice-dictate-btn');
+      const closeVoiceBtn = document.getElementById('close-voice-modal-btn');
+      const cancelVoiceBtn = document.getElementById('cancel-voice-btn');
+      const submitVoiceBtn = document.getElementById('submit-voice-btn');
+      const voiceInput = document.getElementById('voice-transcript-input');
+      const voicePulse = document.getElementById('voice-record-pulse');
+
+      if (voiceBtn && voiceModal) {
+        voiceBtn.addEventListener('click', () => voiceModal.classList.remove('hidden'));
+        closeVoiceBtn.addEventListener('click', () => voiceModal.classList.add('hidden'));
+        cancelVoiceBtn.addEventListener('click', () => voiceModal.classList.add('hidden'));
+      }
+
+      document.querySelectorAll('.voice-preset-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          if (voiceInput) voiceInput.value = chip.getAttribute('data-transcript');
+        });
       });
 
-      // Scenario 2: Delivery Delay & Auto-Refund Escrow
-      scenario2Btn.addEventListener('click', () => {
-        currentScenario = 2;
-        setActiveScenario(scenario2Btn);
-        injectionCard.classList.add('hidden');
-        escalationBanner.classList.add('hidden');
-        directiveText.innerHTML = '“Procure urgent replacement thermal camera sensor with guaranteed 24h delivery.”';
-        candidateTitle.textContent = 'FLIR Precision Core 120 (Dispatched)';
-        candidatePrice.textContent = '$28.50';
-        approveCtaText.textContent = 'Order Auto-Approved via PayPal ($28.50)';
-        approveBtn.disabled = true;
-        approveBtn.className = 'w-full h-12 rounded-md bg-surface-container text-on-surface-variant font-title-md text-title-md font-bold transition-all shadow-sm flex items-center justify-center gap-space-xs cursor-not-allowed';
-        settlementStateText.textContent = 'PAYMENTS V2 DISPUTE ESCROW';
-        escalationStatusPill.textContent = 'Under $30 limit: Auto-Approved with Escrow Watch';
-        triggerRefundAction();
-      });
+      if (voicePulse) {
+        voicePulse.addEventListener('click', () => {
+          document.getElementById('voice-mic-status').innerText = 'Listening to voice stream... (Speaking)';
+          voicePulse.classList.add('animate-bounce');
+          setTimeout(() => {
+            document.getElementById('voice-mic-status').innerText = 'Audio recorded (4.2 seconds). Ready to process.';
+            voicePulse.classList.remove('animate-bounce');
+          }, 1800);
+        });
+      }
 
-      // Scenario 3: Hard Policy Rejection
-      scenario3Btn.addEventListener('click', () => {
-        currentScenario = 3;
-        setActiveScenario(scenario3Btn);
-        injectionCard.classList.add('hidden');
-        escalationBanner.classList.remove('hidden');
-        directiveText.innerHTML = '“Purchase enterprise GPU cluster pass ($240.00 USD).”';
-        candidateTitle.textContent = 'Enterprise Cloud Cluster 100-Hr Pass';
-        candidatePrice.textContent = '$240.00';
-        approveCtaText.textContent = 'Hard Policy Rejection: Cap Exceeded';
-        approveBtn.disabled = true;
-        approveBtn.className = 'w-full h-12 rounded-md bg-error-container text-on-error-container font-title-md text-title-md font-bold transition-all shadow-sm flex items-center justify-center gap-space-xs cursor-not-allowed';
-        settlementStateText.textContent = 'INVARIANT HARD HALT';
-        escalationStatusPill.textContent = 'Violates Rule 3: Session Headroom ($65.81 available)';
+      if (submitVoiceBtn) {
+        submitVoiceBtn.addEventListener('click', async () => {
+          const text = voiceInput.value;
+          submitVoiceBtn.disabled = true;
+          submitVoiceBtn.innerText = 'Processing Speech AI...';
+          try {
+            const res = await fetch('/agent/ingest/audio', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'X-API-Key': 'copilot-secret-key-12345' },
+              body: JSON.stringify({ transcription_override: text, filename: 'voice_memo_01.wav' })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              document.getElementById('voice-output-card').classList.remove('hidden');
+              document.getElementById('voice-json-output').innerText = JSON.stringify(data.parsed, null, 2);
+              document.getElementById('voice-confidence-badge').innerText = (data.transcription_confidence * 100).toFixed(1) + '% Speech Confidence';
+              submitVoiceBtn.innerText = 'Draft Created!';
+              return;
+            }
+          } catch (e) {}
 
-        // Show Toast
-        statusToast.className = 'bg-error-container text-on-error-container p-space-md rounded-DEFAULT shadow-sm transition-all flex items-start gap-space-sm';
-        toastIcon.textContent = 'block';
-        toastTitle.textContent = 'Hard Invariant Violation: Order Rejected';
-        toastBody.textContent = 'Item price ($240.00 USD) exceeds remaining headroom ($65.81 USD). Mathematical limit locked. No charge initiated.';
-        statusToast.classList.remove('hidden');
-      });
+          // Fallback UI
+          document.getElementById('voice-output-card').classList.remove('hidden');
+          document.getElementById('voice-json-output').innerText = JSON.stringify({
+            client: "Vanguard Logistics",
+            amount: 3400.00,
+            due_days: 15,
+            terms: "Net 15",
+            contractor_allocation: "Elena Rostova (20%)"
+          }, null, 2);
+          submitVoiceBtn.innerText = 'Draft Created!';
+        });
+      }
+
+      // MCP Modal Trigger & Handler
+      const mcpModal = document.getElementById('mcp-modal');
+      const mcpBtn = document.getElementById('mcp-server-btn');
+      const closeMcpBtn = document.getElementById('close-mcp-modal-btn');
+      const copyMcpBtn = document.getElementById('copy-mcp-cmd-btn');
+      const testMcpBtn = document.getElementById('test-mcp-call-btn');
+
+      if (mcpBtn && mcpModal) {
+        mcpBtn.addEventListener('click', () => mcpModal.classList.remove('hidden'));
+        closeMcpBtn.addEventListener('click', () => mcpModal.classList.add('hidden'));
+      }
+
+      if (copyMcpBtn) {
+        copyMcpBtn.addEventListener('click', () => {
+          navigator.clipboard.writeText('npx -y @modelcontextprotocol/inspector http://localhost:8000/mcp/sse');
+          copyMcpBtn.innerText = 'Copied!';
+          setTimeout(() => copyMcpBtn.innerText = 'Copy', 1800);
+        });
+      }
+
+      if (testMcpBtn) {
+        testMcpBtn.addEventListener('click', async () => {
+          testMcpBtn.disabled = true;
+          testMcpBtn.innerText = 'Calling MCP JSON-RPC...';
+          try {
+            const res = await fetch('/mcp/tools/call', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: 'simulate_runway', arguments: { client_delay_days: 14 } })
+            });
+            if (res.ok) {
+              const data = await res.json();
+              document.getElementById('mcp-test-output').classList.remove('hidden');
+              document.getElementById('mcp-test-json').innerText = JSON.stringify(data, null, 2);
+              testMcpBtn.innerText = 'RPC Successful';
+              return;
+            }
+          } catch (e) {}
+
+          document.getElementById('mcp-test-output').classList.remove('hidden');
+          document.getElementById('mcp-test-json').innerText = JSON.stringify({
+            jsonrpc: "2.0",
+            result: {
+              baseline_dso: 34.2,
+              stressed_dso: 48.2,
+              solvency: "HEALTHY",
+              tool: "simulate_runway"
+            }
+          }, null, 2);
+          testMcpBtn.innerText = 'RPC Tested';
+        });
+      }
 
       // Trigger PayPal Approval Action
       approveBtn.addEventListener('click', () => {
@@ -1094,19 +1751,16 @@ container._cleanup = function() {
           approveCtaText.textContent = 'Settled via PayPal (Order #4K910382)';
           approveBtn.className = 'w-full h-12 rounded-md bg-secondary-fixed text-on-secondary-fixed font-title-md text-title-md font-extrabold shadow-sm flex items-center justify-center gap-space-xs cursor-default';
           
-          // Update headroom
           spendProgress.style.width = '92.1%';
           spendCurrentText.textContent = '$184.18';
           headroomText.textContent = 'Headroom: $15.82 Safe';
 
-          // Show Toast
           statusToast.className = 'bg-surface-container-high text-primary p-space-md rounded-DEFAULT shadow-sm transition-all flex items-start gap-space-sm';
           toastIcon.textContent = 'check_circle';
           toastTitle.textContent = 'PayPal Orders v2 Capture Completed';
           toastBody.textContent = 'Transaction ID: 4K910382029410. Idempotent key verified. Ledgers committed into Merkle Block #1,049.';
           statusToast.classList.remove('hidden');
 
-          // Append to table
           const newRow = document.createElement('tr');
           newRow.className = 'hover:bg-surface-container-low transition-colors';
           newRow.setAttribute('data-testid', 'audit-row');
@@ -1142,7 +1796,6 @@ container._cleanup = function() {
         toastBody.textContent = 'Webhook CHECKOUT.ORDER.DELAY_EVENT received (Fulfillment SLA > 24h breached). Full refund $28.50 USD returned to funding instrument.';
         statusToast.classList.remove('hidden');
 
-        // Append refund row
         const newRow = document.createElement('tr');
         newRow.className = 'hover:bg-surface-container-low transition-colors';
         newRow.setAttribute('data-testid', 'audit-row');
