@@ -353,15 +353,15 @@ container._cleanup = function() {
     <div class="flex items-center gap-2">
       <button id="voice-dictate-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all" title="Audio / Voice Dictation Ingestion" type="button">
         <span class="material-symbols-outlined text-[15px] text-sky-300">mic</span>
-        <span class="hidden sm:inline">Voice Ingest</span>
+        <span class="hidden sm:inline">Voice Invoicing</span>
       </button>
       <button id="mcp-server-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-amber-400/40 text-amber-200 text-xs shadow-sm transition-all" title="Model Context Protocol (MCP) Server" type="button">
         <span class="material-symbols-outlined text-[15px] text-[#ffc439]">hub</span>
-        <span class="hidden sm:inline">MCP Server</span>
+        <span class="hidden sm:inline">AI Assistant (MCP)</span>
       </button>
       <button id="undo-drawer-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-emerald-400/40 text-emerald-200 text-xs shadow-sm transition-all" title="5-Minute Grace / Undo Window" type="button">
         <span class="material-symbols-outlined text-[15px] text-emerald-300">timer</span>
-        <span class="font-mono text-[11px]" id="undo-top-timer">04:48</span>
+        <span class="font-mono text-[11px]">Undo: <span id="undo-top-timer">04:48</span></span>
       </button>
       <a href="/?theme=dark" id="theme-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#001e4a]/90 hover:bg-[#002b66] border border-sky-400/40 text-sky-200 text-xs shadow-sm transition-all">
         <span class="material-symbols-outlined text-[15px] text-sky-300">dark_mode</span>
@@ -395,27 +395,27 @@ container._cleanup = function() {
       <span class="text-xs text-sky-200/90 font-semibold tracking-wider uppercase mr-1">Quick Scenarios:</span>
       <button class="scenario-btn active px-2.5 py-1 rounded bg-secondary text-white text-xs shadow-sm border border-sky-300/40 transition-all flex items-center gap-1 font-medium" id="scenario-1-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">shield</span>
-        <span>1: Injection</span>
+        <span>1: Fraud Block</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-2-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">history</span>
-        <span>2: Escrow</span>
+        <span>2: Auto-Refund</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-3-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">timer</span>
-        <span>3: 5-Min Undo</span>
+        <span>3: Cancel Window</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-4-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">local_shipping</span>
-        <span>4: Carrier Proof</span>
+        <span>4: Delivery Proof</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-5-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">trending_up</span>
-        <span>5: Runway / DSO</span>
+        <span>5: Cash Runway</span>
       </button>
       <button class="scenario-btn px-2.5 py-1 rounded bg-white/95 text-primary hover:bg-white text-xs shadow-sm border border-sky-500/20 transition-all flex items-center gap-1 font-medium" id="scenario-6-btn" type="button">
         <span class="material-symbols-outlined text-[14px]">currency_exchange</span>
-        <span>6: FX Risk</span>
+        <span>6: Currency Rates</span>
       </button>
     </div>
   </div>
