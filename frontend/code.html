@@ -780,84 +780,239 @@ container._cleanup = function() {
 </div>
 </div>
 </section>
-<!-- Feature Bento Grid: High Craft Architecture -->
-<section class="w-full py-space-xl px-6 lg:px-12 bg-transparent">
-<div class="max-w-7xl mx-auto flex flex-col gap-space-xl">
-<div class="flex flex-col gap-space-xs max-w-2xl">
-<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold">FOUNDATIONAL GUARANTEES</span>
-<h2 class="font-headline-lg text-headline-lg font-bold tracking-tight text-on-surface">Mathematical Control of Model Spending</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">
-          LLMs are probabilistic. Capital transfer must be deterministic. Mandate injects absolute mathematical guardrails between Claude reasoning engines and PayPal payment terminals.
+<!-- 6 SCROLL-DOWN ANIMATED SCENARIOS SHOWCASE (DARK THEME) -->
+<style>
+  .scenario-scroll-card {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .scenario-scroll-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+<section id="scenarios-showcase" class="w-full px-6 lg:px-12 py-16 bg-[#080d16]/90 backdrop-blur-2xl border-y border-outline-variant/30 shadow-[0_8px_32px_rgba(0,0,0,0.6)]">
+  <div class="max-w-7xl mx-auto flex flex-col gap-10">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div class="max-w-2xl">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span class="font-label-sm text-xs uppercase tracking-[0.18em] text-primary font-bold">The 6 Core Scenarios</span>
+        </div>
+        <h2 class="font-headline-md text-3xl font-extrabold text-white tracking-tight mt-1.5">
+          How PayPal Protects Autonomous Commerce
+        </h2>
+        <p class="font-body-md text-sm text-on-surface-variant mt-2 leading-relaxed">
+          Scroll through the 6 real-world failure modes of autonomous AI agents, and how deterministic code and PayPal rails guarantee safe execution.
         </p>
-</div>
-<!-- Bento Grid 4 Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md">
-<!-- Card 1 -->
-<div class="p-space-lg rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 flex flex-col justify-between gap-space-lg shadow-xl group hover:bg-[#111622]/85 transition-all">
-<div class="flex flex-col gap-space-sm">
-<div class="w-10 h-10 rounded bg-primary-container/80 backdrop-blur-md flex items-center justify-center text-primary border border-primary/20">
-<span class="material-symbols-outlined text-[20px]">calculate</span>
-</div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface">11 Deterministic Invariants</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-              Every checkout payload is checked against non-negotiable state machines: currency validity, supplier registry, price drift bounds, and strict per-session wallet limits.
-            </p>
-</div>
-<div class="bg-[#0a0e17]/70 backdrop-blur-md border border-outline-variant/20 p-space-sm rounded font-mono text-[11px] text-primary flex items-center justify-between">
-<span>INVARIANT_ACCURACY</span>
-<span>100.00%</span>
-</div>
-</div>
-<!-- Card 2 -->
-<div class="p-space-lg rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 flex flex-col justify-between gap-space-lg shadow-xl group hover:bg-[#111622]/85 transition-all">
-<div class="flex flex-col gap-space-sm">
-<div class="w-10 h-10 rounded bg-surface-container-high/80 backdrop-blur-md flex items-center justify-center text-secondary border border-secondary/20">
-<span class="material-symbols-outlined text-[20px]">credit_card</span>
-</div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface">Real PayPal Sandbox</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-              Live native integration with PayPal Orders v2 and Payments v2 capture/refund endpoints, preserving real transactional idempotency, tracking tokens, and dispute webhooks.
-            </p>
-</div>
-<div class="bg-[#0a0e17]/70 backdrop-blur-md border border-outline-variant/20 p-space-sm rounded font-mono text-[11px] text-secondary flex items-center justify-between">
-<span>REST API v2</span>
-<span>IDEMPOTENT</span>
-</div>
-</div>
-<!-- Card 3 -->
-<div class="p-space-lg rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 flex flex-col justify-between gap-space-lg shadow-xl group hover:bg-[#111622]/85 transition-all">
-<div class="flex flex-col gap-space-sm">
-<div class="w-10 h-10 rounded bg-surface-container-high/80 backdrop-blur-md flex items-center justify-center text-error border border-error/20">
-<span class="material-symbols-outlined text-[20px]">shield_lock</span>
-</div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface">Prompt Injection Shield</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-              Adversarial catalog items with hidden jailbreak payloads or fee redirection scripts are intercepted and quarantined before LLM contextual synthesis.
-            </p>
-</div>
-<div class="bg-[#0a0e17]/70 backdrop-blur-md border border-outline-variant/20 p-space-sm rounded font-mono text-[11px] text-error flex items-center justify-between">
-<span>ZERO EXPLOIT RUNS</span>
-<span>HEURISTIC + AST</span>
-</div>
-</div>
-<!-- Card 4 -->
-<div class="p-space-lg rounded bg-[#0a0e17]/80 backdrop-blur-lg border border-outline-variant/30 flex flex-col justify-between gap-space-lg shadow-xl group hover:bg-[#111622]/85 transition-all">
-<div class="flex flex-col gap-space-sm">
-<div class="w-10 h-10 rounded bg-primary-container/80 backdrop-blur-md flex items-center justify-center text-on-tertiary-container border border-primary/20">
-<span class="material-symbols-outlined text-[20px]">history_edu</span>
-</div>
-<h3 class="font-headline-sm text-headline-sm text-on-surface">SHA-256 Audit Chain</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-              Cryptographically chained blocks for every proposed SKU, human escalation key, PayPal transaction token, and delivery carrier event proof.
-            </p>
-</div>
-<div class="bg-[#0a0e17]/70 backdrop-blur-md border border-outline-variant/20 p-space-sm rounded font-mono text-[11px] text-primary flex items-center justify-between">
-<span>MERKLE AUDIT</span>
-<span>TAMPER-EVIDENT</span>
-</div>
-</div>
-</div>
-</div>
+      </div>
+      <div class="flex items-center gap-2 text-xs text-secondary font-mono">
+        <span class="material-symbols-outlined text-[16px] text-primary">touch_app</span>
+        <span>Click any card to test live in sandbox</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 01: Fraud Block -->
+      <div class="scenario-scroll-card group bg-[#0e1422]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-outline-variant/20 hover:border-primary/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" style="transition-delay: 50ms;">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <span class="font-mono text-xs font-black tracking-widest text-primary">01 / 06</span>
+            <span class="px-2 py-0.5 rounded bg-primary-container/20 text-primary font-mono text-[10px] font-bold uppercase tracking-wider">Injection Shield</span>
+          </div>
+          <div class="flex items-center gap-3 mt-4">
+            <div class="w-10 h-10 rounded-xl bg-primary-container/30 text-primary flex items-center justify-center border border-primary/30 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">shield</span>
+            </div>
+            <div>
+              <h3 class="font-title-md text-base font-bold text-on-surface tracking-tight">Fraud Block</h3>
+              <span class="text-[11px] text-outline font-mono">PayPal Orders v2 Capture</span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2.5 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/20 text-rose-200">
+              <span class="font-bold text-rose-400 block mb-0.5">⚠️ The AI Risk:</span>
+              Untrusted vendor listings hide prompt injection overrides to hijack agents into unauthorized checkouts.
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/20 text-emerald-200">
+              <span class="font-bold text-emerald-400 block mb-0.5">🛡️ The PayPal Solution:</span>
+              AST sanitization filters prompts, strictly caps unassisted orders at $30, and enforces dual-key approval.
+            </div>
+          </div>
+        </div>
+        <button type="button" class="mt-5 w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-primary-container/30 text-primary border border-outline-variant/30 hover:border-primary/40 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow" onclick="jumpToScenario('scenario-1')">
+          <span>Test Scenario 1 in Sandbox</span>
+          <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- 02: Auto-Refund -->
+      <div class="scenario-scroll-card group bg-[#0e1422]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-outline-variant/20 hover:border-secondary/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" style="transition-delay: 100ms;">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <span class="font-mono text-xs font-black tracking-widest text-secondary">02 / 06</span>
+            <span class="px-2 py-0.5 rounded bg-secondary-container/20 text-secondary font-mono text-[10px] font-bold uppercase tracking-wider">Escrow Automation</span>
+          </div>
+          <div class="flex items-center gap-3 mt-4">
+            <div class="w-10 h-10 rounded-xl bg-secondary-container/30 text-secondary flex items-center justify-center border border-secondary/30 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">history</span>
+            </div>
+            <div>
+              <h3 class="font-title-md text-base font-bold text-on-surface tracking-tight">Auto-Refund</h3>
+              <span class="text-[11px] text-outline font-mono">PayPal Payments v2 Refund</span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2.5 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/20 text-rose-200">
+              <span class="font-bold text-rose-400 block mb-0.5">⚠️ The AI Risk:</span>
+              Supplier misses guaranteed 24-hour fulfillment SLA, locking corporate capital in unfulfilled limbo.
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/20 text-emerald-200">
+              <span class="font-bold text-emerald-400 block mb-0.5">🛡️ The PayPal Solution:</span>
+              Webhook monitoring detects shipping delays and instantly initiates an automated refund to the buyer.
+            </div>
+          </div>
+        </div>
+        <button type="button" class="mt-5 w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-secondary-container/30 text-secondary border border-outline-variant/30 hover:border-secondary/40 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow" onclick="jumpToScenario('scenario-2')">
+          <span>Test Scenario 2 in Sandbox</span>
+          <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- 03: Cancel Window -->
+      <div class="scenario-scroll-card group bg-[#0e1422]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-outline-variant/20 hover:border-emerald-400/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" style="transition-delay: 150ms;">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <span class="font-mono text-xs font-black tracking-widest text-emerald-400">03 / 06</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-300 font-mono text-[10px] font-bold uppercase tracking-wider">5-Min Grace Window</span>
+          </div>
+          <div class="flex items-center gap-3 mt-4">
+            <div class="w-10 h-10 rounded-xl bg-emerald-950/40 text-emerald-400 flex items-center justify-center border border-emerald-500/30 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">timer</span>
+            </div>
+            <div>
+              <h3 class="font-title-md text-base font-bold text-on-surface tracking-tight">Cancel Window</h3>
+              <span class="text-[11px] text-outline font-mono">Pre-Settlement Undo</span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2.5 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/20 text-rose-200">
+              <span class="font-bold text-rose-400 block mb-0.5">⚠️ The AI Risk:</span>
+              Autonomous agent schedules duplicate invoice payment or misallocates milestone fee to wrong contractor.
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/20 text-emerald-200">
+              <span class="font-bold text-emerald-400 block mb-0.5">🛡️ The PayPal Solution:</span>
+              Disbursements enter a 5-minute pre-settlement hold. Operators can hit Undo to cancel with zero penalty.
+            </div>
+          </div>
+        </div>
+        <button type="button" class="mt-5 w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-emerald-950/40 text-emerald-300 border border-outline-variant/30 hover:border-emerald-500/40 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow" onclick="jumpToScenario('scenario-3')">
+          <span>Test Scenario 3 in Sandbox</span>
+          <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- 04: Delivery Proof -->
+      <div class="scenario-scroll-card group bg-[#0e1422]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-outline-variant/20 hover:border-cyan-400/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" style="transition-delay: 200ms;">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <span class="font-mono text-xs font-black tracking-widest text-cyan-400">04 / 06</span>
+            <span class="px-2 py-0.5 rounded bg-cyan-950/40 text-cyan-300 font-mono text-[10px] font-bold uppercase tracking-wider">Dispute Defense</span>
+          </div>
+          <div class="flex items-center gap-3 mt-4">
+            <div class="w-10 h-10 rounded-xl bg-cyan-950/40 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+            </div>
+            <div>
+              <h3 class="font-title-md text-base font-bold text-on-surface tracking-tight">Delivery Proof</h3>
+              <span class="text-[11px] text-outline font-mono">Carrier GPS Attestation</span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2.5 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/20 text-rose-200">
+              <span class="font-bold text-rose-400 block mb-0.5">⚠️ The AI Risk:</span>
+              Buyer falsely claims "Item Not Received," locking merchant account balance in protracted dispute resolution.
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/20 text-emerald-200">
+              <span class="font-bold text-emerald-400 block mb-0.5">🛡️ The PayPal Solution:</span>
+              Queries carrier API for GPS drop-off coordinates & electronic signature, submitting evidence to PayPal Disputes.
+            </div>
+          </div>
+        </div>
+        <button type="button" class="mt-5 w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-cyan-950/40 text-cyan-300 border border-outline-variant/30 hover:border-cyan-500/40 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow" onclick="jumpToScenario('scenario-4')">
+          <span>Test Scenario 4 in Sandbox</span>
+          <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- 05: Cash Runway -->
+      <div class="scenario-scroll-card group bg-[#0e1422]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-outline-variant/20 hover:border-amber-400/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" style="transition-delay: 250ms;">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <span class="font-mono text-xs font-black tracking-widest text-amber-400">05 / 06</span>
+            <span class="px-2 py-0.5 rounded bg-amber-950/40 text-amber-300 font-mono text-[10px] font-bold uppercase tracking-wider">Liquidity Intelligence</span>
+          </div>
+          <div class="flex items-center gap-3 mt-4">
+            <div class="w-10 h-10 rounded-xl bg-amber-950/40 text-amber-400 flex items-center justify-center border border-amber-500/30 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">trending_up</span>
+            </div>
+            <div>
+              <h3 class="font-title-md text-base font-bold text-on-surface tracking-tight">Cash Runway</h3>
+              <span class="text-[11px] text-outline font-mono">Predictive DSO & Burn</span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2.5 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/20 text-rose-200">
+              <span class="font-bold text-rose-400 block mb-0.5">⚠️ The AI Risk:</span>
+              Autonomous purchasing agents spend operating funds faster than customer accounts receivable settle.
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/20 text-emerald-200">
+              <span class="font-bold text-emerald-400 block mb-0.5">🛡️ The PayPal Solution:</span>
+              Stress-tests Days Sales Outstanding (DSO) under delay scenarios, predicting runway and cash solvency.
+            </div>
+          </div>
+        </div>
+        <button type="button" class="mt-5 w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-amber-950/40 text-amber-300 border border-outline-variant/30 hover:border-amber-500/40 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow" onclick="jumpToScenario('scenario-5')">
+          <span>Test Scenario 5 in Sandbox</span>
+          <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+
+      <!-- 06: Currency Rates -->
+      <div class="scenario-scroll-card group bg-[#0e1422]/90 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-outline-variant/20 hover:border-purple-400/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between" style="transition-delay: 300ms;">
+        <div>
+          <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+            <span class="font-mono text-xs font-black tracking-widest text-purple-400">06 / 06</span>
+            <span class="px-2 py-0.5 rounded bg-purple-950/40 text-purple-300 font-mono text-[10px] font-bold uppercase tracking-wider">Multi-Currency</span>
+          </div>
+          <div class="flex items-center gap-3 mt-4">
+            <div class="w-10 h-10 rounded-xl bg-purple-950/40 text-purple-400 flex items-center justify-center border border-purple-500/30 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-[20px]">currency_exchange</span>
+            </div>
+            <div>
+              <h3 class="font-title-md text-base font-bold text-on-surface tracking-tight">Currency Rates</h3>
+              <span class="text-[11px] text-outline font-mono">Dynamic FX Volatility Hedge</span>
+            </div>
+          </div>
+          <div class="mt-4 space-y-2.5 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-rose-950/30 border border-rose-500/20 text-rose-200">
+              <span class="font-bold text-rose-400 block mb-0.5">⚠️ The AI Risk:</span>
+              Foreign cross-border invoices in EUR or GBP slip in exchange value before international settlement clears.
+            </div>
+            <div class="p-2.5 rounded-lg bg-emerald-950/30 border border-emerald-500/20 text-emerald-200">
+              <span class="font-bold text-emerald-400 block mb-0.5">🛡️ The PayPal Solution:</span>
+              Computes FX volatility exposure and automatically triggers 48h dynamic early-payment discounts.
+            </div>
+          </div>
+        </div>
+        <button type="button" class="mt-5 w-full py-2 px-3 rounded-lg bg-surface-container hover:bg-purple-950/40 text-purple-300 border border-outline-variant/30 hover:border-purple-500/40 font-semibold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm group-hover:shadow" onclick="jumpToScenario('scenario-6')">
+          <span>Test Scenario 6 in Sandbox</span>
+          <span class="material-symbols-outlined text-[15px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </section>
 <!-- Real-time Verification & Terminal Modal View -->
 <section class="w-full py-space-xl px-6 lg:px-12 bg-transparent">
@@ -1676,6 +1831,31 @@ container._cleanup = function() {
       rootDisplay.innerText = 'VERIFIED_SHA256:7f9b2d88c...ALL_SIGNATURES_VALID';
       alert('Mandate Ledger Integrity Verified: All mathematical invariants, dual-key signatures, and PayPal sandbox tokens cryptographically match root hash.');
     }, 400);
+  }
+
+  // Jump to Scenario Helper from Showcase Cards
+  window.jumpToScenario = function(scenarioKey) {
+    const dualState = document.getElementById('interactive-simulator') || document.getElementById('dual-state-sandbox');
+    if (dualState) {
+      dualState.scrollIntoView({ behavior: 'smooth' });
+    }
+    switchScenario(scenarioKey);
+  };
+
+  // Scroll-Down Reveal Animation for 6 Scenario Cards
+  const scenarioCards = document.querySelectorAll('.scenario-scroll-card');
+  if ('IntersectionObserver' in window) {
+    const cardObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+    scenarioCards.forEach(card => cardObserver.observe(card));
+  } else {
+    scenarioCards.forEach(card => card.classList.add('is-visible'));
   }
 </script></main><footer class="w-full bg-[#0a0e17]/85 backdrop-blur-xl border-t border-outline-variant/30 py-space-xl shadow-[0_-1px_12px_rgba(0,0,0,0.6)]"><div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col gap-space-lg"><div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-lg"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-space-sm"><span class="font-headline-sm text-headline-sm text-secondary">Mandate</span><span class="font-label-sm text-label-sm text-on-surface-variant">- PayPal Autonomous Governance Engine</span></div><p class="font-body-sm text-body-sm text-outline max-w-xl">Cryptographic transaction boundaries, autonomous procurement constraints, and deterministic liquidity guardrails for agentic spending pipelines.</p></div><div class="flex flex-wrap items-center gap-space-md font-label-sm text-label-sm"><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="font-label-sm text-label-sm text-secondary uppercase">Root State:</span><span class="font-label-sm text-label-sm text-primary font-mono">SHA256:7f9b2d...c341e9a</span></div><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="font-label-sm text-label-sm text-secondary uppercase">Attestation:</span><span class="font-label-sm text-label-sm text-on-tertiary-container">Deterministic Validated</span></div></div></div><div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md pt-space-md"><div class="flex flex-wrap items-center gap-space-lg font-body-sm text-body-sm text-on-surface-variant"><a class="hover:text-primary transition-colors" data-path="overview" href="#">Scenario: Cloud Infrastructure Reserve</a><a class="hover:text-primary transition-colors" data-path="interactive-demo" href="#">Scenario: Sub-Agent Liquidity Cap</a><a class="hover:text-primary transition-colors" data-path="security-and-architecture" href="#">Audit Ledger</a><a class="hover:text-primary transition-colors" data-path="docs" href="#">PayPal SDK Specs</a></div><div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-md font-label-sm text-label-sm text-outline"><span class="uppercase">PayPal Innovation Hackathon 2025</span><span>© 2025 Mandate Protocol. Strict Deterministic Execution.</span></div></div></div></footer>
 </div>
