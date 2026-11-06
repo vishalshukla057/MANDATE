@@ -385,3 +385,9 @@ TOOL_REGISTRY: Dict[str, ToolDefinition] = {
     ),
 }
 
+
+def get_tool_registry() -> Dict[str, ToolDefinition]:
+    """Returns the full tool registry dictionary."""
+    return TOOL_REGISTRY
+
+

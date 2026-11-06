@@ -157,3 +157,61 @@ async def ask_analytics_question(payload: AskRequest, db: Session = Depends(get_
     """Translates NL query into a constrained query plan and returns structured chart data + prose."""
     return await AnalyticsQAEngine.answer_question(db, payload.question)
 
+
+@router.get("/runway-simulator")
+def simulate_cashflow_runway(
+    monthly_burn_rate: float = Query(12000.0, ge=1000.0, description="Monthly fixed business burn rate"),
+    client_delay_days: int = Query(14, ge=0, le=60, description="Simulated additional payment delay across overdue clients"),
+    db: Session = Depends(get_db)
+):
+    """Predictive DSO & Cashflow Runway Simulator: evaluates solvency under client delay scenarios."""
+    invoices = db.query(Invoice).filter(Invoice.tenant_id == settings.DEFAULT_TENANT_ID).all()
+    clients = db.query(Client).filter(Client.tenant_id == settings.DEFAULT_TENANT_ID).all()
+    payments = db.query(Payment).filter(Payment.tenant_id == settings.DEFAULT_TENANT_ID).all()
+
+    total_sales = sum(i.total for i in invoices)
+    total_outstanding = sum(i.amount_due for i in invoices if i.amount_due > 0.0)
+    current_cash_collected = sum(p.amount for p in payments)
+
+    # Baseline DSO
+    baseline_dso = round((total_outstanding / max(1.0, total_sales)) * 90, 1)
+
+    # Stressed DSO with added delay
+    stressed_outstanding = total_outstanding * (1.0 + (client_delay_days / 90.0))
+    stressed_dso = round((stressed_outstanding / max(1.0, total_sales)) * 90, 1)
+
+    daily_burn = monthly_burn_rate / 30.0
+    baseline_runway_days = round(current_cash_collected / max(1.0, daily_burn), 1)
+
+    # Calculate individual client default probabilities
+    client_risk_breakdown = []
+    for c in clients:
+        # Risk score 0-100 to default probability
+        late_prob = min(0.95, round((c.risk_score * 0.7 + c.late_count * 5.0) / 100.0, 2))
+        client_risk_breakdown.append({
+            "client_id": c.id,
+            "client_name": c.name,
+            "risk_score": c.risk_score,
+            "late_count": c.late_count,
+            "projected_default_probability": late_prob,
+            "recommended_action": "Offer 10% early-pay discount" if late_prob > 0.4 else "Standard tone ladder",
+        })
+
+    recommendations = []
+    if stressed_dso > 45.0:
+        recommendations.append("DSO stress exceeds 45-day threshold. Activate automated 5% early-pay discount ladder on high-value accounts.")
+    if baseline_runway_days < 60:
+        recommendations.append("Cash runway under 60 days. Stage contractor split disbursements into 2 bi-weekly tranches.")
+
+    return {
+        "monthly_burn_rate": monthly_burn_rate,
+        "simulated_client_delay_days": client_delay_days,
+        "baseline_dso_days": baseline_dso,
+        "stressed_dso_days": stressed_dso,
+        "dso_delta_days": round(stressed_dso - baseline_dso, 1),
+        "baseline_runway_days": baseline_runway_days,
+        "client_risk_forecast": client_risk_breakdown,
+        "proactive_recommendations": recommendations,
+    }
+
+

@@ -284,3 +284,59 @@ def record_external_payment(id: str, payload: ExternalPaymentRequest, db: Sessio
         "amount_due": inv.amount_due if inv else invoice.amount_due,
     }
 
+
+@router.get("/{id}/fx-risk")
+def get_invoice_fx_risk(id: str, db: Session = Depends(get_db)):
+    """Calculates foreign exchange currency exposure and dynamic early-settlement incentive."""
+    from app.services.fx_service import FXService
+
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+    if not invoice:
+        raise HTTPException(status_code=404, detail="Invoice not found")
+
+    now_dt = ClockService.now()
+    days_overdue = 0
+    if invoice.status == "overdue":
+        inv_due = invoice.due_date
+        from datetime import timezone
+        if inv_due.tzinfo is None:
+            inv_due = inv_due.replace(tzinfo=timezone.utc)
+        if now_dt.tzinfo is None:
+            now_dt = now_dt.replace(tzinfo=timezone.utc)
+        days_overdue = max(0, int((now_dt - inv_due).total_seconds() // 86400))
+
+    return FXService.analyze_fx_risk(
+        amount=invoice.amount_due,
+        currency=invoice.currency,
+        days_overdue=days_overdue,
+    )
+
+
+@router.get("/portfolio/fx-summary")
+def get_portfolio_fx_summary(db: Session = Depends(get_db)):
+    """Portfolio-wide multi-currency exposure and potential hedging savings."""
+    from app.services.fx_service import FXService
+
+    invoices = db.query(Invoice).filter(Invoice.tenant_id == settings.DEFAULT_TENANT_ID, Invoice.amount_due > 0).all()
+
+    currency_breakdown = {}
+    total_usd_value = 0.0
+
+    for inv in invoices:
+        c = inv.currency.upper()
+        if c not in currency_breakdown:
+            currency_breakdown[c] = {"count": 0, "total_local": 0.0, "total_usd": 0.0}
+
+        usd_val = FXService.convert_to_usd(inv.amount_due, c)
+        currency_breakdown[c]["count"] += 1
+        currency_breakdown[c]["total_local"] = round(currency_breakdown[c]["total_local"] + inv.amount_due, 2)
+        currency_breakdown[c]["total_usd"] = round(currency_breakdown[c]["total_usd"] + usd_val, 2)
+        total_usd_value = round(total_usd_value + usd_val, 2)
+
+    return {
+        "total_portfolio_usd": total_usd_value,
+        "currencies_represented": list(currency_breakdown.keys()),
+        "breakdown": currency_breakdown,
+    }
+
+

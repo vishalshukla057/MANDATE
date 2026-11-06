@@ -18,7 +18,7 @@ from app.paypal.client import get_paypal_gateway, PayPalError
 from app.api import (
     invoices, clients, webhooks, agent, approvals,
     feed, policy_audit, simulate, contractors, payouts, disputes,
-    analytics, jobs
+    analytics, jobs, mcp
 )
 
 
@@ -121,6 +121,7 @@ app.include_router(payouts.router, dependencies=[Security(verify_api_key)])
 app.include_router(disputes.router, dependencies=[Security(verify_api_key)])
 app.include_router(analytics.router, dependencies=[Security(verify_api_key)])
 app.include_router(jobs.router, dependencies=[Security(verify_api_key)])
+app.include_router(mcp.router)  # Model Context Protocol (MCP) tool server
 app.include_router(simulate.router)  # Simulation tools for hackathon demo
 app.include_router(webhooks.router)  # Public, signature verified
 
