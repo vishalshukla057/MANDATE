@@ -943,13 +943,38 @@ container._cleanup = function() {
   }
   .scenario-chapter {
     opacity: 0;
-    transform: translateY(48px);
-    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
   }
   .scenario-chapter.is-visible {
     opacity: 1;
-    transform: translateY(0);
+  }
+  .scenario-chapter .chapter-editorial {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
+    will-change: opacity, transform;
+  }
+  .scenario-chapter.is-visible .chapter-editorial {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .scenario-chapter .chapter-telemetry {
+    opacity: 0;
+    transform: translateY(32px) scale(0.97);
+    transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.18s, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.18s;
+    will-change: opacity, transform;
+  }
+  .scenario-chapter.is-visible .chapter-telemetry {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  .watermark-numeral {
+    transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .scenario-chapter.is-visible .watermark-numeral {
+    transform: translateY(-16px) scale(1.04);
   }
   @keyframes scannerSweep {
     0% { top: 0%; opacity: 0; }
@@ -980,12 +1005,25 @@ container._cleanup = function() {
   .animate-bob {
     animation: bobFloat 2.6s infinite ease-in-out;
   }
+  @keyframes mousePillPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 196, 57, 0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(255, 196, 57, 0); }
+  }
+  .animate-pill-pulse {
+    animation: mousePillPulse 2.2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  }
 </style>
 
 <div id="scenarios-showcase" class="w-full relative bg-[#001435]">
 
+  <!-- Top Viewport Scroll Progress Bar for Scenarios -->
+  <div id="showcase-progress-bar-container" class="fixed top-0 left-0 right-0 h-[3px] bg-white/[0.04] z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
+    <div id="showcase-progress-bar" class="h-full w-0 bg-gradient-to-r from-[#ffc439] via-sky-400 to-[#0070ba] shadow-[0_0_12px_rgba(56,189,248,0.8)] transition-all duration-100 ease-out"></div>
+  </div>
+
   <!-- Fixed Scroll Spy Chapter Navigator (Right Rail) -->
-  <nav id="scroll-spy-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-end gap-3.5 transition-all duration-300 opacity-0 pointer-events-none">
+  <nav id="scroll-spy-nav" class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden xl:flex flex-col items-end gap-2.5 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="px-2 py-0.5 rounded bg-black/80 border border-sky-400/30 text-[9px] font-mono uppercase tracking-wider text-sky-200 mb-1 shadow-sm" id="spy-chapter-counter">CH 01 / 06</div>
     <a href="#chapter-1" class="spy-dot flex items-center gap-2.5 group cursor-pointer" data-target="chapter-1" title="01: Fraud Block">
       <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">01 Fraud Block</span>
       <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
@@ -1010,15 +1048,23 @@ container._cleanup = function() {
       <span class="text-[10px] font-mono font-bold text-sky-200 opacity-0 group-hover:opacity-100 transition-opacity bg-[#001435]/95 px-2 py-0.5 rounded border border-sky-400/40 shadow-sm">06 Currency Rates</span>
       <span class="w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 group-hover:bg-[#ffc439] group-hover:scale-125 transition-all"></span>
     </a>
+    <div class="mt-1 flex flex-col gap-1 items-center">
+      <button type="button" onclick="scrollPrevChapter()" class="w-6 h-6 rounded flex items-center justify-center bg-white/5 hover:bg-white/15 text-white/70 hover:text-white transition-colors" title="Previous (Up Arrow)">
+        <span class="material-symbols-outlined text-[14px]">expand_less</span>
+      </button>
+      <button type="button" onclick="scrollNextChapterBtn()" class="w-6 h-6 rounded flex items-center justify-center bg-white/5 hover:bg-white/15 text-white/70 hover:text-white transition-colors" title="Next (Down Arrow)">
+        <span class="material-symbols-outlined text-[14px]">expand_more</span>
+      </button>
+    </div>
   </nav>
 
   <!-- CHAPTER 01: FRAUD BLOCK -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-1">
-    <div class="absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">01</div>
+    <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">01</div>
     <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-6 flex flex-col gap-5">
+      <div class="lg:col-span-6 flex flex-col gap-5 chapter-editorial">
         <div class="flex items-center gap-3">
           <span class="font-mono text-xs font-black tracking-widest px-2.5 py-1 rounded bg-[#001e4a] border border-sky-400/30 text-sky-300">SCENARIO 01 / 06</span>
           <span class="text-xs uppercase tracking-widest text-sky-400 font-semibold">• REST API V2 ARCHITECTURE</span>
@@ -1047,7 +1093,7 @@ container._cleanup = function() {
       </div>
 
       <!-- Right Visual Component: AST Sanitizer Live Stream with Animated Laser Scanner -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
+      <div class="lg:col-span-6 flex flex-col justify-center chapter-telemetry">
         <div class="relative overflow-hidden p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-sky-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
           <div class="animate-scanner-line pointer-events-none"></div>
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
@@ -1086,7 +1132,7 @@ container._cleanup = function() {
     <!-- Scroll Down Prompt to 02 -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(1)">
       <span class="text-[9px] font-mono tracking-widest text-sky-300 uppercase group-hover:text-white transition-colors">Scroll Down to 02</span>
-      <div class="w-4 h-7 rounded-full border border-sky-400/50 flex items-start justify-center p-0.5 group-hover:border-sky-300">
+      <div class="w-4 h-7 rounded-full border border-sky-400/50 flex items-start justify-center p-0.5 group-hover:border-sky-300 animate-pill-pulse">
         <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
@@ -1094,11 +1140,11 @@ container._cleanup = function() {
 
   <!-- CHAPTER 02: AUTO-REFUND -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-2">
-    <div class="absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">02</div>
+    <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">02</div>
     <div class="absolute top-1/3 left-1/3 w-96 h-96 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-6 flex flex-col gap-5">
+      <div class="lg:col-span-6 flex flex-col gap-5 chapter-editorial">
         <div class="flex items-center gap-3">
           <span class="font-mono text-xs font-black tracking-widest px-2.5 py-1 rounded bg-[#001e4a] border border-sky-400/30 text-sky-300">SCENARIO 02 / 06</span>
           <span class="text-xs uppercase tracking-widest text-sky-400 font-semibold">• PAYMENTS V2 REFUND ESCROW</span>
@@ -1127,13 +1173,13 @@ container._cleanup = function() {
       </div>
 
       <!-- Right Visual Component: SLA Breach Timeline with Active Pulse -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
+      <div class="lg:col-span-6 flex flex-col justify-center chapter-telemetry">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-sky-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <span class="text-sky-300 font-semibold uppercase tracking-wider text-[11px]">SLA Fulfillment Ledger</span>
             <span class="text-amber-400 font-mono text-[11px] font-bold flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-              <span>24H DEADLINE EXPIRED</span>
+              <span id="ch2-sla-clock">23:59:44</span> <span class="text-[10px]">SLA EXPIRED</span>
             </span>
           </div>
           <div class="relative pl-6 space-y-4 border-l border-sky-800/80">
@@ -1160,7 +1206,7 @@ container._cleanup = function() {
     <!-- Scroll Down Prompt to 03 -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(2)">
       <span class="text-[9px] font-mono tracking-widest text-sky-300 uppercase group-hover:text-white transition-colors">Scroll Down to 03</span>
-      <div class="w-4 h-7 rounded-full border border-sky-400/50 flex items-start justify-center p-0.5 group-hover:border-sky-300">
+      <div class="w-4 h-7 rounded-full border border-sky-400/50 flex items-start justify-center p-0.5 group-hover:border-sky-300 animate-pill-pulse">
         <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
@@ -1168,11 +1214,11 @@ container._cleanup = function() {
 
   <!-- CHAPTER 03: CANCEL WINDOW -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-3">
-    <div class="absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">03</div>
+    <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">03</div>
     <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-6 flex flex-col gap-5">
+      <div class="lg:col-span-6 flex flex-col gap-5 chapter-editorial">
         <div class="flex items-center gap-3">
           <span class="font-mono text-xs font-black tracking-widest px-2.5 py-1 rounded bg-[#001e4a] border border-sky-400/30 text-emerald-300">SCENARIO 03 / 06</span>
           <span class="text-xs uppercase tracking-widest text-emerald-400 font-semibold">• 5-MINUTE GRACE WINDOW</span>
@@ -1201,7 +1247,7 @@ container._cleanup = function() {
       </div>
 
       <!-- Right Visual Component: Grace Countdown Display with Ticking Seconds -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
+      <div class="lg:col-span-6 flex flex-col justify-center chapter-telemetry">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-emerald-500/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-5">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <span class="text-emerald-300 font-semibold uppercase tracking-wider text-[11px]">Pre-Settlement Grace Watch</span>
@@ -1210,7 +1256,7 @@ container._cleanup = function() {
           <div class="p-4 rounded-2xl bg-black/40 border border-emerald-500/30 flex items-center justify-between">
             <div>
               <div class="text-[10px] text-sky-400 uppercase tracking-widest font-bold">Grace Countdown Remaining</div>
-              <div id="live-grace-countdown" class="text-3xl font-black text-emerald-400 font-mono tracking-tight mt-1">04:48.2</div>
+              <div id="ch3-live-countdown" class="text-3xl font-black text-emerald-400 font-mono tracking-tight mt-1">04:48.2</div>
             </div>
             <div class="w-12 h-12 rounded-full border-2 border-emerald-400/40 border-t-emerald-400 animate-spin flex items-center justify-center">
               <span class="material-symbols-outlined text-emerald-400 text-[20px]">timer</span>
@@ -1230,7 +1276,7 @@ container._cleanup = function() {
     <!-- Scroll Down Prompt to 04 -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(3)">
       <span class="text-[9px] font-mono tracking-widest text-emerald-300 uppercase group-hover:text-white transition-colors">Scroll Down to 04</span>
-      <div class="w-4 h-7 rounded-full border border-emerald-400/50 flex items-start justify-center p-0.5 group-hover:border-emerald-300">
+      <div class="w-4 h-7 rounded-full border border-emerald-400/50 flex items-start justify-center p-0.5 group-hover:border-emerald-300 animate-pill-pulse">
         <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
@@ -1238,11 +1284,11 @@ container._cleanup = function() {
 
   <!-- CHAPTER 04: DELIVERY PROOF -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-4">
-    <div class="absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">04</div>
+    <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">04</div>
     <div class="absolute top-1/3 left-1/3 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-6 flex flex-col gap-5">
+      <div class="lg:col-span-6 flex flex-col gap-5 chapter-editorial">
         <div class="flex items-center gap-3">
           <span class="font-mono text-xs font-black tracking-widest px-2.5 py-1 rounded bg-[#001e4a] border border-sky-400/30 text-cyan-300">SCENARIO 04 / 06</span>
           <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold">• DISPUTES V1 API ATTESTATION</span>
@@ -1271,7 +1317,7 @@ container._cleanup = function() {
       </div>
 
       <!-- Right Visual Component: Carrier Satellite GPS Attestation with Pulsing Radar Ring -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
+      <div class="lg:col-span-6 flex flex-col justify-center chapter-telemetry">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-cyan-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4 relative overflow-hidden">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <span class="text-cyan-300 font-semibold uppercase tracking-wider text-[11px] flex items-center gap-2">
@@ -1309,7 +1355,7 @@ container._cleanup = function() {
     <!-- Scroll Down Prompt to 05 -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(4)">
       <span class="text-[9px] font-mono tracking-widest text-cyan-300 uppercase group-hover:text-white transition-colors">Scroll Down to 05</span>
-      <div class="w-4 h-7 rounded-full border border-cyan-400/50 flex items-start justify-center p-0.5 group-hover:border-cyan-300">
+      <div class="w-4 h-7 rounded-full border border-cyan-400/50 flex items-start justify-center p-0.5 group-hover:border-cyan-300 animate-pill-pulse">
         <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
@@ -1317,11 +1363,11 @@ container._cleanup = function() {
 
   <!-- CHAPTER 05: CASH RUNWAY -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-5">
-    <div class="absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">05</div>
+    <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">05</div>
     <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-6 flex flex-col gap-5">
+      <div class="lg:col-span-6 flex flex-col gap-5 chapter-editorial">
         <div class="flex items-center gap-3">
           <span class="font-mono text-xs font-black tracking-widest px-2.5 py-1 rounded bg-[#001e4a] border border-sky-400/30 text-amber-300">SCENARIO 05 / 06</span>
           <span class="text-xs uppercase tracking-widest text-amber-400 font-semibold">• TREASURY LIQUIDITY ENGINE</span>
@@ -1350,11 +1396,26 @@ container._cleanup = function() {
       </div>
 
       <!-- Right Visual Component: Predictive DSO Simulator -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
+      <div class="lg:col-span-6 flex flex-col justify-center chapter-telemetry">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-amber-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <span class="text-amber-300 font-semibold uppercase tracking-wider text-[11px]">Predictive Liquidity Engine</span>
             <span class="text-emerald-400 font-mono text-[11px] font-bold">SOLVENCY: HEALTHY</span>
+          </div>
+          <!-- Animated Solvency Trajectory Sparkline -->
+          <div class="w-full h-7 my-1 relative overflow-hidden flex items-center">
+            <svg class="w-full h-7 overflow-visible" viewBox="0 0 300 28" fill="none">
+              <path d="M0,24 Q75,22 140,14 T240,6 T300,10" stroke="url(#dsoGradient)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <defs>
+                <linearGradient id="dsoGradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="65%" stop-color="#ffc439"/>
+                  <stop offset="100%" stop-color="#10b981"/>
+                </linearGradient>
+              </defs>
+              <circle cx="240" cy="6" r="4" fill="#ffc439" class="animate-ping" style="animation-duration: 2s;"/>
+              <circle cx="240" cy="6" r="3" fill="#ffc439"/>
+            </svg>
           </div>
           <div class="grid grid-cols-2 gap-3 text-[11px]">
             <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1">
@@ -1379,7 +1440,7 @@ container._cleanup = function() {
     <!-- Scroll Down Prompt to 06 -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(5)">
       <span class="text-[9px] font-mono tracking-widest text-amber-300 uppercase group-hover:text-white transition-colors">Scroll Down to 06</span>
-      <div class="w-4 h-7 rounded-full border border-amber-400/50 flex items-start justify-center p-0.5 group-hover:border-amber-300">
+      <div class="w-4 h-7 rounded-full border border-amber-400/50 flex items-start justify-center p-0.5 group-hover:border-amber-300 animate-pill-pulse">
         <div class="w-1.5 h-1.5 rounded-full bg-[#ffc439] animate-bounce"></div>
       </div>
     </div>
@@ -1387,11 +1448,11 @@ container._cleanup = function() {
 
   <!-- CHAPTER 06: CURRENCY RATES -->
   <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-6">
-    <div class="absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">06</div>
+    <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">06</div>
     <div class="absolute top-1/3 left-1/3 w-96 h-96 bg-indigo-500/10 rounded-full blur-[140px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
-      <div class="lg:col-span-6 flex flex-col gap-5">
+      <div class="lg:col-span-6 flex flex-col gap-5 chapter-editorial">
         <div class="flex items-center gap-3">
           <span class="font-mono text-xs font-black tracking-widest px-2.5 py-1 rounded bg-[#001e4a] border border-sky-400/30 text-indigo-300">SCENARIO 06 / 06</span>
           <span class="text-xs uppercase tracking-widest text-indigo-400 font-semibold">• MULTI-CURRENCY FX ENGINE</span>
@@ -1420,7 +1481,7 @@ container._cleanup = function() {
       </div>
 
       <!-- Right Visual Component: Multi-Currency Live Ticker -->
-      <div class="lg:col-span-6 flex flex-col justify-center">
+      <div class="lg:col-span-6 flex flex-col justify-center chapter-telemetry">
         <div class="p-6 sm:p-8 rounded-3xl bg-[#00102b]/80 backdrop-blur-2xl border border-indigo-400/20 shadow-[0_20px_60px_rgba(0,10,30,0.8)] font-mono text-xs space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-sky-900/60">
             <span class="text-indigo-300 font-semibold uppercase tracking-wider text-[11px]">Multi-Currency Volatility Hedge</span>
@@ -1429,7 +1490,10 @@ container._cleanup = function() {
           <div class="grid grid-cols-2 gap-3 text-[11px]">
             <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1">
               <span class="text-sky-400 uppercase text-[10px] font-bold">EUR / USD Cross Rate</span>
-              <div class="text-2xl font-bold text-white font-mono">1.0842</div>
+              <div class="text-2xl font-bold text-white font-mono flex items-center gap-2">
+                <span id="ch6-live-fx-rate">1.0842</span>
+                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-sans font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>LIVE</span>
+              </div>
               <div class="text-[10px] text-rose-400">-0.62% 7-Day Volatility Slip</div>
             </div>
             <div class="p-3 rounded-xl bg-black/40 border border-white/5 space-y-1">
@@ -1449,7 +1513,7 @@ container._cleanup = function() {
     <!-- Scroll Down Prompt to Return to Sandbox -->
     <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 cursor-pointer opacity-70 hover:opacity-100 transition-opacity z-20 group" onclick="scrollToNextChapter(6)">
       <span class="text-[9px] font-mono tracking-widest text-indigo-300 uppercase group-hover:text-white transition-colors">Test All in Sandbox ↑</span>
-      <div class="w-4 h-7 rounded-full border border-indigo-400/50 flex items-center justify-center p-0.5 group-hover:border-indigo-300">
+      <div class="w-4 h-7 rounded-full border border-indigo-400/50 flex items-center justify-center p-0.5 group-hover:border-indigo-300 animate-pill-pulse">
         <span class="material-symbols-outlined text-[13px] text-[#ffc439]">north</span>
       </div>
     </div>
@@ -2407,6 +2471,8 @@ container._cleanup = function() {
       };
 
       // Scroll to Next Chapter Helper
+      window.currentShowcaseIndex = 1;
+
       window.scrollToNextChapter = function(currentChapterNum) {
         if (currentChapterNum < 6) {
           const nextChap = document.getElementById('chapter-' + (currentChapterNum + 1));
@@ -2416,6 +2482,40 @@ container._cleanup = function() {
           if (sandbox) sandbox.scrollIntoView({ behavior: 'smooth' });
         }
       };
+
+      window.scrollNextChapterBtn = function() {
+        scrollToNextChapter(window.currentShowcaseIndex);
+      };
+
+      window.scrollPrevChapter = function() {
+        if (window.currentShowcaseIndex > 1) {
+          const prevChap = document.getElementById('chapter-' + (window.currentShowcaseIndex - 1));
+          if (prevChap) prevChap.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      };
+
+      // Keyboard navigation for full-screen chapters
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+        const showcaseSec = document.getElementById('scenarios-showcase');
+        if (!showcaseSec) return;
+        const sRect = showcaseSec.getBoundingClientRect();
+        if (sRect.bottom < 50 || sRect.top > window.innerHeight - 50) return;
+
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+          if (window.currentShowcaseIndex <= 6) {
+            e.preventDefault();
+            scrollNextChapterBtn();
+          }
+        } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+          if (window.currentShowcaseIndex >= 1) {
+            e.preventDefault();
+            scrollPrevChapter();
+          }
+        }
+      });
 
       // Scroll-Down Reveal Animation for 6 Full-Screen Scenario Chapters
       const scenarioChapters = document.querySelectorAll('.scenario-chapter');
@@ -2432,24 +2532,53 @@ container._cleanup = function() {
         scenarioChapters.forEach(chapter => chapter.classList.add('is-visible'));
       }
 
-      // Scroll Spy Nav Indicator
+      // Scroll Spy Nav Indicator & Top Progress Bar Controller
       const spyNav = document.getElementById('scroll-spy-nav');
       const showcaseSec = document.getElementById('scenarios-showcase');
       const spyDots = document.querySelectorAll('.spy-dot');
-      if (spyNav && showcaseSec && spyDots.length > 0) {
+      const progressBarContainer = document.getElementById('showcase-progress-bar-container');
+      const progressBar = document.getElementById('showcase-progress-bar');
+      const chapterCounter = document.getElementById('spy-chapter-counter');
+
+      if (showcaseSec) {
         window.addEventListener('scroll', () => {
           const sRect = showcaseSec.getBoundingClientRect();
+          const showcaseHeight = showcaseSec.offsetHeight - window.innerHeight;
+          const scrolledPast = -sRect.top;
+
+          // Toggle floating navigation and top progress bar
           if (sRect.top <= window.innerHeight * 0.4 && sRect.bottom >= window.innerHeight * 0.2) {
-            spyNav.classList.remove('opacity-0', 'pointer-events-none');
-            spyNav.classList.add('opacity-100');
+            if (spyNav) {
+              spyNav.classList.remove('opacity-0', 'pointer-events-none');
+              spyNav.classList.add('opacity-100');
+            }
+            if (progressBarContainer) {
+              progressBarContainer.classList.remove('opacity-0', 'pointer-events-none');
+              progressBarContainer.classList.add('opacity-100');
+            }
+            if (progressBar && showcaseHeight > 0) {
+              const progressPercent = Math.min(100, Math.max(0, (scrolledPast / showcaseHeight) * 100));
+              progressBar.style.width = progressPercent.toFixed(1) + '%';
+            }
           } else {
-            spyNav.classList.add('opacity-0', 'pointer-events-none');
-            spyNav.classList.remove('opacity-100');
+            if (spyNav) {
+              spyNav.classList.add('opacity-0', 'pointer-events-none');
+              spyNav.classList.remove('opacity-100');
+            }
+            if (progressBarContainer) {
+              progressBarContainer.classList.add('opacity-0', 'pointer-events-none');
+              progressBarContainer.classList.remove('opacity-100');
+            }
           }
 
+          // Detect active chapter and update counter & dots
           scenarioChapters.forEach((ch, idx) => {
             const r = ch.getBoundingClientRect();
             if (r.top <= window.innerHeight * 0.5 && r.bottom >= window.innerHeight * 0.3) {
+              window.currentShowcaseIndex = idx + 1;
+              if (chapterCounter) {
+                chapterCounter.textContent = 'CH 0' + (idx + 1) + ' / 06';
+              }
               spyDots.forEach(d => {
                 const dot = d.querySelector('span:last-child');
                 if (dot) dot.className = 'w-2.5 h-2.5 rounded-full bg-white/30 border border-white/50 transition-all';
@@ -2463,5 +2592,43 @@ container._cleanup = function() {
         });
       }
     })();
-  </script>
+  
+  // Live Micro-Telemetry Tickers for Chapters 02, 03, and 06
+  (function initTelemetryTickers() {
+    let graceSeconds = 288.2;
+    let slaSeconds = 86384;
+    let eurUsdRate = 1.0842;
+
+    setInterval(() => {
+      graceSeconds -= 0.1;
+      if (graceSeconds <= 0) graceSeconds = 300;
+      const m = Math.floor(graceSeconds / 60);
+      const s = Math.floor(graceSeconds % 60);
+      const ms = Math.floor((graceSeconds % 1) * 10);
+      const ch3El = document.getElementById('ch3-live-countdown');
+      if (ch3El) {
+        ch3El.textContent = `0${m}:${s < 10 ? '0' : ''}${s}.${ms}`;
+      }
+    }, 100);
+
+    setInterval(() => {
+      slaSeconds -= 1;
+      if (slaSeconds <= 0) slaSeconds = 86400;
+      const h = Math.floor(slaSeconds / 3600);
+      const m = Math.floor((slaSeconds % 3600) / 60);
+      const s = slaSeconds % 60;
+      const ch2El = document.getElementById('ch2-sla-clock');
+      if (ch2El) {
+        ch2El.textContent = `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+      }
+
+      const delta = (Math.random() * 0.0006 - 0.0003);
+      eurUsdRate = Math.min(1.0870, Math.max(1.0815, eurUsdRate + delta));
+      const ch6El = document.getElementById('ch6-live-fx-rate');
+      if (ch6El) {
+        ch6El.textContent = eurUsdRate.toFixed(4);
+      }
+    }, 1800);
+  })();
+</script>
 </div></main><footer class="w-full relative z-10 bg-[#001435]/90 backdrop-blur-2xl border-t border-white/[0.08] shadow-[0_-8px_32px_rgba(0,10,35,0.6)]"><div class="w-full px-4 sm:px-6 lg:px-8 py-8"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-lg mb-space-lg pb-space-lg border-b border-sky-500/15"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-white font-bold tracking-tight">PayPal Developer Ecosystem</span><span class="px-space-xs py-0.5 rounded-md bg-[#001e4a]/90 border border-sky-400/30 font-label-sm text-[11px] text-sky-200 tracking-wider">v2.44-Sandbox</span></div><p class="font-body-sm text-body-sm text-sky-200/80 max-w-xl">Autonomous Agent Governance &amp; Invariant Mandate Verifier for programmatic Orders v2 execution and enterprise policy consensus.</p></div><div class="flex flex-wrap items-center gap-space-md font-label-md text-sm"><a class="text-sky-200/80 hover:text-white transition-colors" data-path="docs" href="#">Developer Guides</a><a class="text-sky-200/80 hover:text-white transition-colors" data-path="paypal-orders-v2-api" href="#">Orders v2 Reference</a><a class="text-sky-200/80 hover:text-white transition-colors" data-path="invariant-rules" href="#">Mandate Protocol</a><a class="text-sky-200/80 hover:text-white transition-colors" data-path="audit-ledger" href="#">Security Attestation</a></div><div class="flex items-center gap-space-md font-label-md text-sm"><a class="text-sky-200/80 hover:text-white transition-colors" href="/privacy">Privacy Policy</a><a class="text-sky-200/80 hover:text-white transition-colors" href="/terms">Terms &amp; Conditions</a><span class="text-sky-300 font-mono text-xs">copilot.enterprise.paypal.com</span></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pt-space-md font-label-sm text-xs text-sky-200/70"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px] text-sky-400">verified_user</span><span>Zero-Trust Mandate Execution: 256-bit Signature Verification Enabled • ISO/IEC 27001 Certified Mock Framework</span></div><div class="flex items-center gap-space-md"><span>© 2025 PayPal Inc. • Developer Innovation Hackathon</span><a class="hover:text-white transition-colors" href="#">Privacy Statement</a><a class="hover:text-white transition-colors" href="#">API Terms</a></div></div></div></footer></body></html>
