@@ -15,3 +15,7 @@ class AuditLog(Base, BaseModelMixin):
     payload = Column(JSON, default=dict, nullable=False)
     prev_hash = Column(String(64), nullable=False)
     hash = Column(String(64), nullable=False, index=True)
+
+    @property
+    def entry_hash(self) -> str:
+        return self.hash

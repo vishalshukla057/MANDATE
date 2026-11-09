@@ -51,12 +51,14 @@ class UndoService:
         )
 
         # Notify feed
-        feed_broker.publish({
-            "type": "ACTION_STAGED_IN_GRACE_PERIOD",
-            "action_id": action.id,
-            "tool_name": action.tool_name,
-            "seconds_remaining": grace_seconds,
-        })
+        feed_broker.publish(
+            "ACTION_STAGED_IN_GRACE_PERIOD",
+            {
+                "action_id": action.id,
+                "tool_name": action.tool_name,
+                "seconds_remaining": grace_seconds,
+            }
+        )
 
         return action
 
@@ -110,19 +112,21 @@ class UndoService:
             }
         )
 
-        feed_broker.publish({
-            "type": "ACTION_UNDO_CONFIRMED",
-            "action_id": action.id,
-            "tool_name": action.tool_name,
-            "reason": reason,
-        })
+        feed_broker.publish(
+            "ACTION_UNDO_CONFIRMED",
+            {
+                "action_id": action.id,
+                "tool_name": action.tool_name,
+                "reason": reason,
+            }
+        )
 
         return {
             "success": True,
             "action_id": action.id,
             "status": "cancelled",
             "reason": reason,
-            "merkle_hash": audit_entry.entry_hash,
+            "merkle_hash": audit_entry.hash,
         }
 
     @classmethod

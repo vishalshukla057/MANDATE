@@ -1,7 +1,7 @@
 import json
 import re
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, computed_field
 from sqlalchemy.orm import Session
 from app.models.client import Client
 from app.config import settings
@@ -37,6 +37,11 @@ class ParsedInvoiceDraft(BaseModel):
     confidence: float = 0.9
     missing_fields: List[str] = Field(default_factory=list)
     assumptions: List[str] = Field(default_factory=list)
+
+    @computed_field
+    @property
+    def total(self) -> float:
+        return sum(float(item.quantity) * float(item.unit_price) for item in self.line_items)
 
 
 SYSTEM_PARSER_PROMPT = """

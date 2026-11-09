@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.db import get_db
 from app.models.dispute import Dispute
+from app.models.invoice import Invoice
 from app.services.audit import AuditService
 from app.services.feed import feed_broker
 from app.agent.dispute_writer import DisputeCopilotService
@@ -183,11 +184,14 @@ def download_evidence_pack(id: str, db: Session = Depends(get_db)):
     evidence_pack = DisputeCopilotService.compile_evidence_pack(db, dispute)
     win_likelihood = CarrierService.calculate_win_probability(evidence_pack)
 
+    invoice = db.query(Invoice).filter(Invoice.id == dispute.invoice_id).first() if dispute.invoice_id else None
+    dispute_currency = getattr(invoice, "currency", "USD") if invoice else "USD"
+
     manifest = {
         "manifest_version": "2024-11-06",
         "paypal_dispute_id": dispute.paypal_dispute_id,
-        "disputed_amount": dispute.dispute_amount,
-        "dispute_currency": dispute.currency,
+        "disputed_amount": dispute.amount,
+        "dispute_currency": dispute_currency,
         "reason": dispute.reason,
         "win_probability_score": win_likelihood,
         "compiled_evidence": evidence_pack,

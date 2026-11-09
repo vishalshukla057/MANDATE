@@ -9,12 +9,18 @@ class FeedBroker:
         self._subscribers: List[asyncio.Queue] = []
         self._history: List[Dict[str, Any]] = []
 
-    def publish(self, event_type: str, data: Dict[str, Any]):
-        item = {
-            "type": event_type,
-            "data": data,
-            "timestamp": ClockService.now().isoformat(),
-        }
+    def publish(self, event_type: Any, data: Optional[Dict[str, Any]] = None):
+        if isinstance(event_type, dict) and data is None:
+            item = dict(event_type)
+            item.setdefault("timestamp", ClockService.now().isoformat())
+            if "type" not in item:
+                item["type"] = "general_event"
+        else:
+            item = {
+                "type": event_type,
+                "data": data or {},
+                "timestamp": ClockService.now().isoformat(),
+            }
         self._history.append(item)
         if len(self._history) > 200:
             self._history.pop(0)

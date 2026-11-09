@@ -57,22 +57,21 @@ async def call_mcp_tool(payload: MCPToolCallRequest, db: Session = Depends(get_d
         raise HTTPException(status_code=404, detail=f"Tool '{payload.name}' not found in MCP registry")
 
     # Evaluate through Policy Engine
-    policy_eval = PolicyEngine.evaluate(
+    policy_decision = PolicyEngine.evaluate(
         db=db,
-        action_type=tool.name,
-        params=payload.arguments,
-        risk_tier=tool.risk_tier,
+        tool_name=tool.name,
+        args=payload.arguments or {},
     )
 
-    if policy_eval.get("decision") == "block":
+    if policy_decision.is_blocked():
         return {
             "content": [
                 {
                     "type": "text",
                     "text": json.dumps({
                         "status": "blocked_by_policy",
-                        "policy_decision": policy_eval,
-                        "explanation": policy_eval.get("explanation"),
+                        "policy_decision": policy_decision.to_dict(),
+                        "explanation": "; ".join(policy_decision.reasons),
                     }, indent=2)
                 }
             ],
@@ -92,7 +91,7 @@ async def call_mcp_tool(payload: MCPToolCallRequest, db: Session = Depends(get_d
             payload={
                 "tool_name": tool.name,
                 "arguments": payload.arguments,
-                "policy_decision": policy_eval.get("decision"),
+                "policy_decision": policy_decision.decision,
                 "result_status": "success",
             }
         )
@@ -103,9 +102,9 @@ async def call_mcp_tool(payload: MCPToolCallRequest, db: Session = Depends(get_d
                     "type": "text",
                     "text": json.dumps({
                         "result": result,
-                        "policy_decision": policy_eval,
+                        "policy_decision": policy_decision.to_dict(),
                         "merkle_block_id": audit_entry.id,
-                        "tamper_evident_hash": audit_entry.entry_hash,
+                        "tamper_evident_hash": audit_entry.hash,
                     }, indent=2)
                 }
             ],
