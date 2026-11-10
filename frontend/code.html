@@ -158,11 +158,11 @@ let targetY = 0;
 function updateCoreLayout() {
   const isDesktop = (container.clientWidth || window.innerWidth) >= 1024;
   if (isDesktop) {
-    coreGroup.position.set(24, 0, 0);
-    coreGroup.scale.set(1.35, 1.35, 1.35);
+    coreGroup.position.set(20, 0, 0);
+    coreGroup.scale.set(1.0, 1.0, 1.0);
   } else {
     coreGroup.position.set(0, 0, 0);
-    coreGroup.scale.set(1.0, 1.0, 1.0);
+    coreGroup.scale.set(0.85, 0.85, 0.85);
   }
 }
 updateCoreLayout();
@@ -262,7 +262,7 @@ container._cleanup = function() {
 </div>
 </section>
 <!-- Editorial Hero Section -->
-<section id="overview" class="w-full relative overflow-hidden min-h-[calc(100vh-120px)] flex flex-col justify-center py-8 lg:py-12 px-6 lg:px-12 bg-transparent scroll-mt-20">
+<section id="overview" class="w-full relative overflow-hidden py-10 lg:py-16 px-6 lg:px-12 bg-transparent scroll-mt-20">
 <div class="absolute inset-0 pointer-events-none opacity-20">
 <div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary-container rounded-md blur-[120px]"></div>
 <div class="absolute top-1/2 right-10 w-80 h-80 bg-secondary-container rounded-md blur-[140px]"></div>

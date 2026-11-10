@@ -122,12 +122,12 @@ const p2Mat = new THREE.MeshPhysicalMaterial({
 const meshP1 = new THREE.Mesh(pGeometry, p1Mat);
 meshP1.position.set(-4.8, -2.6, -2.4);
 meshP1.rotation.z = -0.16; // Corporate italic forward slant
-meshP1.scale.set(1.36, 1.36, 1.36);
+meshP1.scale.set(1.22, 1.22, 1.22);
 
 const meshP2 = new THREE.Mesh(pGeometry, p2Mat);
 meshP2.position.set(2.0, 2.4, 2.4);
 meshP2.rotation.z = -0.16;
-meshP2.scale.set(1.36, 1.36, 1.36);
+meshP2.scale.set(1.22, 1.22, 1.22);
 
 const logoGroup = new THREE.Group();
 logoGroup.add(meshP1);
@@ -137,11 +137,11 @@ masterGroup.add(logoGroup);
 function updateSceneLayout() {
   const isDesktop = (container.clientWidth || window.innerWidth) >= 1024;
   if (isDesktop) {
-    masterGroup.position.set(25, 2, 0);
-    masterGroup.scale.set(1.42, 1.42, 1.42);
+    masterGroup.position.set(20, 1, 0);
+    masterGroup.scale.set(1.0, 1.0, 1.0);
   } else {
-    masterGroup.position.set(0, 5, 0);
-    masterGroup.scale.set(1.12, 1.12, 1.12);
+    masterGroup.position.set(0, 3, 0);
+    masterGroup.scale.set(0.85, 0.85, 0.85);
   }
 }
 updateSceneLayout();
@@ -162,25 +162,25 @@ function createPrecisionOrbit(radius, tube, color, emissive, opacity) {
   return new THREE.Mesh(geo, mat);
 }
 
-const orbit1 = createPrecisionOrbit(30, 0.32, 0xffc439, 0x8a6200, 0.9);
+const orbit1 = createPrecisionOrbit(24, 0.28, 0xffc439, 0x8a6200, 0.85);
 orbit1.rotation.x = Math.PI / 2.3;
 orbit1.rotation.y = Math.PI / 5.2;
 masterGroup.add(orbit1);
 
-const orbit2 = createPrecisionOrbit(39, 0.24, 0x0070ba, 0x001d4a, 0.75);
+const orbit2 = createPrecisionOrbit(32, 0.20, 0x0070ba, 0x001d4a, 0.7);
 orbit2.rotation.x = -Math.PI / 3.0;
 orbit2.rotation.z = Math.PI / 4.0;
 masterGroup.add(orbit2);
 
-const orbit3 = createPrecisionOrbit(48, 0.16, 0x38bdf8, 0x001435, 0.45);
+const orbit3 = createPrecisionOrbit(40, 0.14, 0x38bdf8, 0x001435, 0.4);
 orbit3.rotation.z = Math.PI / 2.7;
 orbit3.rotation.y = -Math.PI / 5.5;
 masterGroup.add(orbit3);
 
 // --- 3. FLOATING MERKLE TRANSACTION TOKENS ---
-const tokenCount = 48;
+const tokenCount = 42;
 const tokens = [];
-const tokenGeo = new THREE.CylinderGeometry(1.4, 1.4, 0.45, 32);
+const tokenGeo = new THREE.CylinderGeometry(1.3, 1.3, 0.4, 32);
 
 const matGoldToken = new THREE.MeshPhysicalMaterial({
   color: 0xffc439,
@@ -207,9 +207,9 @@ const matBlueToken = new THREE.MeshPhysicalMaterial({
 for (let i = 0; i < tokenCount; i++) {
   const isGold = i % 4 === 0;
   const token = new THREE.Mesh(tokenGeo, isGold ? matGoldToken : matBlueToken);
-  const radius = 30 + Math.random() * 32;
+  const radius = 22 + Math.random() * 24;
   const angle = (i / tokenCount) * Math.PI * 2 + (Math.random() * 0.18);
-  const y = ((i % 8) - 3.5) * 4.4;
+  const y = ((i % 8) - 3.5) * 3.8;
 
   token.position.set(radius * Math.cos(angle), y, radius * Math.sin(angle));
   token.rotation.x = Math.random() * Math.PI;
@@ -234,7 +234,7 @@ const gridHelper = new THREE.GridHelper(180, 44, 0x0070ba, 0x001d4a);
 gridHelper.position.y = -28;
 gridHelper.material.opacity = 0.26;
 gridHelper.material.transparent = true;
-masterGroup.add(gridHelper);
+scene.add(gridHelper);
 
 // Floating subtle particle dust
 const particleCount = 260;
@@ -445,7 +445,7 @@ container._cleanup = function() {
   </div>
 </section>
 <!-- HERO SECTION WITH PAYPAL AUTHORITY -->
-<section id="overview" class="w-full px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-120px)] flex flex-col justify-center scroll-mt-20">
+<section id="overview" class="w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-16 scroll-mt-20">
   <div class="max-w-7xl mx-auto w-full">
     <div class="max-w-xl lg:max-w-2xl flex flex-col gap-space-sm relative z-20">
       <h1 class="font-display-hero text-display-hero text-white tracking-tighter font-extrabold drop-shadow-[0_4px_16px_rgba(0,18,50,0.8)]">
