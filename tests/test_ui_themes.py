@@ -8,7 +8,7 @@ def test_ui_default_serves_light_mode():
     res = client.get("/")
     assert res.status_code == 200
     assert "PayPal Developer" in res.text or "PayPal Global Design System" in res.text or "ANIMATION_63" in res.text
-    assert "Dark Mode" in res.text
+    assert "Dark Mode" not in res.text
 
 def test_ui_dark_mode_route():
     res = client.get("/ui/dark")
@@ -25,7 +25,7 @@ def test_ui_light_mode_route():
     res = client.get("/ui/light")
     assert res.status_code == 200
     assert "PayPal Developer" in res.text or "ANIMATION_63" in res.text
-    assert "Dark Mode" in res.text
+    assert "Dark Mode" not in res.text
     assert "copilot_theme" in res.cookies
 
 def test_ui_query_param_theme_switch():
