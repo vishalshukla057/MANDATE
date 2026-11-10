@@ -1,0 +1,62 @@
+transaction_id,invoice_number,client_name,amount,currency,rail,payment_date
+CAP-1001-8864,INV-1001,Apex Innovations,7170.0,CAD,PayPal Orders v2 Settlement,2026-10-15
+CAP-1002-9362,INV-1002,Apex Innovations,14210.0,CAD,PayPal Orders v2 Settlement,2026-11-04
+CAP-1003-6861,INV-1003,Apex Innovations,11720.0,USD,PayPal Orders v2 Settlement,2026-11-22
+CAP-1004-4348,INV-1004,Apex Innovations,7400.0,GBP,PayPal Orders v2 Settlement,2026-09-25
+CAP-1006-5724,INV-1006,Vanguard Logistics,7400.0,GBP,PayPal Orders v2 Settlement,2026-11-10
+CAP-1007-3645,INV-1007,Vanguard Logistics,7440.0,USD,PayPal Orders v2 Settlement,2026-09-06
+CAP-1008-7860,INV-1008,Vanguard Logistics,6300.0,CAD,PayPal Orders v2 Settlement,2026-09-20
+CAP-1009-4325,INV-1009,Vanguard Logistics,15460.0,USD,PayPal Orders v2 Settlement,2026-08-17
+CAP-1010-2495,INV-1010,Sovereign Capital,5850.0,EUR,PayPal Orders v2 Settlement,2026-08-21
+CAP-1014-6079,INV-1014,Sovereign Capital,18900.0,EUR,PayPal Orders v2 Settlement,2026-10-15
+CAP-1016-2051,INV-1016,Sovereign Capital,7400.0,GBP,PayPal Orders v2 Settlement,2026-10-19
+CAP-1017-7631,INV-1017,Atlas Heavy Engineering,7400.0,EUR,PayPal Orders v2 Settlement,2026-09-09
+CAP-1021-6533,INV-1021,Atlas Heavy Engineering,16200.0,GBP,PayPal Orders v2 Settlement,2026-10-19
+CAP-1022-7152,INV-1022,Hyperion Dynamics,8700.0,GBP,PayPal Orders v2 Settlement,2026-09-22
+CAP-1023-2191,INV-1023,Hyperion Dynamics,11320.0,EUR,PayPal Orders v2 Settlement,2026-09-15
+CAP-1026-3893,INV-1026,Beacon Health Systems,8700.0,GBP,PayPal Orders v2 Settlement,2026-10-27
+CAP-1027-5756,INV-1027,Beacon Health Systems,4000.0,GBP,PayPal Orders v2 Settlement,2026-11-02
+CAP-1029-4951,INV-1029,Beacon Health Systems,8750.0,GBP,PayPal Orders v2 Settlement,2026-10-11
+CAP-1033-4829,INV-1033,Cyberdyne Systems,23110.0,CAD,PayPal Orders v2 Settlement,2026-10-21
+CAP-1034-4112,INV-1034,Cyberdyne Systems,8750.0,GBP,PayPal Orders v2 Settlement,2026-09-29
+CAP-1036-5791,INV-1036,Cyberdyne Systems,7400.0,EUR,PayPal Orders v2 Settlement,2026-10-10
+CAP-1038-9083,INV-1038,Tyrell Corporation,8260.0,USD,PayPal Orders v2 Settlement,2026-08-12
+CAP-1039-1186,INV-1039,Tyrell Corporation,10210.0,USD,PayPal Orders v2 Settlement,2026-10-14
+CAP-1041-1650,INV-1041,Tyrell Corporation,2960.0,USD,PayPal Orders v2 Settlement,2026-08-12
+CAP-1043-2031,INV-1043,Tyrell Corporation,7360.0,USD,PayPal Orders v2 Settlement,2026-08-24
+CAP-1044-7780,INV-1044,Umbrella BioLabs,7360.0,USD,PayPal Orders v2 Settlement,2026-09-27
+CAP-1045-8719,INV-1045,Umbrella BioLabs,10250.0,CAD,PayPal Orders v2 Settlement,2026-12-05
+CAP-1046-7340,INV-1046,Umbrella BioLabs,5700.0,USD,PayPal Orders v2 Settlement,2026-10-20
+CAP-1048-9667,INV-1048,Umbrella BioLabs,8700.0,USD,PayPal Orders v2 Settlement,2026-09-15
+CAP-1050-5393,INV-1050,Weyland-Yutani Corp,14720.0,CAD,PayPal Orders v2 Settlement,2026-11-29
+CAP-1051-8824,INV-1051,Weyland-Yutani Corp,7360.0,USD,PayPal Orders v2 Settlement,2026-09-29
+CAP-1052-2763,INV-1052,Weyland-Yutani Corp,14350.0,USD,PayPal Orders v2 Settlement,2026-09-13
+CAP-1053-9780,INV-1053,Weyland-Yutani Corp,6850.0,USD,PayPal Orders v2 Settlement,2026-09-23
+CAP-1054-7135,INV-1054,Initech Software,5850.0,USD,PayPal Orders v2 Settlement,2026-09-15
+CAP-1055-6669,INV-1055,Initech Software,5850.0,CAD,PayPal Orders v2 Settlement,2026-09-23
+CAP-1056-2671,INV-1056,Initech Software,16180.0,GBP,PayPal Orders v2 Settlement,2026-09-17
+CAP-1059-4506,INV-1059,Initech Software,19000.0,GBP,PayPal Orders v2 Settlement,2026-09-04
+CAP-1060-5583,INV-1060,Initech Software,14800.0,CAD,PayPal Orders v2 Settlement,2026-09-12
+CAP-1061-6435,INV-1061,Hooli Enterprise,12650.0,CAD,PayPal Orders v2 Settlement,2026-09-30
+CAP-1062-5017,INV-1062,Hooli Enterprise,7360.0,EUR,PayPal Orders v2 Settlement,2026-09-04
+CAP-1063-1978,INV-1063,Hooli Enterprise,13500.0,GBP,PayPal Orders v2 Settlement,2026-08-23
+CAP-1064-7369,INV-1064,Hooli Enterprise,6850.0,EUR,PayPal Orders v2 Settlement,2026-10-20
+CAP-1067-9661,INV-1067,Pied Piper Compression,7400.0,CAD,PayPal Orders v2 Settlement,2026-09-20
+CAP-1068-3518,INV-1068,Pied Piper Compression,8750.0,GBP,PayPal Orders v2 Settlement,2026-09-16
+CAP-1071-3089,INV-1071,Pied Piper Compression,12650.0,CAD,PayPal Orders v2 Settlement,2026-08-21
+CAP-1073-6356,INV-1073,Massive Dynamic,7000.0,GBP,PayPal Orders v2 Settlement,2026-10-18
+CAP-1074-3547,INV-1074,Massive Dynamic,11360.0,GBP,PayPal Orders v2 Settlement,2026-12-05
+CAP-1075-5271,INV-1075,Massive Dynamic,11670.0,CAD,PayPal Orders v2 Settlement,2026-09-05
+CAP-1076-9503,INV-1076,Massive Dynamic,7000.0,EUR,PayPal Orders v2 Settlement,2026-08-23
+CAP-1077-2855,INV-1077,Massive Dynamic,20150.0,USD,PayPal Orders v2 Settlement,2026-11-14
+CAP-1078-5085,INV-1078,Massive Dynamic,7000.0,CAD,PayPal Orders v2 Settlement,2026-08-26
+CAP-1079-4641,INV-1079,Massive Dynamic,2850.0,CAD,PayPal Orders v2 Settlement,2026-11-23
+CAP-1082-2175,INV-1082,Soylent Logistics,12250.0,EUR,PayPal Orders v2 Settlement,2026-10-19
+CAP-1083-1721,INV-1083,Soylent Logistics,11900.0,CAD,PayPal Orders v2 Settlement,2026-10-10
+CAP-1085-1831,INV-1085,Soylent Logistics,5904.0,USD,PayPal Orders v2 Settlement,2026-08-24
+CAP-1087-3375,INV-1087,Globex International,11600.0,USD,PayPal Orders v2 Settlement,2026-10-19
+CAP-1088-8561,INV-1088,Globex International,18500.0,USD,PayPal Orders v2 Settlement,2026-10-23
+CAP-1089-5383,INV-1089,Globex International,21960.0,EUR,PayPal Orders v2 Settlement,2026-11-07
+CAP-1090-7584,INV-1090,Globex International,10020.0,USD,PayPal Orders v2 Settlement,2026-09-07
+CAP-1091-8580,INV-1091,Globex International,15600.0,USD,PayPal Orders v2 Settlement,2026-09-12
+CAP-1092-6170,INV-1092,Globex International,7000.0,EUR,PayPal Orders v2 Settlement,2026-10-14

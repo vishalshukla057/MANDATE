@@ -1,0 +1,62 @@
+[
+  {
+    "id": "voice-001",
+    "type": "audio_transcript",
+    "transcript": "Hey Antigravity, please bill Apex Innovations 45 hours for cloud architecture review at 185 dollars an hour, net 15 terms.",
+    "expected_extraction": {
+      "client": "Apex Innovations",
+      "quantity": 45,
+      "unit_price": 185.0,
+      "terms_days": 15,
+      "total": 8325.0
+    }
+  },
+  {
+    "id": "email-002",
+    "type": "raw_email",
+    "transcript": "Hi Alice, please invoice Vanguard Logistics for emergency dispatcher portal hotfix, 20 hours at $160 per hr due on receipt. Send to ap@vanguard-freight.com.",
+    "expected_extraction": {
+      "client": "Vanguard Logistics",
+      "quantity": 20,
+      "unit_price": 160.0,
+      "terms_days": 0,
+      "total": 3200.0
+    }
+  },
+  {
+    "id": "slack-003",
+    "type": "chat_message",
+    "transcript": "Charge Cyberdyne Systems $12,500 flat for quarterly autonomous security model validation, net 30.",
+    "expected_extraction": {
+      "client": "Cyberdyne Systems",
+      "quantity": 1,
+      "unit_price": 12500.0,
+      "terms_days": 30,
+      "total": 12500.0
+    }
+  },
+  {
+    "id": "voice-004",
+    "type": "audio_transcript",
+    "transcript": "Bill Tyrell Corporation for 16 hours at $250 with 50 percent upfront and 50 percent due in 15 days.",
+    "expected_extraction": {
+      "client": "Tyrell Corporation",
+      "quantity": 8,
+      "unit_price": 250.0,
+      "terms_days": 15,
+      "total": 2000.0
+    }
+  },
+  {
+    "id": "invoice-005",
+    "type": "multiline_statement",
+    "transcript": "Client: Sovereign Capital\nScope: Multi-Currency FX Risk Hedging Module\n35 hrs @ $200/hr\nPayment Terms: Net 15",
+    "expected_extraction": {
+      "client": "Sovereign Capital",
+      "quantity": 35,
+      "unit_price": 200.0,
+      "terms_days": 15,
+      "total": 7000.0
+    }
+  }
+]

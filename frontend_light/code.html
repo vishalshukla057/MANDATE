@@ -341,13 +341,13 @@ container._cleanup = function() {
         <span class="w-1.5 h-1.5 rounded-sm bg-emerald-400"></span>
         <span>copilot.enterprise.paypal.com</span>
       </div>
-      <nav class="hidden lg:flex items-center gap-1 text-xs">
-        <a aria-current="page" class="px-3 py-1.5 bg-sky-500/20 text-white font-bold rounded border border-sky-400/30" data-path="overview" href="#">Overview</a>
-        <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="autonomous-sandbox" href="#">Autonomous Sandbox</a>
-        <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="invariant-rules" href="#">Invariant Rules</a>
-        <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="paypal-orders-v2-api" href="#">Orders v2 API</a>
-        <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="audit-ledger" href="#">Audit Ledger</a>
-        <a class="px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-colors" data-path="docs" href="#">Docs</a>
+      <nav id="top-navbar-links" class="hidden lg:flex items-center gap-1 text-xs">
+        <a aria-current="page" class="nav-tab px-3 py-1.5 bg-sky-500/20 text-white font-bold rounded border border-sky-400/30 transition-all cursor-pointer" data-path="overview" href="#overview">Overview</a>
+        <a class="nav-tab px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-all cursor-pointer" data-path="autonomous-sandbox" href="#autonomous-sandbox">Autonomous Sandbox</a>
+        <a class="nav-tab px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-all cursor-pointer" data-path="invariant-rules" href="#invariant-rules">Invariant Rules</a>
+        <a class="nav-tab px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-all cursor-pointer" data-path="paypal-orders-v2-api" href="#orders-v2-api">Orders v2 API</a>
+        <a class="nav-tab px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-all cursor-pointer" data-path="audit-ledger" href="#audit-ledger">Audit Ledger</a>
+        <a class="nav-tab px-3 py-1.5 text-sky-200/80 hover:text-white hover:bg-sky-500/10 rounded transition-all cursor-pointer" data-path="docs" href="/docs" target="_blank">Docs</a>
       </nav>
     </div>
     <!-- LOGGED-OUT PUBLIC CONTROLS (Default) -->
@@ -446,7 +446,7 @@ container._cleanup = function() {
   </div>
 </section>
 <!-- HERO SECTION WITH PAYPAL AUTHORITY -->
-<section class="w-full px-4 sm:px-6 lg:px-8 py-10">
+<section id="overview" class="w-full px-4 sm:px-6 lg:px-8 py-10 scroll-mt-20">
   <div class="max-w-7xl mx-auto">
     <div class="max-w-3xl flex flex-col gap-space-sm">
       <div class="flex items-center gap-space-xs">
@@ -466,7 +466,7 @@ container._cleanup = function() {
   </div>
 </section>
 <!-- INTERACTIVE DUAL-STATE SANDBOX WORKSPACE -->
-<section class="w-full px-4 sm:px-6 lg:px-8 py-space-lg">
+<section id="autonomous-sandbox" class="w-full px-4 sm:px-6 lg:px-8 py-space-lg scroll-mt-20">
 <div class="max-w-7xl mx-auto">
 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm mb-space-md">
 <div>
@@ -679,7 +679,7 @@ container._cleanup = function() {
 </div>
 </div>
 <!-- RIGHT CARD: CODE DECIDES (Deterministic PayPal Policy Engine) -->
-<div class="lg:col-span-6 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_12px_40px_rgba(0,35,90,0.08),inset_0_1px_1px_rgba(255,255,255,0.95)] border border-sky-100 hover:-translate-y-1 hover:shadow-2xl hover:border-sky-400/40 transition-all duration-300 p-space-lg flex flex-col gap-space-md">
+<div id="orders-v2-api" class="lg:col-span-6 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-[0_12px_40px_rgba(0,35,90,0.08),inset_0_1px_1px_rgba(255,255,255,0.95)] border border-sky-100 hover:-translate-y-1 hover:shadow-2xl hover:border-sky-400/40 transition-all duration-300 p-space-lg flex flex-col gap-space-md scroll-mt-24">
 <div class="flex items-center justify-between pb-space-sm border-b border-surface-container">
 <div class="flex items-center gap-space-sm">
 <div class="w-9 h-9 rounded-DEFAULT bg-secondary text-on-secondary flex items-center justify-center shadow-md border border-sky-300/40">
@@ -1068,7 +1068,8 @@ container._cleanup = function() {
   </nav>
 
   <!-- CHAPTER 01: FRAUD BLOCK -->
-  <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden" id="chapter-1">
+  <section class="scenario-chapter min-h-screen w-full relative flex items-center justify-center py-24 px-6 lg:px-16 border-b border-white/[0.08] overflow-hidden scroll-mt-20" id="chapter-1">
+    <div id="invariant-rules" class="absolute -top-24 pointer-events-none"></div>
     <div class="watermark-numeral absolute -right-12 -bottom-16 text-[18rem] lg:text-[26rem] font-mono font-black text-white/[0.02] select-none pointer-events-none leading-none">01</div>
     <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-sky-500/10 rounded-full blur-[140px] pointer-events-none"></div>
 
@@ -1614,7 +1615,7 @@ container._cleanup = function() {
 </div>
 </section>
 <!-- LIVE AUDIT LEDGER TRAIL TABLE -->
-<section class="w-full px-4 sm:px-6 lg:px-8 pb-8">
+<section id="audit-ledger" class="w-full px-4 sm:px-6 lg:px-8 pb-8 scroll-mt-20">
 <div class="max-w-7xl mx-auto bg-white/95 backdrop-blur-2xl rounded-2xl p-space-lg shadow-[0_12px_40px_rgba(0,35,90,0.08),inset_0_1px_1px_rgba(255,255,255,0.95)] border border-sky-100 hover:border-sky-300 hover:shadow-2xl transition-all flex flex-col gap-space-md">
 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm">
 <div>
@@ -2657,6 +2658,94 @@ container._cleanup = function() {
         ch6El.textContent = eurUsdRate.toFixed(4);
       }
     }, 1800);
+  })();
+
+  // Top Navigation Bar and Anchor Scrolling Controller
+  (function initNavigationController() {
+    const navLinks = document.querySelectorAll('[data-path]');
+    const activeClasses = ['bg-sky-500/20', 'text-white', 'font-bold', 'border', 'border-sky-400/30'];
+    const inactiveClasses = ['text-sky-200/80'];
+
+    function setActiveTab(targetPath) {
+      document.querySelectorAll('#top-navbar-links [data-path], nav [data-path]').forEach(link => {
+        const path = link.getAttribute('data-path');
+        if (path === targetPath) {
+          link.classList.add(...activeClasses);
+          link.classList.remove(...inactiveClasses);
+          link.setAttribute('aria-current', 'page');
+        } else if (path !== 'docs') {
+          link.classList.remove(...activeClasses);
+          link.classList.add(...inactiveClasses);
+          link.removeAttribute('aria-current');
+        }
+      });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        const path = link.getAttribute('data-path');
+        if (!path) return;
+
+        if (path === 'docs') {
+          window.open('/docs', '_blank');
+          return;
+        }
+
+        e.preventDefault();
+        setActiveTab(path);
+
+        let targetEl = null;
+        if (path === 'overview') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        } else if (path === 'autonomous-sandbox' || path === 'interactive-demo') {
+          targetEl = document.getElementById('autonomous-sandbox');
+        } else if (path === 'invariant-rules' || path === 'security-and-architecture') {
+          targetEl = document.getElementById('chapter-1') || document.getElementById('invariant-rules');
+        } else if (path === 'paypal-orders-v2-api' || path === 'api-reference') {
+          targetEl = document.getElementById('orders-v2-api') || document.getElementById('chapter-2');
+        } else if (path === 'audit-ledger') {
+          targetEl = document.getElementById('audit-ledger');
+        }
+
+        if (targetEl) {
+          const navOffset = 80;
+          const elementPosition = targetEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+
+          // Subtle visual highlight pulse on target
+          targetEl.classList.add('ring-2', 'ring-sky-400', 'ring-offset-2', 'transition-all', 'duration-500');
+          setTimeout(() => {
+            targetEl.classList.remove('ring-2', 'ring-sky-400', 'ring-offset-2');
+          }, 1500);
+        }
+      });
+    });
+
+    // Auto-ScrollSpy to update active state as user scrolls
+    window.addEventListener('scroll', () => {
+      const scrollPos = window.scrollY + 140;
+      const sections = [
+        { path: 'overview', el: document.getElementById('overview') || document.body },
+        { path: 'autonomous-sandbox', el: document.getElementById('autonomous-sandbox') },
+        { path: 'paypal-orders-v2-api', el: document.getElementById('orders-v2-api') },
+        { path: 'invariant-rules', el: document.getElementById('chapter-1') },
+        { path: 'audit-ledger', el: document.getElementById('audit-ledger') }
+      ];
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const sec = sections[i];
+        if (sec.el && sec.el.offsetTop <= scrollPos) {
+          setActiveTab(sec.path);
+          break;
+        }
+      }
+    }, { passive: true });
   })();
 </script>
 </div></main><footer class="w-full relative z-10 bg-[#001435]/90 backdrop-blur-2xl border-t border-white/[0.08] shadow-[0_-8px_32px_rgba(0,10,35,0.6)]"><div class="w-full px-4 sm:px-6 lg:px-8 py-8"><div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-space-lg mb-space-lg pb-space-lg border-b border-sky-500/15"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-space-xs"><span class="font-title-md text-title-md text-white font-bold tracking-tight">PayPal Developer Ecosystem</span><span class="px-space-xs py-0.5 rounded-md bg-[#001e4a]/90 border border-sky-400/30 font-label-sm text-[11px] text-sky-200 tracking-wider">v2.44-Sandbox</span></div><p class="font-body-sm text-body-sm text-sky-200/80 max-w-xl">Autonomous Agent Governance &amp; Invariant Mandate Verifier for programmatic Orders v2 execution and enterprise policy consensus.</p></div><div class="flex flex-wrap items-center gap-space-md font-label-md text-sm"><a class="text-sky-200/80 hover:text-white transition-colors" data-path="docs" href="#">Developer Guides</a><a class="text-sky-200/80 hover:text-white transition-colors" data-path="paypal-orders-v2-api" href="#">Orders v2 Reference</a><a class="text-sky-200/80 hover:text-white transition-colors" data-path="invariant-rules" href="#">Mandate Protocol</a><a class="text-sky-200/80 hover:text-white transition-colors" data-path="audit-ledger" href="#">Security Attestation</a></div><div class="flex items-center gap-space-md font-label-md text-sm"><a class="text-sky-200/80 hover:text-white transition-colors" href="/privacy">Privacy Policy</a><a class="text-sky-200/80 hover:text-white transition-colors" href="/terms">Terms &amp; Conditions</a><span class="text-sky-300 font-mono text-xs">copilot.enterprise.paypal.com</span></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-space-sm pt-space-md font-label-sm text-xs text-sky-200/70"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-[16px] text-sky-400">verified_user</span><span>Zero-Trust Mandate Execution: 256-bit Signature Verification Enabled • ISO/IEC 27001 Certified Mock Framework</span></div><div class="flex items-center gap-space-md"><span>© 2025 PayPal Inc. • Developer Innovation Hackathon</span><a class="hover:text-white transition-colors" href="#">Privacy Statement</a><a class="hover:text-white transition-colors" href="#">API Terms</a></div></div></div></footer></body></html>

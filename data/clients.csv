@@ -1,0 +1,17 @@
+client_id,name,company,email,risk_tier,risk_score,avg_days_to_pay,late_payments_count,successful_payments_count,credit_terms_days
+b0ca2204-b90b-45f3-a89e-b03a1bd4ab8b,Apex Innovations,Apex Technologies Inc.,accounting@apex.io,reliable,10.0,4.2,0,8,15
+8a55056a-42c9-45c6-a433-7c164e722d2a,Vanguard Logistics,Vanguard Logistics LLC,billing@vanguard-freight.com,risky,85.0,26.5,4,1,30
+863df544-47d0-4d26-9a25-962bf101eb9b,Sovereign Capital,Sovereign Capital Partners,ops@sovereigncap.com,watch,40.0,14.0,1,3,15
+b4681b17-e0b1-4d10-a6d7-0560ecd5a8c5,Atlas Heavy Engineering,Atlas Engineering Group,invoicing@atlas-eng.com,reliable,22.0,7.5,0,5,30
+bef30368-78e5-4636-924e-152a271bbc7b,Hyperion Dynamics,Hyperion Dynamics Corp,ap@hyperion.tech,risky,68.0,21.0,3,2,15
+72e7a446-3067-4328-8d0a-bcb3259d1805,Beacon Health Systems,Beacon Healthcare Solutions,payables@beacon.health,reliable,11.0,4.5,0,9,30
+d712b771-499e-4bad-b46d-7791d419c904,Cyberdyne Systems,Cyberdyne Autonomous Defense,finance@cyberdyne.corp,watch,44.0,16.0,2,6,30
+29dea4d9-6620-4acc-974f-bcae2905c105,Tyrell Corporation,Tyrell Bio-Engineering Corp,ap@tyrell-corp.com,risky,82.0,31.0,6,2,15
+42289a13-dbc9-4cba-880f-c3d4075ba914,Umbrella BioLabs,Umbrella Pharmaceuticals,billing@umbrella.pharma,watch,49.0,18.2,3,5,45
+85d44828-83ca-43aa-89ee-09520194528d,Weyland-Yutani Corp,Weyland-Yutani Deep Space Mining,finance@weyland-yutani.com,reliable,19.0,8.0,1,15,30
+8fdcca05-32ac-4a38-9594-291513eda149,Initech Software,Initech Systems Inc.,accounting@initech.com,watch,35.0,12.0,1,7,15
+33745af2-e267-47d7-8663-8b9802f880cb,Hooli Enterprise,Hooli Cloud Infrastructure,vendor-pay@hooli.com,reliable,9.0,4.0,0,18,30
+2eb799da-9e5a-4a38-81fd-87c7303dde2d,Pied Piper Compression,Pied Piper Technologies,treasury@piedpiper.io,watch,42.0,15.4,2,5,15
+6df7792c-0c88-4cf4-95b6-864efbd9430e,Massive Dynamic,Massive Dynamic Labs LLC,ap@massivedynamic.org,reliable,16.0,7.1,0,11,30
+844e1096-a1ff-4bc7-a955-e203843c346f,Soylent Logistics,Soylent Supply Chain Co.,invoices@soylent.net,risky,79.0,27.5,5,3,15
+5c87a26f-6bdf-49c7-b95d-134305c75fd1,Globex International,Globex Overseas Trading,accounts@globex.intl,reliable,21.0,9.3,1,10,30

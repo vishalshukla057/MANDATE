@@ -1,0 +1,4 @@
+dispute_id,client_name,disputed_amount,reason,carrier,tracking_number,signed_by,win_probability_pct,status
+PP-D-9901,Vanguard Logistics,3400.0,MERCHANDISE_OR_SERVICE_NOT_RECEIVED,FedEx Express,771298492014,J. KOVACS (Freight Receiving Dock 4),94,UNDER_REVIEW
+PP-D-9902,Tyrell Corporation,5800.0,UNAUTHORIZED_TRANSACTION,UPS Worldwide Saver,1Z9999999999999999,R. DECKARD (Security Gate 2),88,UNDER_REVIEW
+PP-D-9903,Hyperion Dynamics,2100.0,SIGNIFICANTLY_NOT_AS_DESCRIBED,DHL Express,DHL-9842104821,ELECTRONIC ACCEPTANCE PROTOCOL 0x4A,82,UNDER_REVIEW
