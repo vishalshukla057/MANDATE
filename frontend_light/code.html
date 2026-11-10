@@ -447,7 +447,7 @@ container._cleanup = function() {
 <!-- HERO SECTION WITH PAYPAL AUTHORITY -->
 <section id="overview" class="w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-16 scroll-mt-20">
   <div class="max-w-7xl mx-auto w-full">
-    <div class="max-w-xl lg:max-w-2xl flex flex-col gap-space-sm relative z-20">
+    <div class="max-w-xl lg:max-w-2xl flex flex-col gap-space-sm relative z-20 p-6 sm:p-8 rounded-3xl bg-[#00102b]/75 backdrop-blur-xl border border-sky-400/20 shadow-[0_20px_50px_rgba(0,10,30,0.7)]">
       <h1 class="font-display-hero text-display-hero text-white tracking-tighter font-extrabold drop-shadow-[0_4px_16px_rgba(0,18,50,0.8)]">
         The model proposes.<br/>
         <span class="text-sky-300">Code decides.</span>
@@ -975,6 +975,18 @@ container._cleanup = function() {
     transform: translateX(-32px);
     transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s, transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
     will-change: opacity, transform;
+    background: rgba(0, 16, 43, 0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(56, 189, 248, 0.24);
+    border-radius: 1.5rem;
+    padding: 1.75rem;
+    box-shadow: 0 25px 60px rgba(0, 10, 30, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+  @media (min-width: 640px) {
+    .scenario-chapter .chapter-editorial {
+      padding: 2.25rem;
+    }
   }
   .scenario-chapter.scroll-up .chapter-editorial {
     transform: translateX(-32px) translateY(18px);
@@ -1044,7 +1056,7 @@ container._cleanup = function() {
   }
 </style>
 
-<div id="scenarios-showcase" class="w-full relative bg-transparent">
+<div id="scenarios-showcase" class="w-full relative bg-gradient-to-b from-transparent via-[#020b18]/70 to-[#020b18]/95">
 
   <!-- Top Viewport Scroll Progress Bar for Scenarios -->
   <div id="showcase-progress-bar-container" class="fixed top-0 left-0 right-0 h-[3px] bg-white/[0.04] z-50 transition-opacity duration-300 opacity-0 pointer-events-none">
