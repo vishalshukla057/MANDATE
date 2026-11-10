@@ -155,12 +155,25 @@ let mouseY = 0;
 let targetX = 0;
 let targetY = 0;
 
+function updateCoreLayout() {
+  const isDesktop = (container.clientWidth || window.innerWidth) >= 1024;
+  if (isDesktop) {
+    coreGroup.position.set(24, 0, 0);
+    coreGroup.scale.set(1.35, 1.35, 1.35);
+  } else {
+    coreGroup.position.set(0, 0, 0);
+    coreGroup.scale.set(1.0, 1.0, 1.0);
+  }
+}
+updateCoreLayout();
+
 function onResize() {
   const w = container.clientWidth || window.innerWidth;
   const h = container.clientHeight || window.innerHeight;
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
+  updateCoreLayout();
 }
 window.addEventListener('resize', onResize);
 

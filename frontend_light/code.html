@@ -122,17 +122,29 @@ const p2Mat = new THREE.MeshPhysicalMaterial({
 const meshP1 = new THREE.Mesh(pGeometry, p1Mat);
 meshP1.position.set(-4.8, -2.6, -2.4);
 meshP1.rotation.z = -0.16; // Corporate italic forward slant
-meshP1.scale.set(1.18, 1.18, 1.18);
+meshP1.scale.set(1.36, 1.36, 1.36);
 
 const meshP2 = new THREE.Mesh(pGeometry, p2Mat);
 meshP2.position.set(2.0, 2.4, 2.4);
 meshP2.rotation.z = -0.16;
-meshP2.scale.set(1.18, 1.18, 1.18);
+meshP2.scale.set(1.36, 1.36, 1.36);
 
 const logoGroup = new THREE.Group();
 logoGroup.add(meshP1);
 logoGroup.add(meshP2);
 masterGroup.add(logoGroup);
+
+function updateSceneLayout() {
+  const isDesktop = (container.clientWidth || window.innerWidth) >= 1024;
+  if (isDesktop) {
+    masterGroup.position.set(25, 2, 0);
+    masterGroup.scale.set(1.42, 1.42, 1.42);
+  } else {
+    masterGroup.position.set(0, 5, 0);
+    masterGroup.scale.set(1.12, 1.12, 1.12);
+  }
+}
+updateSceneLayout();
 
 // --- 2. LUXURY GIMBAL CALIPER ORBITAL RINGS (GOLD & PLATINUM BLUE) ---
 function createPrecisionOrbit(radius, tube, color, emissive, opacity) {
@@ -255,6 +267,7 @@ function onResize() {
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
+  updateSceneLayout();
 }
 window.addEventListener('resize', onResize);
 
@@ -433,8 +446,8 @@ container._cleanup = function() {
 </section>
 <!-- HERO SECTION WITH PAYPAL AUTHORITY -->
 <section id="overview" class="w-full px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-120px)] flex flex-col justify-center scroll-mt-20">
-  <div class="max-w-7xl mx-auto">
-    <div class="max-w-3xl flex flex-col gap-space-sm">
+  <div class="max-w-7xl mx-auto w-full">
+    <div class="max-w-xl lg:max-w-2xl flex flex-col gap-space-sm relative z-20">
       <h1 class="font-display-hero text-display-hero text-white tracking-tighter font-extrabold drop-shadow-[0_4px_16px_rgba(0,18,50,0.8)]">
         The model proposes.<br/>
         <span class="text-sky-300">Code decides.</span>
