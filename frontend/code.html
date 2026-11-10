@@ -264,50 +264,36 @@ container._cleanup = function() {
           Empower AI agents to procure mission-critical inventory through real PayPal sandbox rails with deterministic mathematical boundaries, zero prompt drift, real-time threat neutralization, and automated refund escrows.
         </p>
 </div>
-<!-- Action & Preset Trigger Strip -->
-<div class="w-full flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md pt-space-sm">
-<div class="flex flex-wrap items-center gap-space-sm">
-<span class="font-label-sm text-label-sm text-secondary uppercase font-bold mr-space-xs">Test Scenarios:</span>
-<button class="px-space-md py-2 rounded bg-surface-container-high/85 backdrop-blur-md hover:bg-surface-variant text-on-surface font-label-sm text-label-sm tracking-wider flex items-center gap-space-xs transition-all shadow-sm border border-outline-variant/30" id="scenario-btn-1" onclick="switchScenario('scenario-1')">
-<span class="material-symbols-outlined text-[16px] text-primary">security</span>
-<span>1: Fraud Block</span>
-</button>
-<button class="px-space-md py-2 rounded bg-[#111622]/85 backdrop-blur-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm tracking-wider flex items-center gap-space-xs transition-all border border-outline-variant/20" id="scenario-btn-2" onclick="switchScenario('scenario-2')">
-<span class="material-symbols-outlined text-[16px] text-secondary">assignment_return</span>
-<span>2: Auto-Refund</span>
-</button>
-<button class="px-space-md py-2 rounded bg-[#111622]/85 backdrop-blur-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm tracking-wider flex items-center gap-space-xs transition-all border border-outline-variant/20" id="scenario-btn-3" onclick="switchScenario('scenario-3')">
-<span class="material-symbols-outlined text-[16px] text-emerald-400">timer</span>
-<span>3: Cancel Window</span>
-</button>
-<button class="px-space-md py-2 rounded bg-[#111622]/85 backdrop-blur-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm tracking-wider flex items-center gap-space-xs transition-all border border-outline-variant/20" id="scenario-btn-4" onclick="switchScenario('scenario-4')">
-<span class="material-symbols-outlined text-[16px] text-cyan-400">local_shipping</span>
-<span>4: Delivery Proof</span>
-</button>
-<button class="px-space-md py-2 rounded bg-[#111622]/85 backdrop-blur-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm tracking-wider flex items-center gap-space-xs transition-all border border-outline-variant/20" id="scenario-btn-5" onclick="switchScenario('scenario-5')">
-<span class="material-symbols-outlined text-[16px] text-amber-400">trending_up</span>
-<span>5: Cash Runway</span>
-</button>
-<button class="px-space-md py-2 rounded bg-[#111622]/85 backdrop-blur-md hover:bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm tracking-wider flex items-center gap-space-xs transition-all border border-outline-variant/20" id="scenario-btn-6" onclick="switchScenario('scenario-6')">
-<span class="material-symbols-outlined text-[16px] text-purple-400">currency_exchange</span>
-<span>6: Currency Rates</span>
-</button>
-</div>
-<div class="flex items-center gap-space-sm">
-<a class="px-space-lg py-2.5 rounded bg-primary-container/90 backdrop-blur-md text-primary font-title-md text-title-md hover:bg-surface-container-high hover:text-on-surface flex items-center gap-space-xs transition-all shadow-[0_0_20px_rgba(13,92,58,0.4)] border border-primary/30" href="#interactive-simulator">
-<span class="material-symbols-outlined text-[18px]">play_circle</span>
-<span>Launch Simulation</span>
-</a>
-<button class="px-space-md py-2.5 rounded bg-[#0a0e17]/80 backdrop-blur-md hover:bg-surface-container text-secondary font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-space-xs transition-all border border-outline-variant/30" data-testid="audit-verify" onclick="verifyAuditState()">
-<span class="material-symbols-outlined text-[16px]">verified</span>
-<span>Verify SHA-256 Ledger</span>
-</button>
-</div>
+<div class="flex flex-wrap items-center gap-3 pt-4">
+  <button onclick="openSandboxModal()" type="button" class="px-5 py-2.5 rounded-lg bg-[#ffc439] hover:bg-[#f5b324] text-[#00174b] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 active:scale-95 cursor-pointer">
+    <span class="material-symbols-outlined text-[16px]">terminal</span>
+    <span>Launch Interactive Sandbox</span>
+  </button>
+  <a href="#chapter-1" class="px-5 py-2.5 rounded-lg bg-surface-container-high/80 hover:bg-surface-variant text-white font-semibold text-xs tracking-wider transition-all border border-outline-variant/30 flex items-center gap-2">
+    <span>Explore 6 Scenarios</span>
+    <span class="material-symbols-outlined text-[16px]">arrow_downward</span>
+  </a>
 </div>
 </div>
 </section>
-<!-- Interactive Sandbox Simulator: The Core Feature -->
-<section class="w-full py-space-xl px-6 lg:px-12 bg-transparent scroll-mt-20" id="autonomous-sandbox">
+<!-- Interactive Sandbox Simulator Modal Overlay -->
+<div id="sandbox-modal" class="fixed inset-0 z-50 hidden bg-[#020b18]/90 backdrop-blur-2xl overflow-y-auto p-4 sm:p-6 lg:p-10 transition-all duration-300">
+  <div class="max-w-7xl mx-auto relative bg-[#0c121e] border border-outline-variant/40 rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.95)] p-6 lg:p-8">
+    <div class="flex items-center justify-between pb-4 mb-6 border-b border-white/[0.08]">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-primary-container/80 flex items-center justify-center text-primary border border-outline-variant/30">
+          <span class="material-symbols-outlined text-[22px]">terminal</span>
+        </div>
+        <div>
+          <h2 class="font-headline-md text-headline-md text-on-surface font-bold tracking-tight">Autonomous Transaction Sandbox</h2>
+          <p class="font-body-sm text-xs text-on-surface-variant">Real-time isolation of untrusted model execution and deterministic PayPal capture authority.</p>
+        </div>
+      </div>
+      <button onclick="closeSandboxModal()" type="button" class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer" title="Close Sandbox (Esc)">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+<section class="w-full" id="autonomous-sandbox">
 <div class="max-w-7xl mx-auto flex flex-col gap-space-lg">
 <!-- Simulator Title Bar -->
 <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-space-md pb-space-sm">
@@ -762,6 +748,8 @@ container._cleanup = function() {
 </div>
 </div>
 </section>
+  </div>
+</div>
 <!-- 6 FULL-SCREEN EDITORIAL SCENARIO CHAPTERS (DARK THEME, NON-BOXED, PREMIUM SPATIAL ARCHITECTURE) -->
 <style>
   html {
@@ -2448,11 +2436,12 @@ container._cleanup = function() {
           window.scrollTo({ top: 0, behavior: 'smooth' });
           return;
         } else if (path === 'autonomous-sandbox' || path === 'interactive-demo') {
-          targetEl = document.getElementById('autonomous-sandbox');
+          window.openSandboxModal();
+          return;
         } else if (path === 'invariant-rules' || path === 'security-and-architecture') {
           targetEl = document.getElementById('chapter-1') || document.getElementById('invariant-rules');
         } else if (path === 'paypal-orders-v2-api' || path === 'api-reference') {
-          targetEl = document.getElementById('orders-v2-api') || document.getElementById('chapter-2');
+          targetEl = document.getElementById('chapter-2') || document.getElementById('orders-v2-api');
         } else if (path === 'audit-ledger') {
           targetEl = document.getElementById('audit-ledger');
         }
@@ -2475,6 +2464,37 @@ container._cleanup = function() {
         }
       });
     });
+
+    window.openSandboxModal = function() {
+      const modal = document.getElementById('sandbox-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    };
+
+    window.closeSandboxModal = function() {
+      const modal = document.getElementById('sandbox-modal');
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        window.closeSandboxModal();
+      }
+    });
+
+    const sandboxModalEl = document.getElementById('sandbox-modal');
+    if (sandboxModalEl) {
+      sandboxModalEl.addEventListener('click', (e) => {
+        if (e.target === sandboxModalEl) {
+          window.closeSandboxModal();
+        }
+      });
+    }
 
     // Auto-ScrollSpy to update active state as user scrolls
     window.addEventListener('scroll', () => {
