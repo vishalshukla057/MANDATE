@@ -142,9 +142,8 @@ async def health_check():
 @app.get("/", response_class=HTMLResponse, tags=["UI"])
 @app.get("/ui", response_class=HTMLResponse, tags=["UI"])
 async def serve_ui(request: Request, theme: Optional[str] = None):
-    """Serves the frontend UI with light and dark mode support."""
-    selected_theme = theme or request.cookies.get("copilot_theme") or "light"
-    if selected_theme.lower() == "dark":
+    """Serves the frontend UI (defaulting cleanly to light mode, clearing any stale dark mode cookies)."""
+    if theme and theme.lower() == "dark":
         ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "code.html")
     else:
         ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend_light", "code.html")
@@ -154,6 +153,8 @@ async def serve_ui(request: Request, theme: Optional[str] = None):
             resp = HTMLResponse(content=f.read())
             if theme:
                 resp.set_cookie("copilot_theme", theme, max_age=31536000, path="/")
+            else:
+                resp.set_cookie("copilot_theme", "light", max_age=31536000, path="/")
             return resp
     return HTMLResponse("<h2>Collections Copilot UI not found</h2>", status_code=404)
 
