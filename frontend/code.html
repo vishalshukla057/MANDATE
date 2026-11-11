@@ -367,8 +367,8 @@ container._cleanup = function() {
   </div>
 </section>
 <!-- HERO SECTION WITH PAYPAL AUTHORITY -->
-<section id="overview" class="w-full px-4 sm:px-6 lg:px-8 py-10 lg:py-16 scroll-mt-20">
-  <div class="max-w-7xl mx-auto w-full">
+<section id="overview" class="w-full px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-112px)] flex flex-col justify-center relative scroll-mt-20">
+  <div class="max-w-7xl mx-auto w-full py-8 lg:py-12">
     <div class="max-w-xl lg:max-w-2xl flex flex-col gap-space-sm relative z-20">
       <h1 class="font-display-hero text-display-hero text-white tracking-tighter font-extrabold drop-shadow-[0_4px_16px_rgba(0,18,50,0.8)]">
         The model proposes.<br/>
@@ -387,6 +387,14 @@ container._cleanup = function() {
           <span class="material-symbols-outlined text-[16px]">arrow_downward</span>
         </a>
       </div>
+    </div>
+  </div>
+
+  <!-- Scroll Down Prompt to Explore Scenarios -->
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 opacity-75 hover:opacity-100 transition-opacity cursor-pointer group z-20" onclick="document.getElementById('chapter-1').scrollIntoView({ behavior: 'smooth' })">
+    <span class="text-[10px] font-mono tracking-widest text-sky-300 uppercase group-hover:text-white transition-colors">Scroll to Explore Scenarios</span>
+    <div class="w-5 h-8 rounded-full border border-sky-400/40 flex items-start justify-center p-1 group-hover:border-sky-300 animate-pill-pulse">
+      <div class="w-1.5 h-2 rounded-full bg-[#ffc439] animate-bounce"></div>
     </div>
   </div>
 </section>
