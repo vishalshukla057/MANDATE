@@ -13,12 +13,13 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 from app.config import settings
 from app.db import init_db
+from app.auth_context import extract_token_from_request, verify_session_token
 from app.services.clock import ClockService
 from app.paypal.client import get_paypal_gateway, PayPalError
 from app.api import (
     invoices, clients, webhooks, agent, approvals,
     feed, policy_audit, simulate, contractors, payouts, disputes,
-    analytics, jobs, mcp
+    analytics, jobs, mcp, auth
 )
 
 
@@ -86,13 +87,19 @@ api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
 
 async def verify_api_key(request: Request, api_key: Optional[str] = Security(api_key_header)):
-    # Exempt public routes: /health, /webhooks/paypal, root docs & UI
+    # Exempt public routes: /health, /webhooks/paypal, root docs & UI, and auth endpoints
     public_paths = [
         "/health", "/docs", "/redoc", "/openapi.json", "/webhooks/paypal",
-        "/", "/ui", "/ui/light", "/ui/dark"
+        "/", "/ui", "/ui/light", "/ui/dark",
+        "/auth/signup", "/auth/login", "/auth/explore", "/auth/me",
     ]
     if request.url.path in public_paths or request.url.path.startswith("/simulate/"):
         return api_key
+
+    # Allow authenticated workspace session tokens (personal workspace or explore demo)
+    ws_claims = verify_session_token(extract_token_from_request(request))
+    if ws_claims:
+        return ws_claims.get("tid")
 
     if not api_key:
         raise HTTPException(
@@ -110,6 +117,7 @@ async def verify_api_key(request: Request, api_key: Optional[str] = Security(api
 
 
 # Routes
+app.include_router(auth.router, dependencies=[Security(verify_api_key)])
 app.include_router(invoices.router, dependencies=[Security(verify_api_key)])
 app.include_router(clients.router, dependencies=[Security(verify_api_key)])
 app.include_router(agent.router, dependencies=[Security(verify_api_key)])

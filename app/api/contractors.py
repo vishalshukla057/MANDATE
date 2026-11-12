@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.db import get_db
+from app.auth_context import get_tenant_id
 from app.models.contractor import Contractor, PayoutRule
 
 router = APIRouter(tags=["Contractors & Payout Rules"])
@@ -46,14 +46,14 @@ class PayoutRuleResponse(BaseModel):
 
 
 @router.get("/contractors", response_model=List[ContractorResponse])
-def list_contractors(db: Session = Depends(get_db)):
-    return db.query(Contractor).filter(Contractor.tenant_id == settings.DEFAULT_TENANT_ID).all()
+def list_contractors(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    return db.query(Contractor).filter(Contractor.tenant_id == tenant_id).all()
 
 
 @router.post("/contractors", response_model=ContractorResponse, status_code=status.HTTP_201_CREATED)
-def create_contractor(payload: ContractorCreateRequest, db: Session = Depends(get_db)):
+def create_contractor(payload: ContractorCreateRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     c = Contractor(
-        tenant_id=settings.DEFAULT_TENANT_ID,
+        tenant_id=tenant_id,
         name=payload.name,
         email_or_paypal_id=payload.email_or_paypal_id,
         default_split_pct=payload.default_split_pct,
@@ -67,18 +67,18 @@ def create_contractor(payload: ContractorCreateRequest, db: Session = Depends(ge
 
 
 @router.get("/payout-rules", response_model=List[PayoutRuleResponse])
-def list_payout_rules(db: Session = Depends(get_db)):
-    return db.query(PayoutRule).filter(PayoutRule.tenant_id == settings.DEFAULT_TENANT_ID).all()
+def list_payout_rules(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    return db.query(PayoutRule).filter(PayoutRule.tenant_id == tenant_id).all()
 
 
 @router.post("/payout-rules", response_model=PayoutRuleResponse, status_code=status.HTTP_201_CREATED)
-def create_payout_rule(payload: PayoutRuleCreateRequest, db: Session = Depends(get_db)):
-    contractor = db.query(Contractor).filter(Contractor.id == payload.contractor_id).first()
+def create_payout_rule(payload: PayoutRuleCreateRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    contractor = db.query(Contractor).filter(Contractor.id == payload.contractor_id, Contractor.tenant_id == tenant_id).first()
     if not contractor:
         raise HTTPException(status_code=404, detail="Contractor not found")
 
     rule = PayoutRule(
-        tenant_id=settings.DEFAULT_TENANT_ID,
+        tenant_id=tenant_id,
         contractor_id=payload.contractor_id,
         trigger=payload.trigger,
         basis=payload.basis,

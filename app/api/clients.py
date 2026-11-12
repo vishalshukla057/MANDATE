@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.config import settings
+from app.auth_context import get_tenant_id
 from app.models.client import Client
 from app.models.invoice import Invoice
 from app.schemas.client import (
@@ -17,10 +17,10 @@ router = APIRouter(prefix="/clients", tags=["Clients"])
 
 
 @router.get("", response_model=List[ClientResponse])
-def list_clients(limit: int = 50, offset: int = 0, db: Session = Depends(get_db)):
+def list_clients(limit: int = 50, offset: int = 0, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     return (
         db.query(Client)
-        .filter(Client.tenant_id == settings.DEFAULT_TENANT_ID)
+        .filter(Client.tenant_id == tenant_id)
         .order_by(Client.created_at.desc())
         .offset(offset)
         .limit(limit)
@@ -29,9 +29,9 @@ def list_clients(limit: int = 50, offset: int = 0, db: Session = Depends(get_db)
 
 
 @router.post("", response_model=ClientResponse, status_code=status.HTTP_201_CREATED)
-def create_client(payload: ClientCreateRequest, db: Session = Depends(get_db)):
+def create_client(payload: ClientCreateRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     client = Client(
-        tenant_id=settings.DEFAULT_TENANT_ID,
+        tenant_id=tenant_id,
         name=payload.name,
         email=payload.email,
         company=payload.company,
@@ -48,16 +48,16 @@ def create_client(payload: ClientCreateRequest, db: Session = Depends(get_db)):
 
 
 @router.get("/{id}", response_model=ClientResponse)
-def get_client(id: str, db: Session = Depends(get_db)):
-    client = db.query(Client).filter(Client.id == id, Client.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def get_client(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    client = db.query(Client).filter(Client.id == id, Client.tenant_id == tenant_id).first()
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
     return client
 
 
 @router.patch("/{id}", response_model=ClientResponse)
-def update_client(id: str, payload: ClientUpdateRequest, db: Session = Depends(get_db)):
-    client = db.query(Client).filter(Client.id == id, Client.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def update_client(id: str, payload: ClientUpdateRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    client = db.query(Client).filter(Client.id == id, Client.tenant_id == tenant_id).first()
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
@@ -71,8 +71,8 @@ def update_client(id: str, payload: ClientUpdateRequest, db: Session = Depends(g
 
 
 @router.get("/{id}/history")
-def get_client_history(id: str, db: Session = Depends(get_db)):
-    client = db.query(Client).filter(Client.id == id, Client.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def get_client_history(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    client = db.query(Client).filter(Client.id == id, Client.tenant_id == tenant_id).first()
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
@@ -101,8 +101,8 @@ def get_client_history(id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/{id}/risk", response_model=ClientRiskProfileResponse)
-def get_client_risk(id: str, db: Session = Depends(get_db)):
-    client = db.query(Client).filter(Client.id == id, Client.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def get_client_risk(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    client = db.query(Client).filter(Client.id == id, Client.tenant_id == tenant_id).first()
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 

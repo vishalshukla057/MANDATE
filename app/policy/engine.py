@@ -20,8 +20,9 @@ logger = logging.getLogger("policy_engine")
 
 class PolicyEngine:
     @classmethod
-    def get_runtime_policy(cls, db: Session, key: str, default_val: Any) -> Any:
-        record = db.query(Policy).filter(Policy.key == key).order_by(Policy.version.desc()).first()
+    def get_runtime_policy(cls, db: Session, key: str, default_val: Any, tenant_id: Optional[str] = None) -> Any:
+        tenant = tenant_id or settings.DEFAULT_TENANT_ID
+        record = db.query(Policy).filter(Policy.key == key, Policy.tenant_id == tenant).order_by(Policy.version.desc()).first()
         if record:
             return record.value
         return default_val
@@ -37,7 +38,7 @@ class PolicyEngine:
         tenant = tenant_id or settings.DEFAULT_TENANT_ID
 
         # 1. Kill Switch Check
-        kill_switch_active = cls.get_runtime_policy(db, "KILL_SWITCH", settings.KILL_SWITCH)
+        kill_switch_active = cls.get_runtime_policy(db, "KILL_SWITCH", settings.KILL_SWITCH, tenant_id=tenant)
         is_write_tool = tool_name not in [
             "parse_invoice_input",
             "lookup_client",
@@ -79,7 +80,7 @@ class PolicyEngine:
                 invoice = db.query(Invoice).filter(Invoice.paypal_invoice_id == invoice_id).first()
 
             reasons = []
-            auto_threshold = float(cls.get_runtime_policy(db, "POLICY_REQUIRE_APPROVAL_ABOVE", settings.POLICY_REQUIRE_APPROVAL_ABOVE))
+            auto_threshold = float(cls.get_runtime_policy(db, "POLICY_REQUIRE_APPROVAL_ABOVE", settings.POLICY_REQUIRE_APPROVAL_ABOVE, tenant_id=tenant))
             
             if invoice:
                 client = db.query(Client).filter(Client.id == invoice.client_id).first()
@@ -167,7 +168,7 @@ class PolicyEngine:
                         risk_tier="low",
                     )
 
-            auto_reminders = cls.get_runtime_policy(db, "POLICY_AUTO_APPROVE_REMINDERS", settings.POLICY_AUTO_APPROVE_REMINDERS)
+            auto_reminders = cls.get_runtime_policy(db, "POLICY_AUTO_APPROVE_REMINDERS", settings.POLICY_AUTO_APPROVE_REMINDERS, tenant_id=tenant)
             if not auto_reminders:
                 return PolicyDecision(decision="require_approval", reasons=["Policy mandates approval for all reminders."], risk_tier="low")
 
@@ -176,7 +177,7 @@ class PolicyEngine:
         # 6. Discount Proposal Policy
         if tool_name == "propose_early_pay_discount":
             discount_pct = float(args.get("discount_percent", 0.0))
-            max_discount = float(cls.get_runtime_policy(db, "POLICY_MAX_DISCOUNT_PCT", settings.POLICY_MAX_DISCOUNT_PCT))
+            max_discount = float(cls.get_runtime_policy(db, "POLICY_MAX_DISCOUNT_PCT", settings.POLICY_MAX_DISCOUNT_PCT, tenant_id=tenant))
             if discount_pct > max_discount:
                 return PolicyDecision(
                     decision="block",
@@ -208,9 +209,9 @@ class PolicyEngine:
             # Daily cap check
             start_of_day = ClockService.now().replace(hour=0, minute=0, second=0, microsecond=0)
             daily_total = sum(
-                p.amount for p in db.query(Payout).filter(Payout.created_at >= start_of_day, Payout.status.in_(["approved", "submitted", "succeeded"])).all()
+                p.amount for p in db.query(Payout).filter(Payout.tenant_id == tenant, Payout.created_at >= start_of_day, Payout.status.in_(["approved", "submitted", "succeeded"])).all()
             )
-            daily_cap = float(cls.get_runtime_policy(db, "POLICY_MAX_PAYOUT_PER_DAY", settings.POLICY_MAX_PAYOUT_PER_DAY))
+            daily_cap = float(cls.get_runtime_policy(db, "POLICY_MAX_PAYOUT_PER_DAY", settings.POLICY_MAX_PAYOUT_PER_DAY, tenant_id=tenant))
             if (daily_total + amount) > daily_cap:
                 return PolicyDecision(
                     decision="block",
@@ -218,7 +219,7 @@ class PolicyEngine:
                     risk_tier="high",
                 )
 
-            max_single = float(cls.get_runtime_policy(db, "POLICY_MAX_PAYOUT_PER_TX", settings.POLICY_MAX_PAYOUT_PER_TX))
+            max_single = float(cls.get_runtime_policy(db, "POLICY_MAX_PAYOUT_PER_TX", settings.POLICY_MAX_PAYOUT_PER_TX, tenant_id=tenant))
             if amount > max_single:
                 return PolicyDecision(
                     decision="require_approval",

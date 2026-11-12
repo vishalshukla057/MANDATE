@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.config import settings
+from app.auth_context import get_tenant_id
 from app.models.invoice import Invoice
 from app.models.client import Client
 from app.models.payment import Payment
@@ -29,9 +30,10 @@ def list_invoices(
     client_id: Optional[str] = None,
     limit: int = 50,
     offset: int = 0,
+    tenant_id: str = Depends(get_tenant_id),
     db: Session = Depends(get_db),
 ):
-    query = db.query(Invoice).filter(Invoice.tenant_id == settings.DEFAULT_TENANT_ID)
+    query = db.query(Invoice).filter(Invoice.tenant_id == tenant_id)
     if status_filter:
         query = query.filter(Invoice.status == status_filter.lower())
     if client_id:
@@ -43,8 +45,8 @@ def list_invoices(
 
 
 @router.post("", response_model=InvoiceResponse, status_code=status.HTTP_201_CREATED)
-async def create_invoice(payload: InvoiceCreateRequest, db: Session = Depends(get_db)):
-    client = db.query(Client).filter(Client.id == payload.client_id).first()
+async def create_invoice(payload: InvoiceCreateRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    client = db.query(Client).filter(Client.id == payload.client_id, Client.tenant_id == tenant_id).first()
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
@@ -77,6 +79,10 @@ async def create_invoice(payload: InvoiceCreateRequest, db: Session = Depends(ge
         for item in payload.line_items
     ]
 
+    invoicer_obj: dict = {"name": {"given_name": "Collections Copilot Merchant"}}
+    if settings.PAYPAL_MERCHANT_EMAIL and settings.PAYPAL_MERCHANT_EMAIL != "sb-merchant@business.example.com":
+        invoicer_obj["email_address"] = settings.PAYPAL_MERCHANT_EMAIL
+
     paypal_draft_body = {
         "detail": {
             "invoice_number": inv_number,
@@ -88,10 +94,7 @@ async def create_invoice(payload: InvoiceCreateRequest, db: Session = Depends(ge
                 "due_date": due_dt.strftime("%Y-%m-%d"),
             },
         },
-        "invoicer": {
-            "name": {"given_name": "Collections Copilot Merchant"},
-            "email_address": settings.PAYPAL_MERCHANT_EMAIL,
-        },
+        "invoicer": invoicer_obj,
         "primary_recipients": [
             {
                 "billing_info": {
@@ -117,7 +120,7 @@ async def create_invoice(payload: InvoiceCreateRequest, db: Session = Depends(ge
     line_items_stored = [item.model_dump() for item in payload.line_items]
 
     invoice = Invoice(
-        tenant_id=settings.DEFAULT_TENANT_ID,
+        tenant_id=tenant_id,
         client_id=client.id,
         paypal_invoice_id=paypal_inv_id,
         paypal_invoice_number=inv_number,
@@ -147,6 +150,7 @@ async def create_invoice(payload: InvoiceCreateRequest, db: Session = Depends(ge
         event="invoice_draft_created",
         entity_type="invoice",
         entity_id=invoice.id,
+        tenant_id=tenant_id,
         payload={
             "paypal_invoice_id": paypal_inv_id,
             "invoice_number": inv_number,
@@ -159,16 +163,16 @@ async def create_invoice(payload: InvoiceCreateRequest, db: Session = Depends(ge
 
 
 @router.get("/{id}", response_model=InvoiceResponse)
-def get_invoice(id: str, db: Session = Depends(get_db)):
-    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def get_invoice(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == tenant_id).first()
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
     return invoice
 
 
 @router.post("/{id}/send", response_model=InvoiceResponse)
-async def send_invoice(id: str, db: Session = Depends(get_db)):
-    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+async def send_invoice(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == tenant_id).first()
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
     if invoice.status != "draft":
@@ -190,14 +194,15 @@ async def send_invoice(id: str, db: Session = Depends(get_db)):
         event="invoice_sent",
         entity_type="invoice",
         entity_id=invoice.id,
+        tenant_id=tenant_id,
         payload={"paypal_invoice_id": invoice.paypal_invoice_id, "amount_due": invoice.amount_due},
     )
     return invoice
 
 
 @router.post("/{id}/remind")
-async def send_invoice_reminder(id: str, payload: ReminderSendRequest, db: Session = Depends(get_db)):
-    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+async def send_invoice_reminder(id: str, payload: ReminderSendRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == tenant_id).first()
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
     if invoice.status in ["draft", "paid", "cancelled", "refunded"]:
@@ -223,14 +228,15 @@ async def send_invoice_reminder(id: str, payload: ReminderSendRequest, db: Sessi
         event="reminder_sent",
         entity_type="invoice",
         entity_id=invoice.id,
+        tenant_id=tenant_id,
         payload={"subject": payload.subject, "reminder_count": invoice.reminder_count},
     )
     return {"success": True, "reminder_count": invoice.reminder_count, "result": res}
 
 
 @router.post("/{id}/cancel", response_model=InvoiceResponse)
-async def cancel_invoice(id: str, db: Session = Depends(get_db)):
-    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+async def cancel_invoice(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == tenant_id).first()
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
     if invoice.status in ["paid", "cancelled"]:
@@ -257,14 +263,15 @@ async def cancel_invoice(id: str, db: Session = Depends(get_db)):
         event="invoice_cancelled",
         entity_type="invoice",
         entity_id=invoice.id,
+        tenant_id=tenant_id,
         payload={"paypal_invoice_id": invoice.paypal_invoice_id},
     )
     return invoice
 
 
 @router.post("/{id}/payments")
-def record_external_payment(id: str, payload: ExternalPaymentRequest, db: Session = Depends(get_db)):
-    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def record_external_payment(id: str, payload: ExternalPaymentRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == tenant_id).first()
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
 
@@ -286,11 +293,11 @@ def record_external_payment(id: str, payload: ExternalPaymentRequest, db: Sessio
 
 
 @router.get("/{id}/fx-risk")
-def get_invoice_fx_risk(id: str, db: Session = Depends(get_db)):
+def get_invoice_fx_risk(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Calculates foreign exchange currency exposure and dynamic early-settlement incentive."""
     from app.services.fx_service import FXService
 
-    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == settings.DEFAULT_TENANT_ID).first()
+    invoice = db.query(Invoice).filter(Invoice.id == id, Invoice.tenant_id == tenant_id).first()
     if not invoice:
         raise HTTPException(status_code=404, detail="Invoice not found")
 
@@ -313,11 +320,11 @@ def get_invoice_fx_risk(id: str, db: Session = Depends(get_db)):
 
 
 @router.get("/portfolio/fx-summary")
-def get_portfolio_fx_summary(db: Session = Depends(get_db)):
+def get_portfolio_fx_summary(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Portfolio-wide multi-currency exposure and potential hedging savings."""
     from app.services.fx_service import FXService
 
-    invoices = db.query(Invoice).filter(Invoice.tenant_id == settings.DEFAULT_TENANT_ID, Invoice.amount_due > 0).all()
+    invoices = db.query(Invoice).filter(Invoice.tenant_id == tenant_id, Invoice.amount_due > 0).all()
 
     currency_breakdown = {}
     total_usd_value = 0.0

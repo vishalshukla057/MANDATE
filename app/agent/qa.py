@@ -42,11 +42,12 @@ class AnalyticsQAEngine:
             return QueryPlan(intent="outstanding_vs_overdue")
 
     @classmethod
-    def execute_query_plan(cls, db: Session, plan: QueryPlan) -> Dict[str, Any]:
+    def execute_query_plan(cls, db: Session, plan: QueryPlan, tenant_id: Optional[str] = None) -> Dict[str, Any]:
         """
         Executes constrained queries strictly defined in Python.
         Protects against SQL injection and data leakage.
         """
+        tenant = tenant_id or settings.DEFAULT_TENANT_ID
         now_dt = ClockService.now()
         if now_dt.tzinfo is None:
             now_dt = now_dt.replace(tzinfo=timezone.utc)
@@ -57,6 +58,7 @@ class AnalyticsQAEngine:
         if intent == "who_owes_money":
             invoices = (
                 db.query(Invoice)
+                .filter(Invoice.tenant_id == tenant)
                 .filter(Invoice.amount_due > 0.0)
                 .filter(Invoice.status.in_(["sent", "viewed", "partially_paid", "overdue"]))
                 .all()
@@ -86,7 +88,7 @@ class AnalyticsQAEngine:
         # 2. Cash flow forecast
         elif intent == "cash_flow":
             days = plan.filters.get("days", 30)
-            forecast = CashFlowForecastService.generate_forecast(db, days=days)
+            forecast = CashFlowForecastService.generate_forecast(db, days=days, tenant_id=tenant)
             chart_data = [
                 {
                     "week": b["label"],
@@ -108,7 +110,7 @@ class AnalyticsQAEngine:
 
         # 3. DSO (Days Sales Outstanding)
         elif intent == "dso":
-            total_invoices = db.query(Invoice).all()
+            total_invoices = db.query(Invoice).filter(Invoice.tenant_id == tenant).all()
             total_sales = sum(i.total for i in total_invoices)
             total_receivable = sum(i.amount_due for i in total_invoices if i.amount_due > 0)
 
@@ -122,7 +124,7 @@ class AnalyticsQAEngine:
 
         # 4. Top late clients
         elif intent == "top_late_clients":
-            clients = db.query(Client).order_by(Client.late_count.desc(), Client.avg_days_to_pay.desc()).limit(plan.limit).all()
+            clients = db.query(Client).filter(Client.tenant_id == tenant).order_by(Client.late_count.desc(), Client.avg_days_to_pay.desc()).limit(plan.limit).all()
             data = [
                 {
                     "client": c.name,
@@ -141,7 +143,7 @@ class AnalyticsQAEngine:
 
         # 5. Outstanding vs Overdue
         elif intent == "outstanding_vs_overdue":
-            all_open = db.query(Invoice).filter(Invoice.amount_due > 0.0).all()
+            all_open = db.query(Invoice).filter(Invoice.tenant_id == tenant, Invoice.amount_due > 0.0).all()
             total_outstanding = sum(i.amount_due for i in all_open)
             total_overdue = sum(i.amount_due for i in all_open if i.status == "overdue")
             current_not_overdue = total_outstanding - total_overdue
@@ -158,7 +160,7 @@ class AnalyticsQAEngine:
 
         # 6. Payouts
         elif intent == "payouts":
-            payouts = db.query(Payout).all()
+            payouts = db.query(Payout).filter(Payout.tenant_id == tenant).all()
             total_paid_out = sum(p.amount for p in payouts if p.status in ["submitted", "succeeded"])
             total_pending = sum(p.amount for p in payouts if p.status in ["proposed", "pending_approval", "approved"])
 
@@ -180,10 +182,10 @@ class AnalyticsQAEngine:
         }
 
     @classmethod
-    async def answer_question(cls, db: Session, question: str) -> Dict[str, Any]:
+    async def answer_question(cls, db: Session, question: str, tenant_id: Optional[str] = None) -> Dict[str, Any]:
         """Translates NL query into constrained query plan and returns structured data + prose summary."""
         plan = cls.resolve_intent_heuristically(question)
-        result = cls.execute_query_plan(db, plan)
+        result = cls.execute_query_plan(db, plan, tenant_id=tenant_id)
 
         return {
             "question": question,

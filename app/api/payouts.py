@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.db import get_db
+from app.auth_context import get_tenant_id
 from app.models.payout import Payout
 from app.models.contractor import Contractor
 from app.services.payout_service import PayoutService
@@ -27,18 +27,19 @@ class PayoutResponse(BaseModel):
 @router.get("", response_model=List[PayoutResponse])
 def list_payouts(
     status_filter: Optional[str] = Query(None, alias="status"),
+    tenant_id: str = Depends(get_tenant_id),
     db: Session = Depends(get_db),
 ):
-    query = db.query(Payout).filter(Payout.tenant_id == settings.DEFAULT_TENANT_ID)
+    query = db.query(Payout).filter(Payout.tenant_id == tenant_id)
     if status_filter:
         query = query.filter(Payout.status == status_filter)
     return query.order_by(Payout.created_at.desc()).all()
 
 
 @router.post("/{id}/approve")
-async def approve_payout(id: str, db: Session = Depends(get_db)):
+async def approve_payout(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Approves and executes a pending contractor payout via PayPal Payouts API."""
-    payout = db.query(Payout).filter(Payout.id == id, Payout.tenant_id == settings.DEFAULT_TENANT_ID).first()
+    payout = db.query(Payout).filter(Payout.id == id, Payout.tenant_id == tenant_id).first()
     if not payout:
         raise HTTPException(status_code=404, detail="Payout not found")
     if payout.status not in ["proposed", "pending_approval"]:

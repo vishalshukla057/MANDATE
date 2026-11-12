@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.db import get_db
+from app.auth_context import get_tenant_id
 from app.models.agent import AgentAction
 from app.services.clock import ClockService
 from app.services.audit import AuditService
@@ -43,17 +43,18 @@ class EditRequest(BaseModel):
 @router.get("", response_model=List[ApprovalActionResponse])
 def list_approvals(
     status_filter: Optional[str] = Query("pending_approval", alias="status"),
+    tenant_id: str = Depends(get_tenant_id),
     db: Session = Depends(get_db),
 ):
-    query = db.query(AgentAction).filter(AgentAction.tenant_id == settings.DEFAULT_TENANT_ID)
+    query = db.query(AgentAction).filter(AgentAction.tenant_id == tenant_id)
     if status_filter:
         query = query.filter(AgentAction.status == status_filter)
     return query.order_by(AgentAction.created_at.desc()).all()
 
 
 @router.post("/{id}/approve")
-async def approve_action(id: str, db: Session = Depends(get_db)):
-    action = db.query(AgentAction).filter(AgentAction.id == id, AgentAction.tenant_id == settings.DEFAULT_TENANT_ID).first()
+async def approve_action(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    action = db.query(AgentAction).filter(AgentAction.id == id, AgentAction.tenant_id == tenant_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Approval request not found")
     if action.status != "pending_approval":
@@ -72,7 +73,7 @@ async def approve_action(id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Handler for tool '{action.tool_name}' not found")
 
     try:
-        exec_result = await tool.handler(db, action.args, idempotency_key=action.idempotency_key)
+        exec_result = await tool.handler(db, action.args, idempotency_key=action.idempotency_key, tenant_id=action.tenant_id)
         action.result = exec_result
         action.status = "approved"
         action.approved_by = "operator"
@@ -85,6 +86,7 @@ async def approve_action(id: str, db: Session = Depends(get_db)):
             event="action_approved",
             entity_type="agent_action",
             entity_id=action.id,
+            tenant_id=action.tenant_id,
             payload={"tool_name": action.tool_name, "result": exec_result},
         )
 
@@ -97,8 +99,8 @@ async def approve_action(id: str, db: Session = Depends(get_db)):
 
 
 @router.post("/{id}/reject")
-def reject_action(id: str, payload: RejectRequest, db: Session = Depends(get_db)):
-    action = db.query(AgentAction).filter(AgentAction.id == id, AgentAction.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def reject_action(id: str, payload: RejectRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    action = db.query(AgentAction).filter(AgentAction.id == id, AgentAction.tenant_id == tenant_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Approval request not found")
     if action.status != "pending_approval":
@@ -116,6 +118,7 @@ def reject_action(id: str, payload: RejectRequest, db: Session = Depends(get_db)
         event="action_rejected",
         entity_type="agent_action",
         entity_id=action.id,
+        tenant_id=action.tenant_id,
         payload={"rejection_reason": payload.reason},
     )
 
@@ -124,8 +127,8 @@ def reject_action(id: str, payload: RejectRequest, db: Session = Depends(get_db)
 
 
 @router.post("/{id}/edit")
-def edit_action(id: str, payload: EditRequest, db: Session = Depends(get_db)):
-    action = db.query(AgentAction).filter(AgentAction.id == id, AgentAction.tenant_id == settings.DEFAULT_TENANT_ID).first()
+def edit_action(id: str, payload: EditRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    action = db.query(AgentAction).filter(AgentAction.id == id, AgentAction.tenant_id == tenant_id).first()
     if not action:
         raise HTTPException(status_code=404, detail="Approval request not found")
     if action.status != "pending_approval":

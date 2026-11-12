@@ -3,8 +3,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.db import get_db
+from app.auth_context import get_tenant_id
 from app.models.dispute import Dispute
 from app.models.invoice import Invoice
 from app.services.audit import AuditService
@@ -25,14 +25,14 @@ class DisputeSubmitRequest(BaseModel):
 
 
 @router.get("")
-def list_disputes(db: Session = Depends(get_db)):
-    disputes = db.query(Dispute).filter(Dispute.tenant_id == settings.DEFAULT_TENANT_ID).order_by(Dispute.created_at.desc()).all()
+def list_disputes(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    disputes = db.query(Dispute).filter(Dispute.tenant_id == tenant_id).order_by(Dispute.created_at.desc()).all()
     return disputes
 
 
 @router.get("/{id}")
-def get_dispute(id: str, db: Session = Depends(get_db)):
-    dispute = db.query(Dispute).filter((Dispute.id == id) | (Dispute.paypal_dispute_id == id)).first()
+def get_dispute(id: str, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
+    dispute = db.query(Dispute).filter(Dispute.tenant_id == tenant_id, (Dispute.id == id) | (Dispute.paypal_dispute_id == id)).first()
     if not dispute:
         raise HTTPException(status_code=404, detail="Dispute not found")
 
@@ -121,11 +121,11 @@ class CarrierVerifyRequest(BaseModel):
 
 
 @router.post("/{id}/carrier-verify")
-def verify_carrier_and_attach_proof(id: str, payload: CarrierVerifyRequest, db: Session = Depends(get_db)):
+def verify_carrier_and_attach_proof(id: str, payload: CarrierVerifyRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Verifies shipment with carrier API and automatically attaches cryptographic proof of delivery to dispute."""
     from app.services.carrier_service import CarrierService
 
-    dispute = db.query(Dispute).filter((Dispute.id == id) | (Dispute.paypal_dispute_id == id)).first()
+    dispute = db.query(Dispute).filter(Dispute.tenant_id == tenant_id, (Dispute.id == id) | (Dispute.paypal_dispute_id == id)).first()
     if not dispute:
         raise HTTPException(status_code=404, detail="Dispute not found")
 
@@ -155,6 +155,7 @@ def verify_carrier_and_attach_proof(id: str, payload: CarrierVerifyRequest, db: 
         event="carrier_proof_attached_to_dispute",
         entity_type="dispute",
         entity_id=dispute.id,
+        tenant_id=dispute.tenant_id,
         payload={
             "carrier": carrier_proof["carrier"],
             "tracking_number": payload.tracking_number,

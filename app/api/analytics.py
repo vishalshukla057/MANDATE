@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, Query, status
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from app.config import settings
 from app.db import get_db
+from app.auth_context import get_tenant_id
 from app.models.client import Client
 from app.models.invoice import Invoice
 from app.models.payment import Payment
@@ -22,14 +22,14 @@ class AskRequest(BaseModel):
 
 
 @router.get("/summary")
-def get_analytics_summary(db: Session = Depends(get_db)):
+def get_analytics_summary(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Executive financial summary: total outstanding, overdue, DSO, collected, and open risk."""
     now_dt = ClockService.now()
     if now_dt.tzinfo is None:
         now_dt = now_dt.replace(tzinfo=timezone.utc)
 
-    invoices = db.query(Invoice).filter(Invoice.tenant_id == settings.DEFAULT_TENANT_ID).all()
-    payments = db.query(Payment).filter(Payment.tenant_id == settings.DEFAULT_TENANT_ID).all()
+    invoices = db.query(Invoice).filter(Invoice.tenant_id == tenant_id).all()
+    payments = db.query(Payment).filter(Payment.tenant_id == tenant_id).all()
 
     total_outstanding = sum(i.amount_due for i in invoices if i.amount_due > 0.0)
     total_overdue = sum(i.amount_due for i in invoices if i.status == "overdue")
@@ -50,12 +50,12 @@ def get_analytics_summary(db: Session = Depends(get_db)):
     dso = round((total_outstanding / max(1.0, total_sales)) * 90, 1)
 
     # Invoices at risk
-    at_risk_count = db.query(Invoice).filter(Invoice.status.in_(["overdue", "disputed"])).count()
+    at_risk_count = db.query(Invoice).filter(Invoice.tenant_id == tenant_id, Invoice.status.in_(["overdue", "disputed"])).count()
 
     # Top late clients
     late_clients = (
         db.query(Client)
-        .filter(Client.late_count > 0)
+        .filter(Client.tenant_id == tenant_id, Client.late_count > 0)
         .order_by(Client.late_count.desc())
         .limit(3)
         .all()
@@ -77,19 +77,19 @@ def get_analytics_summary(db: Session = Depends(get_db)):
 
 
 @router.get("/cashflow")
-def get_cashflow_forecast(days: int = Query(30, ge=7, le=90), db: Session = Depends(get_db)):
+def get_cashflow_forecast(days: int = Query(30, ge=7, le=90), tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Expected collections weighted by client historical probability, with scheduled outflows and confidence bands."""
-    return CashFlowForecastService.generate_forecast(db, days=days)
+    return CashFlowForecastService.generate_forecast(db, days=days, tenant_id=tenant_id)
 
 
 @router.get("/aging")
-def get_aging_buckets(db: Session = Depends(get_db)):
+def get_aging_buckets(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Aging buckets: 0-30, 31-60, 61-90, 90+ days overdue."""
     now_dt = ClockService.now()
     if now_dt.tzinfo is None:
         now_dt = now_dt.replace(tzinfo=timezone.utc)
 
-    overdue_invoices = db.query(Invoice).filter(Invoice.status == "overdue").all()
+    overdue_invoices = db.query(Invoice).filter(Invoice.tenant_id == tenant_id, Invoice.status == "overdue").all()
 
     buckets = {
         "0-30": {"count": 0, "total": 0.0, "items": []},
@@ -128,9 +128,9 @@ def get_aging_buckets(db: Session = Depends(get_db)):
 
 
 @router.get("/agent-stats")
-def get_agent_observability_stats(db: Session = Depends(get_db)):
+def get_agent_observability_stats(tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Observability metrics: tool executions, auto-executed vs approved vs rejected vs blocked."""
-    actions = db.query(AgentAction).all()
+    actions = db.query(AgentAction).filter(AgentAction.tenant_id == tenant_id).all()
     total_actions = len(actions)
 
     auto_executed = sum(1 for a in actions if a.status == "auto_executed")
@@ -153,21 +153,22 @@ def get_agent_observability_stats(db: Session = Depends(get_db)):
 
 
 @router.post("/ask")
-async def ask_analytics_question(payload: AskRequest, db: Session = Depends(get_db)):
+async def ask_analytics_question(payload: AskRequest, tenant_id: str = Depends(get_tenant_id), db: Session = Depends(get_db)):
     """Translates NL query into a constrained query plan and returns structured chart data + prose."""
-    return await AnalyticsQAEngine.answer_question(db, payload.question)
+    return await AnalyticsQAEngine.answer_question(db, payload.question, tenant_id=tenant_id)
 
 
 @router.get("/runway-simulator")
 def simulate_cashflow_runway(
     monthly_burn_rate: float = Query(12000.0, ge=1000.0, description="Monthly fixed business burn rate"),
     client_delay_days: int = Query(14, ge=0, le=60, description="Simulated additional payment delay across overdue clients"),
+    tenant_id: str = Depends(get_tenant_id),
     db: Session = Depends(get_db)
 ):
     """Predictive DSO & Cashflow Runway Simulator: evaluates solvency under client delay scenarios."""
-    invoices = db.query(Invoice).filter(Invoice.tenant_id == settings.DEFAULT_TENANT_ID).all()
-    clients = db.query(Client).filter(Client.tenant_id == settings.DEFAULT_TENANT_ID).all()
-    payments = db.query(Payment).filter(Payment.tenant_id == settings.DEFAULT_TENANT_ID).all()
+    invoices = db.query(Invoice).filter(Invoice.tenant_id == tenant_id).all()
+    clients = db.query(Client).filter(Client.tenant_id == tenant_id).all()
+    payments = db.query(Payment).filter(Payment.tenant_id == tenant_id).all()
 
     total_sales = sum(i.total for i in invoices)
     total_outstanding = sum(i.amount_due for i in invoices if i.amount_due > 0.0)

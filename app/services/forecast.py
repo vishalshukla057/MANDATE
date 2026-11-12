@@ -1,7 +1,8 @@
 from datetime import timedelta
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.models.invoice import Invoice
 from app.models.client import Client
 from app.models.payout import Payout
@@ -11,17 +12,19 @@ from app.services.risk import RiskScoringService
 
 class CashFlowForecastService:
     @classmethod
-    def generate_forecast(cls, db: Session, days: int = 30) -> Dict[str, Any]:
+    def generate_forecast(cls, db: Session, days: int = 30, tenant_id: Optional[str] = None) -> Dict[str, Any]:
         """
         Generates probability-weighted cash flow forecast for N days.
         Weights expected collections by each client's historical reliability,
         deducts pending payouts as scheduled outflows, and computes confidence bands.
         """
+        tenant = tenant_id or settings.DEFAULT_TENANT_ID
         now_dt = ClockService.now()
         horizon_dt = now_dt + timedelta(days=days)
 
         open_invoices = (
             db.query(Invoice)
+            .filter(Invoice.tenant_id == tenant)
             .filter(Invoice.status.in_(["sent", "viewed", "partially_paid", "overdue"]))
             .filter(Invoice.amount_due > 0.0)
             .all()
@@ -29,6 +32,7 @@ class CashFlowForecastService:
 
         pending_payouts = (
             db.query(Payout)
+            .filter(Payout.tenant_id == tenant)
             .filter(Payout.status.in_(["proposed", "pending_approval", "approved"]))
             .all()
         )
