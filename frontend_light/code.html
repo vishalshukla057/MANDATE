@@ -426,36 +426,42 @@ container._cleanup = function() {
     </nav>
 
     <!-- LOGGED-OUT PUBLIC CONTROLS (Default) -->
-    <div id="logged-out-header-controls" class="flex items-center gap-2.5 shrink-0">
+    <div id="logged-out-header-controls" class="flex items-center gap-2 shrink-0">
       <div class="hidden 2xl:flex items-center gap-2 px-3 h-8 rounded-lg bg-[#232B38]/90 border border-[#A7C7E7]/25 text-[#A7C7E7]">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
         <span class="font-satoshi-cap text-[11px]">Orders v2</span>
       </div>
+      <button id="explore-demo-btn" type="button" class="font-satoshi-cap text-[12px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] text-[#DFECFA] border border-[#A7C7E7]/30 transition-all cursor-pointer whitespace-nowrap" title="Explore seeded demo workspace without signing up">
+        <span>Explore Demo</span>
+      </button>
       <button id="open-paypal-login-btn" type="button" class="font-satoshi-cap text-[12px] flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-bold shadow-md transition-all border border-amber-300/60 active:scale-[0.98] cursor-pointer whitespace-nowrap">
-        <span>Sign In with PayPal</span>
+        <span>Sign In / Sign Up</span>
       </button>
     </div>
 
-    <!-- AUTHENTICATED MERCHANT CONTROLS (Hidden until login) -->
-    <div id="merchant-auth-controls" class="hidden items-center gap-2.5 shrink-0">
-      <button id="voice-dictate-btn" class="font-satoshi-cap text-[11.5px] flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] border border-[#A7C7E7]/30 text-[#D7E6F5] transition-all cursor-pointer" title="Audio / Voice Dictation Ingestion" type="button">
-        <span class="hidden sm:inline">Voice Invoicing</span>
+    <!-- AUTHENTICATED / EXPLORE WORKSPACE CONTROLS -->
+    <div id="merchant-auth-controls" class="hidden items-center gap-2 shrink-0">
+      <button id="open-workspace-btn" type="button" class="font-satoshi-cap text-[12px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-bold shadow-md transition-all border border-amber-300/60 cursor-pointer whitespace-nowrap">
+        <span>My Workspace</span>
       </button>
-      <button id="mcp-server-btn" class="font-satoshi-cap text-[11.5px] flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] border border-[#FF6B1A]/35 text-[#FFD3B8] transition-all cursor-pointer" title="Model Context Protocol (MCP) Server" type="button">
-        <span class="hidden sm:inline">MCP Server</span>
+      <button id="voice-dictate-btn" class="font-satoshi-cap text-[11.5px] hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] border border-[#A7C7E7]/30 text-[#D7E6F5] transition-all cursor-pointer" title="Audio / Voice Dictation Ingestion" type="button">
+        <span>Voice Invoicing</span>
       </button>
-      <button id="undo-drawer-btn" class="font-satoshi-cap text-[11.5px] flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] border border-emerald-400/35 text-emerald-200 transition-all cursor-pointer" title="5-Minute Grace / Undo Window" type="button">
+      <button id="mcp-server-btn" class="font-satoshi-cap text-[11.5px] hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] border border-[#FF6B1A]/35 text-[#FFD3B8] transition-all cursor-pointer" title="Model Context Protocol (MCP) Server" type="button">
+        <span>MCP Server</span>
+      </button>
+      <button id="undo-drawer-btn" class="font-satoshi-cap text-[11.5px] hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-[#2C3646] border border-emerald-400/35 text-emerald-200 transition-all cursor-pointer" title="5-Minute Grace / Undo Window" type="button">
         <span class="font-mono text-[12px]">Undo: <span id="undo-top-timer">04:48</span></span>
       </button>
       <div class="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-lg bg-[#232B38] border border-[#A7C7E7]/30">
-        <div class="w-6 h-6 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center font-bold text-[11px]">ER</div>
+        <div id="ws-user-initials" class="w-6 h-6 rounded-full bg-emerald-400/20 text-emerald-300 flex items-center justify-center font-bold text-[11px]">WS</div>
         <div class="flex flex-col text-left leading-none">
-          <span class="text-white font-semibold text-[12px]">Elena Rostova</span>
-          <span class="text-[10px] text-[#A7C7E7]/80 font-mono">#M_SONIC_881</span>
+          <span id="ws-user-name" class="text-white font-semibold text-[12px]">Workspace</span>
+          <span id="ws-user-sub" class="text-[10px] text-[#A7C7E7]/80 font-mono">Personal</span>
         </div>
       </div>
-      <button id="merchant-logout-btn" type="button" class="font-satoshi-cap text-[11.5px] px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-rose-950/70 border border-rose-400/30 text-rose-200 transition-all cursor-pointer" title="Sign Out of Merchant Cockpit">
-        <span>Sign Out</span>
+      <button id="merchant-logout-btn" type="button" class="font-satoshi-cap text-[11.5px] px-3 py-1.5 rounded-lg bg-[#232B38]/90 hover:bg-rose-950/70 border border-rose-400/30 text-rose-200 transition-all cursor-pointer" title="Sign Out of Workspace">
+        <span id="ws-logout-label">Sign Out</span>
       </button>
     </div>
   </div>
@@ -497,13 +503,16 @@ container._cleanup = function() {
       <p class="text-lg sm:text-xl lg:text-[22px] text-[#DCE8F5]/90 max-w-2xl leading-relaxed font-normal">
         Let AI shop and pay with PayPal — safely protected by your rules and budget.
       </p>
-      <div class="flex flex-wrap items-center gap-4 pt-3">
-        <button onclick="openSandboxModal()" type="button" class="font-satoshi-cap text-[13px] px-6 py-3.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-bold transition-all shadow-lg active:scale-95 cursor-pointer">
-          <span>Launch Interactive Sandbox</span>
+      <div class="flex flex-wrap items-center gap-3.5 pt-3">
+        <button id="hero-open-workspace-btn" onclick="openPrimaryWorkspaceCTA()" type="button" class="font-satoshi-cap text-[13px] px-6 py-3.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-bold transition-all shadow-lg active:scale-95 cursor-pointer">
+          <span id="hero-workspace-cta-label">Create / Open Workspace</span>
         </button>
-        <a href="#chapter-1" class="font-satoshi-cap text-[13px] px-6 py-3.5 rounded-xl bg-[#252D3B]/75 hover:bg-[#2F3A4B] text-[#EAF2FA] transition-all border border-[#A7C7E7]/30 flex items-center gap-2">
-          <span>Explore 6 Scenarios</span>
-        </a>
+        <button id="hero-explore-demo-btn" onclick="startExploreWorkspace()" type="button" class="font-satoshi-cap text-[13px] px-6 py-3.5 rounded-xl bg-[#A7C7E7]/15 hover:bg-[#A7C7E7]/25 text-white transition-all border border-[#A7C7E7]/40 cursor-pointer">
+          <span>Explore Demo (Seed Data)</span>
+        </button>
+        <button onclick="openSandboxModal()" type="button" class="font-satoshi-cap text-[13px] px-5 py-3.5 rounded-xl bg-[#252D3B]/75 hover:bg-[#2F3A4B] text-[#EAF2FA] transition-all border border-[#A7C7E7]/30 cursor-pointer">
+          <span>Interactive Sandbox</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1956,61 +1965,568 @@ container._cleanup = function() {
   </div>
 </div>
 
-<!-- PAYPAL BUSINESS SANDBOX LOGIN MODAL -->
-<div id="paypal-login-modal" class="modal-fade hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-  <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-sky-100 flex flex-col gap-4 text-on-surface animate-in fade-in zoom-in-95 duration-200">
-    <div class="flex items-center justify-between pb-3 border-b border-surface-container">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-md bg-[#2A323D] text-white flex items-center justify-center font-black text-sm">
-          <span>P<span class="text-sky-300">P</span></span>
+<!-- PERSONALIZED WORKSPACE AUTH MODAL (Sign In / Sign Up / Explore Demo) -->
+<div id="paypal-login-modal" class="modal-fade hidden fixed inset-0 z-[70] bg-[#0F141C]/80 flex items-center justify-center p-4 overflow-y-auto">
+  <div class="bg-[#181E27] rounded-2xl max-w-md w-full p-6 shadow-[0_28px_80px_rgba(0,0,0,0.65)] border border-[#A7C7E7]/25 flex flex-col gap-4 text-slate-100">
+    <div class="flex items-center justify-between pb-3 border-b border-[#A7C7E7]/15">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-[#252D3A] border border-[#A7C7E7]/30 text-white flex items-center justify-center font-heading font-bold text-sm">
+          <span>P<span class="text-[#A7C7E7]">P</span></span>
         </div>
         <div>
-          <h3 class="font-title-md font-bold text-primary flex items-center gap-1.5">
-            <span>PayPal Sandbox Login</span>
-            <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold">SECURE</span>
+          <h3 class="font-heading font-bold text-white text-base flex items-center gap-2">
+            <span>Mandate Workspace</span>
+            <span class="px-1.5 py-0.5 rounded bg-emerald-500/15 border border-emerald-400/35 text-emerald-300 text-[10px] font-mono">ISOLATED</span>
           </h3>
-          <p class="text-[11px] text-on-surface-variant font-mono">Sign in to unlock full Merchant Operator Cockpit</p>
+          <p class="text-[11px] text-[#9BB0C7]">Sign in to your personal workspace or explore seeded demo data</p>
         </div>
       </div>
-      <button id="close-login-modal-btn" type="button" class="text-on-surface-variant hover:text-primary">
+      <button id="close-login-modal-btn" type="button" class="text-[#9BB0C7] hover:text-white cursor-pointer">
         <span class="material-symbols-outlined text-[20px]">close</span>
       </button>
     </div>
 
-    <div class="bg-surface-container-low p-3.5 rounded-xl border border-sky-100 space-y-2 text-xs">
-      <div class="flex items-center justify-between">
-        <span class="text-on-surface-variant font-medium">Merchant Identity:</span>
-        <span class="font-bold text-primary font-mono">elena.rostova@apexventures.io</span>
-      </div>
-      <div class="flex items-center justify-between">
-        <span class="text-on-surface-variant font-medium">Merchant ID:</span>
-        <span class="font-mono text-secondary font-bold">#M_SONIC_881</span>
-      </div>
-      <div class="flex items-center justify-between">
-        <span class="text-on-surface-variant font-medium">Authorized Rails:</span>
-        <span class="font-mono text-emerald-700 font-semibold text-[11px]">Orders v2 • Payments v2 • Disputes</span>
-      </div>
-      <div class="flex items-center justify-between">
-        <span class="text-on-surface-variant font-medium">Dual-Key Consensus:</span>
-        <span class="font-mono text-primary font-semibold text-[11px]">Enabled (Threshold &gt; $50)</span>
-      </div>
+    <!-- Auth Mode Tabs -->
+    <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-[#11161E] border border-[#A7C7E7]/15">
+      <button id="auth-tab-login" type="button" class="py-2 rounded-lg text-xs font-satoshi-cap bg-[#FF6B1A] text-[#1A0F06] font-bold transition-all cursor-pointer">Sign In</button>
+      <button id="auth-tab-signup" type="button" class="py-2 rounded-lg text-xs font-satoshi-cap text-[#C8DAEC] hover:text-white transition-all cursor-pointer">Sign Up</button>
     </div>
 
-    <div class="p-3 bg-sky-50 rounded-xl border border-sky-200 text-xs text-sky-900 flex items-start gap-2">
-      
-      <p class="leading-relaxed">Signing in authenticates you as the merchant operator, unlocking <strong>Voice Invoicing</strong>, <strong>Claude AI MCP Server</strong>, <strong>5-Minute Undo Cancellation</strong>, and custom scenario testing.</p>
-    </div>
+    <div id="auth-error-msg" class="hidden p-3 rounded-xl bg-rose-500/15 border border-rose-400/40 text-rose-200 text-xs leading-relaxed"></div>
 
-    <div class="flex flex-col gap-2 pt-2">
-      <button id="confirm-login-btn" type="button" class="w-full h-11 rounded-md bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-title-md text-sm font-extrabold flex items-center justify-center gap-2 shadow-md border border-amber-300 transition-all active:scale-[0.99]">
-        <div class="flex items-center font-black tracking-tighter text-sm">
-          <span class="text-[#1A0F06]">P</span><span class="text-[#6B2E0C] -ml-0.5">P</span>
+    <!-- SIGN IN FORM -->
+    <form id="auth-login-form" class="flex flex-col gap-3">
+      <div>
+        <label class="block text-[11px] font-satoshi-cap text-[#A7C7E7] mb-1">Email</label>
+        <input id="auth-login-email" type="email" required placeholder="you@company.com" class="w-full px-3.5 py-2.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/25 text-white text-sm focus:border-[#A7C7E7] focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block text-[11px] font-satoshi-cap text-[#A7C7E7] mb-1">Password</label>
+        <div class="relative">
+          <input id="auth-login-password" type="password" required placeholder="Enter your password" class="w-full pl-3.5 pr-11 py-2.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/25 text-white text-sm focus:border-[#A7C7E7] focus:outline-none"/>
+          <button type="button" onclick="togglePasswordVisibility('auth-login-password', this)" aria-label="Show password" title="Show password" class="absolute inset-y-0 right-0 px-3 flex items-center text-[#9BB0C7] hover:text-white cursor-pointer">
+            <span class="material-symbols-outlined text-[19px]">visibility</span>
+          </button>
         </div>
-        <span>Sign In to Merchant Console</span>
+      </div>
+      <button id="confirm-login-btn" type="submit" class="w-full h-11 mt-1 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+        <span>Sign In to Workspace</span>
       </button>
-      <button id="cancel-login-btn" type="button" class="w-full py-2 rounded text-xs font-semibold text-on-surface-variant hover:text-primary">
-        Continue as Guest (Public Mode)
+    </form>
+
+    <!-- SIGN UP FORM -->
+    <form id="auth-signup-form" class="hidden flex-col gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[11px] font-satoshi-cap text-[#A7C7E7] mb-1">Full Name</label>
+          <input id="auth-signup-name" type="text" required placeholder="Jane Doe" class="w-full px-3 py-2 rounded-xl bg-[#11161E] border border-[#A7C7E7]/25 text-white text-sm focus:border-[#A7C7E7] focus:outline-none"/>
+        </div>
+        <div>
+          <label class="block text-[11px] font-satoshi-cap text-[#A7C7E7] mb-1">Workspace Name</label>
+          <input id="auth-signup-workspace" type="text" required placeholder="Acme Studio" class="w-full px-3 py-2 rounded-xl bg-[#11161E] border border-[#A7C7E7]/25 text-white text-sm focus:border-[#A7C7E7] focus:outline-none"/>
+        </div>
+      </div>
+      <div>
+        <label class="block text-[11px] font-satoshi-cap text-[#A7C7E7] mb-1">Email</label>
+        <input id="auth-signup-email" type="email" required placeholder="jane@acme.io" class="w-full px-3.5 py-2 rounded-xl bg-[#11161E] border border-[#A7C7E7]/25 text-white text-sm focus:border-[#A7C7E7] focus:outline-none"/>
+      </div>
+      <div>
+        <label class="block text-[11px] font-satoshi-cap text-[#A7C7E7] mb-1">Password (min 6 chars)</label>
+        <div class="relative">
+          <input id="auth-signup-password" type="password" required minlength="6" placeholder="Create a password" class="w-full pl-3.5 pr-11 py-2 rounded-xl bg-[#11161E] border border-[#A7C7E7]/25 text-white text-sm focus:border-[#A7C7E7] focus:outline-none"/>
+          <button type="button" onclick="togglePasswordVisibility('auth-signup-password', this)" aria-label="Show password" title="Show password" class="absolute inset-y-0 right-0 px-3 flex items-center text-[#9BB0C7] hover:text-white cursor-pointer">
+            <span class="material-symbols-outlined text-[19px]">visibility</span>
+          </button>
+        </div>
+      </div>
+      <label class="flex items-start gap-2.5 p-3 rounded-xl bg-[#11161E]/90 border border-[#A7C7E7]/20 cursor-pointer hover:border-[#A7C7E7]/40 transition-colors">
+        <input id="auth-signup-seed" type="checkbox" class="mt-0.5 rounded bg-[#181E27] border-[#A7C7E7]/40 text-[#FF6B1A] focus:ring-[#FF6B1A]"/>
+        <span class="text-xs leading-relaxed text-[#C8DAEC]">
+          <strong class="text-white block">Add sample mock data to my workspace</strong>
+          Leave unchecked (default) to start with an empty workspace and see where to add your own clients, invoices, and rules.
+        </span>
+      </label>
+      <button id="confirm-signup-btn" type="submit" class="w-full h-11 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+        <span>Create Personal Workspace</span>
       </button>
+    </form>
+
+    <div class="pt-3 border-t border-[#A7C7E7]/15 flex flex-col gap-2">
+      <button id="modal-explore-btn" type="button" class="w-full py-2.5 px-4 rounded-xl bg-[#242D3B] hover:bg-[#2E394B] text-[#EAF2FA] border border-[#A7C7E7]/30 font-satoshi-cap text-xs font-semibold transition-all cursor-pointer">
+        Explore Demo Without Sign Up (Seed Data)
+      </button>
+      <button id="cancel-login-btn" type="button" class="w-full py-1.5 rounded text-xs text-[#9BB0C7] hover:text-white cursor-pointer">
+        Stay on Overview Page
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FULL-FLEDGE PERSONALIZED WORKSPACE & EXPLORE CONSOLE -->
+<style>
+  #workspace-modal:not(.hidden) { display: flex; }
+  #workspace-modal {
+    background-color: rgba(18, 23, 31, 0.94);
+    background-image:
+      radial-gradient(ellipse 85% 65% at 15% 12%, rgba(167, 199, 231, 0.20) 0%, transparent 65%),
+      radial-gradient(ellipse 75% 60% at 88% 85%, rgba(255, 107, 26, 0.08) 0%, transparent 65%);
+    color: #D5E2F0;
+  }
+  .ws-tab.is-active { color: #fff; background: rgba(255, 107, 26, 0.16); box-shadow: inset 0 -2px 0 #FF6B1A; }
+  .ws-card { background: rgba(29, 36, 47, 0.86); border: 1px solid rgba(167, 199, 231, 0.18); border-radius: 14px; }
+  .ws-input { background: #11161E; border: 1px solid rgba(167, 199, 231, 0.22); color: #F2F7FC; border-radius: 10px; padding: 8px 12px; font-size: 13px; width: 100%; }
+  .ws-input:focus { outline: none; border-color: #A7C7E7; }
+</style>
+<div id="workspace-modal" class="modal-fade fixed inset-0 z-[60] hidden flex-col" role="dialog" aria-modal="true" aria-label="Personalized Merchant Workspace">
+  <!-- Workspace Top Bar -->
+  <div class="shrink-0 flex flex-wrap items-center justify-between gap-3 px-5 lg:px-8 py-3 border-b border-[#A7C7E7]/20 bg-[#181E27]/95 backdrop-blur-lg">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-[#252D3A] border border-[#A7C7E7]/30 flex items-center justify-center font-heading font-bold text-sm text-white">
+        <span>P<span class="text-[#A7C7E7]">P</span></span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <h2 id="ws-header-title" class="font-heading text-base sm:text-lg font-bold text-white leading-tight">Personal Workspace</h2>
+          <span id="ws-mode-badge" class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase bg-emerald-500/15 text-emerald-300 border border-emerald-400/35">PERSONAL</span>
+        </div>
+        <p id="ws-header-subtitle" class="text-xs text-[#9BB0C7] font-mono">Signed in</p>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <button id="ws-upgrade-account-btn" type="button" onclick="openAuthModal('signup')" class="hidden font-satoshi-cap text-[11px] px-3 py-1.5 rounded-lg bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-bold cursor-pointer">
+        Create Personal Account
+      </button>
+      <button id="ws-load-mock-btn" type="button" class="font-satoshi-cap text-[11px] px-3 py-1.5 rounded-lg bg-[#A7C7E7]/15 hover:bg-[#A7C7E7]/25 text-[#A7C7E7] border border-[#A7C7E7]/35 cursor-pointer">
+        Load Sample Mock Data
+      </button>
+      <button id="ws-clear-data-btn" type="button" class="font-satoshi-cap text-[11px] px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-200 border border-rose-400/30 cursor-pointer">
+        Clear Data
+      </button>
+      <button id="ws-refresh-btn" type="button" class="font-satoshi-cap text-[11px] px-3 py-1.5 rounded-lg bg-[#232B38] hover:bg-[#2D3849] text-white border border-[#A7C7E7]/25 cursor-pointer">
+        Refresh
+      </button>
+      <button onclick="closeWorkspaceModal()" type="button" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center cursor-pointer" title="Close Workspace">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Workspace Sub-Nav Tabs -->
+  <div class="shrink-0 flex items-center gap-1.5 px-5 lg:px-8 py-2 border-b border-[#A7C7E7]/15 bg-[#151B24] overflow-x-auto">
+    <button type="button" data-ws-tab="overview" class="ws-tab is-active font-satoshi-cap text-[11.5px] px-3.5 py-2 rounded-lg text-[#C8DAEC] hover:text-white whitespace-nowrap cursor-pointer">Overview &amp; Analytics</button>
+    <button type="button" data-ws-tab="clients" class="ws-tab font-satoshi-cap text-[11.5px] px-3.5 py-2 rounded-lg text-[#C8DAEC] hover:text-white whitespace-nowrap cursor-pointer">Clients (<span id="ws-count-clients">0</span>)</button>
+    <button type="button" data-ws-tab="invoices" class="ws-tab font-satoshi-cap text-[11.5px] px-3.5 py-2 rounded-lg text-[#C8DAEC] hover:text-white whitespace-nowrap cursor-pointer">Invoices &amp; Payments (<span id="ws-count-invoices">0</span>)</button>
+    <button type="button" data-ws-tab="agent" class="ws-tab font-satoshi-cap text-[11.5px] px-3.5 py-2 rounded-lg text-[#C8DAEC] hover:text-white whitespace-nowrap cursor-pointer">AI Agent &amp; Approvals (<span id="ws-count-approvals">0</span>)</button>
+    <button type="button" data-ws-tab="ops" class="ws-tab font-satoshi-cap text-[11.5px] px-3.5 py-2 rounded-lg text-[#C8DAEC] hover:text-white whitespace-nowrap cursor-pointer">Contractors &amp; Disputes (<span id="ws-count-disputes">0</span>)</button>
+    <button type="button" data-ws-tab="policy" class="ws-tab font-satoshi-cap text-[11.5px] px-3.5 py-2 rounded-lg text-[#C8DAEC] hover:text-white whitespace-nowrap cursor-pointer">Policy &amp; Audit Ledger</button>
+  </div>
+
+  <!-- Status Toast Banner -->
+  <div id="ws-banner" class="hidden mx-5 lg:mx-8 mt-3 px-4 py-2.5 rounded-xl text-xs font-medium flex items-center justify-between gap-3">
+    <span id="ws-banner-text"></span>
+    <button type="button" onclick="document.getElementById('ws-banner').classList.add('hidden')" class="text-xs opacity-75 hover:opacity-100 cursor-pointer">Dismiss</button>
+  </div>
+
+  <!-- Workspace Body -->
+  <div class="flex-1 overflow-y-auto px-5 lg:px-8 py-6 space-y-6">
+    <!-- TAB 1: OVERVIEW -->
+    <div id="ws-pane-overview" class="ws-pane space-y-6">
+      <!-- Empty Workspace Onboarding Guide -->
+      <div id="ws-empty-onboarding" class="hidden ws-card p-6 border-[#FF6B1A]/40 bg-gradient-to-br from-[#232B38]/90 to-[#19202B]/90 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="font-satoshi-cap text-[11px] text-[#FF6B1A]">Empty Workspace • Getting Started</span>
+            <h3 class="font-heading text-xl font-bold text-white mt-1">Welcome! Add your own data to start tracking</h3>
+            <p class="text-sm text-[#C8DAEC] mt-1">Your personal workspace starts completely blank so you can see where everything goes — or load sample mock data in one click to test the workflows.</p>
+          </div>
+          <button type="button" onclick="wsSeedMockData(false)" class="font-satoshi-cap text-xs px-4 py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-bold shadow cursor-pointer">
+            Load Sample Mock Data
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <button type="button" onclick="switchWorkspaceTab('clients')" class="text-left p-4 rounded-xl bg-[#11161E]/85 border border-[#A7C7E7]/20 hover:border-[#A7C7E7]/50 transition-all cursor-pointer">
+            <span class="font-mono text-xs text-[#A7C7E7]">STEP 1 • CLIENTS TAB</span>
+            <h4 class="font-heading text-sm font-bold text-white mt-1">Add Your First Client</h4>
+            <p class="text-xs text-[#9BB0C7] mt-1">Enter client name, billing email, currency, and net terms.</p>
+          </button>
+          <button type="button" onclick="switchWorkspaceTab('invoices')" class="text-left p-4 rounded-xl bg-[#11161E]/85 border border-[#A7C7E7]/20 hover:border-[#A7C7E7]/50 transition-all cursor-pointer">
+            <span class="font-mono text-xs text-[#A7C7E7]">STEP 2 • INVOICES TAB</span>
+            <h4 class="font-heading text-sm font-bold text-white mt-1">Create &amp; Track Invoices</h4>
+            <p class="text-xs text-[#9BB0C7] mt-1">Generate PayPal invoice drafts, send reminders, and record payments.</p>
+          </button>
+          <button type="button" onclick="switchWorkspaceTab('policy')" class="text-left p-4 rounded-xl bg-[#11161E]/85 border border-[#A7C7E7]/20 hover:border-[#A7C7E7]/50 transition-all cursor-pointer">
+            <span class="font-mono text-xs text-[#A7C7E7]">STEP 3 • POLICY &amp; AGENT</span>
+            <h4 class="font-heading text-sm font-bold text-white mt-1">Set Limits &amp; Run AI Agent</h4>
+            <p class="text-xs text-[#9BB0C7] mt-1">Configure auto-approval thresholds and let the agent propose actions.</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-6 gap-4">
+        <div class="ws-card p-4">
+          <span class="font-satoshi-cap text-[10.5px] text-[#9BB0C7]">Outstanding</span>
+          <p id="ws-kpi-outstanding" class="font-heading text-2xl font-bold text-white mt-1 tnum">$0.00</p>
+        </div>
+        <div class="ws-card p-4">
+          <span class="font-satoshi-cap text-[10.5px] text-rose-300">Overdue</span>
+          <p id="ws-kpi-overdue" class="font-heading text-2xl font-bold text-rose-300 mt-1 tnum">$0.00</p>
+        </div>
+        <div class="ws-card p-4">
+          <span class="font-satoshi-cap text-[10.5px] text-emerald-300">Collected (Month)</span>
+          <p id="ws-kpi-collected" class="font-heading text-2xl font-bold text-emerald-300 mt-1 tnum">$0.00</p>
+        </div>
+        <div class="ws-card p-4">
+          <span class="font-satoshi-cap text-[10.5px] text-[#A7C7E7]">DSO</span>
+          <p id="ws-kpi-dso" class="font-heading text-2xl font-bold text-white mt-1 tnum">0.0d</p>
+        </div>
+        <div class="ws-card p-4">
+          <span class="font-satoshi-cap text-[10.5px] text-[#FF6B1A]">At-Risk Invoices</span>
+          <p id="ws-kpi-risk" class="font-heading text-2xl font-bold text-[#FF6B1A] mt-1 tnum">0</p>
+        </div>
+        <div class="ws-card p-4">
+          <span class="font-satoshi-cap text-[10.5px] text-[#A7C7E7]">Pending Approvals</span>
+          <p id="ws-kpi-approvals" class="font-heading text-2xl font-bold text-white mt-1 tnum">0</p>
+        </div>
+      </div>
+
+      <!-- Analytics Q&A + Cashflow Forecast -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="ws-card p-5 space-y-4">
+          <div>
+            <span class="font-satoshi-cap text-[11px] text-[#A7C7E7]">Financial Q&amp;A Engine</span>
+            <h3 class="font-heading text-base font-bold text-white mt-0.5">Ask Your Ledger</h3>
+          </div>
+          <form id="ws-qa-form" class="flex gap-2">
+            <input id="ws-qa-input" type="text" placeholder="e.g. Who owes me money? or What is my cash flow?" class="ws-input flex-1"/>
+            <button type="submit" class="px-4 py-2 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold shrink-0 cursor-pointer">Ask</button>
+          </form>
+          <div class="flex flex-wrap gap-1.5">
+            <button type="button" onclick="askWorkspaceQA('Who owes me money?')" class="px-2.5 py-1 rounded-lg bg-[#11161E] hover:bg-[#232B38] border border-[#A7C7E7]/20 text-[11px] text-[#C8DAEC] cursor-pointer">Who owes me money?</button>
+            <button type="button" onclick="askWorkspaceQA('What is my 30 day cash flow forecast?')" class="px-2.5 py-1 rounded-lg bg-[#11161E] hover:bg-[#232B38] border border-[#A7C7E7]/20 text-[11px] text-[#C8DAEC] cursor-pointer">Cash flow forecast</button>
+            <button type="button" onclick="askWorkspaceQA('Top late clients')" class="px-2.5 py-1 rounded-lg bg-[#11161E] hover:bg-[#232B38] border border-[#A7C7E7]/20 text-[11px] text-[#C8DAEC] cursor-pointer">Top late clients</button>
+            <button type="button" onclick="askWorkspaceQA('What is my DSO?')" class="px-2.5 py-1 rounded-lg bg-[#11161E] hover:bg-[#232B38] border border-[#A7C7E7]/20 text-[11px] text-[#C8DAEC] cursor-pointer">DSO</button>
+          </div>
+          <div id="ws-qa-output" class="p-3.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/15 text-xs text-[#C8DAEC] min-h-[96px]">
+            Run a query to inspect live metrics from your workspace ledger.
+          </div>
+        </div>
+
+        <div class="ws-card p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="font-satoshi-cap text-[11px] text-[#A7C7E7]">30-Day Forecast &amp; Aging</span>
+              <h3 class="font-heading text-base font-bold text-white mt-0.5">Cashflow &amp; Overdue Buckets</h3>
+            </div>
+          </div>
+          <div id="ws-cashflow-list" class="space-y-2 text-xs"></div>
+          <div class="pt-3 border-t border-[#A7C7E7]/15">
+            <span class="font-satoshi-cap text-[10.5px] text-[#9BB0C7]">Overdue Aging Buckets</span>
+            <div id="ws-aging-grid" class="grid grid-cols-4 gap-2 mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CLIENTS -->
+    <div id="ws-pane-clients" class="ws-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <form id="ws-add-client-form" class="lg:col-span-4 ws-card p-5 space-y-3 h-fit">
+          <div>
+            <span class="font-satoshi-cap text-[11px] text-[#FF6B1A]">Add Client</span>
+            <h3 class="font-heading text-base font-bold text-white">New Customer Profile</h3>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Client Name *</label>
+            <input id="ws-client-name" type="text" required placeholder="e.g. Horizon Labs" class="ws-input"/>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Company</label>
+            <input id="ws-client-company" type="text" placeholder="Horizon Technologies Inc." class="ws-input"/>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Billing Email</label>
+            <input id="ws-client-email" type="email" placeholder="ap@horizon.io" class="ws-input"/>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Currency</label>
+              <select id="ws-client-currency" class="ws-input">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="CAD">CAD</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Net Terms (days)</label>
+              <input id="ws-client-terms" type="number" value="15" min="1" max="120" class="ws-input"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Notes</label>
+            <input id="ws-client-notes" type="text" placeholder="Contract / SLA notes" class="ws-input"/>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold cursor-pointer">
+            Save Client
+          </button>
+        </form>
+
+        <div class="lg:col-span-8 ws-card p-5 space-y-3 overflow-x-auto">
+          <div class="flex items-center justify-between">
+            <h3 class="font-heading text-base font-bold text-white">Tracked Clients</h3>
+            <span id="ws-clients-total-label" class="text-xs font-mono text-[#9BB0C7]">0 clients</span>
+          </div>
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-[#9BB0C7] border-b border-[#A7C7E7]/15 font-satoshi-cap text-[10.5px]">
+                <th class="py-2 pr-3">Client</th>
+                <th class="py-2 pr-3">Risk</th>
+                <th class="py-2 pr-3">Billed</th>
+                <th class="py-2 pr-3">Paid</th>
+                <th class="py-2 pr-3">Terms</th>
+                <th class="py-2 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ws-clients-tbody" class="divide-y divide-[#A7C7E7]/10"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: INVOICES & PAYMENTS -->
+    <div id="ws-pane-invoices" class="ws-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <form id="ws-add-invoice-form" class="lg:col-span-4 ws-card p-5 space-y-3 h-fit">
+          <div>
+            <span class="font-satoshi-cap text-[11px] text-[#FF6B1A]">Create Invoice</span>
+            <h3 class="font-heading text-base font-bold text-white">Issue PayPal Invoice Draft</h3>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Select Client *</label>
+            <select id="ws-inv-client" required class="ws-input"></select>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Line Item Description *</label>
+            <input id="ws-inv-item" type="text" required placeholder="e.g. API Integration Sprint" class="ws-input"/>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Quantity</label>
+              <input id="ws-inv-qty" type="number" step="1" min="1" value="1" class="ws-input"/>
+            </div>
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Unit Price *</label>
+              <input id="ws-inv-price" type="number" step="0.01" min="1" required placeholder="500.00" class="ws-input"/>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Currency</label>
+              <select id="ws-inv-currency" class="ws-input">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+                <option value="GBP">GBP</option>
+                <option value="CAD">CAD</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Terms (d)</label>
+              <input id="ws-inv-terms" type="number" min="1" value="15" class="ws-input"/>
+            </div>
+            <div>
+              <label class="block text-[11px] text-[#9BB0C7] mb-1">Discount %</label>
+              <input id="ws-inv-discount" type="number" step="0.5" min="0" max="50" value="0" class="ws-input"/>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Memo</label>
+            <input id="ws-inv-memo" type="text" placeholder="Thank you for your business" class="ws-input"/>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold cursor-pointer">
+            Create Invoice Draft
+          </button>
+        </form>
+
+        <div class="lg:col-span-8 ws-card p-5 space-y-3 overflow-x-auto">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <h3 class="font-heading text-base font-bold text-white">Invoices &amp; Payment Tracking</h3>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" data-inv-filter="" class="ws-inv-filter px-2.5 py-1 rounded-lg text-[11px] font-mono bg-[#FF6B1A] text-[#1A0F06] font-bold cursor-pointer">All</button>
+              <button type="button" data-inv-filter="draft" class="ws-inv-filter px-2.5 py-1 rounded-lg text-[11px] font-mono bg-[#11161E] text-[#C8DAEC] cursor-pointer">Draft</button>
+              <button type="button" data-inv-filter="sent" class="ws-inv-filter px-2.5 py-1 rounded-lg text-[11px] font-mono bg-[#11161E] text-[#C8DAEC] cursor-pointer">Sent</button>
+              <button type="button" data-inv-filter="overdue" class="ws-inv-filter px-2.5 py-1 rounded-lg text-[11px] font-mono bg-[#11161E] text-[#C8DAEC] cursor-pointer">Overdue</button>
+              <button type="button" data-inv-filter="paid" class="ws-inv-filter px-2.5 py-1 rounded-lg text-[11px] font-mono bg-[#11161E] text-[#C8DAEC] cursor-pointer">Paid</button>
+            </div>
+          </div>
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-[#9BB0C7] border-b border-[#A7C7E7]/15 font-satoshi-cap text-[10.5px]">
+                <th class="py-2 pr-3">Invoice</th>
+                <th class="py-2 pr-3">Client</th>
+                <th class="py-2 pr-3">Total / Due</th>
+                <th class="py-2 pr-3">Status</th>
+                <th class="py-2 pr-3">Due Date</th>
+                <th class="py-2 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ws-invoices-tbody" class="divide-y divide-[#A7C7E7]/10"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: AI AGENT & APPROVALS -->
+    <div id="ws-pane-agent" class="ws-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 ws-card p-5 space-y-3">
+          <div>
+            <span class="font-satoshi-cap text-[11px] text-[#FF6B1A]">Policy-Bound Agent</span>
+            <h3 class="font-heading text-base font-bold text-white">Send Directive to Collections Agent</h3>
+            <p class="text-xs text-[#9BB0C7] mt-1">The agent parses your prompt, creates a PayPal draft, and routes dispatch through your Policy Engine (auto-executing low-risk items or queuing approvals).</p>
+          </div>
+          <form id="ws-agent-form" class="space-y-3">
+            <textarea id="ws-agent-input" rows="3" required placeholder="e.g. Bill Horizon Labs $180 for security review, due in 15 days" class="ws-input"></textarea>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="fillAgentPrompt('Bill Apex Innovations $180 for advisory review, due in 15 days')" class="px-2.5 py-1 rounded-lg bg-[#11161E] border border-[#A7C7E7]/20 text-[11px] text-[#C8DAEC] cursor-pointer">Low-risk auto invoice ($180)</button>
+              <button type="button" onclick="fillAgentPrompt('Bill Vanguard Logistics $850 for cloud architecture sprint, due in 15 days')" class="px-2.5 py-1 rounded-lg bg-[#11161E] border border-[#A7C7E7]/20 text-[11px] text-[#C8DAEC] cursor-pointer">High-value escalation ($850)</button>
+            </div>
+            <button id="ws-agent-submit" type="submit" class="w-full py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold cursor-pointer">
+              Run Policy-Bound Agent
+            </button>
+          </form>
+          <div id="ws-agent-result" class="hidden p-3.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/20 text-xs text-[#EAF2FA] leading-relaxed"></div>
+        </div>
+
+        <div class="lg:col-span-7 space-y-6">
+          <div class="ws-card p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-heading text-base font-bold text-white">Human Approval Queue</h3>
+              <span id="ws-approvals-badge" class="text-xs font-mono text-[#FF6B1A]">0 pending</span>
+            </div>
+            <div id="ws-approvals-list" class="space-y-3"></div>
+          </div>
+
+          <div class="ws-card p-5 space-y-3">
+            <h3 class="font-heading text-base font-bold text-white">Recent Agent Runs</h3>
+            <div id="ws-runs-list" class="space-y-2 text-xs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: CONTRACTORS, PAYOUTS & DISPUTES -->
+    <div id="ws-pane-ops" class="ws-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <form id="ws-add-contractor-form" class="lg:col-span-4 ws-card p-5 space-y-3 h-fit">
+          <div>
+            <span class="font-satoshi-cap text-[11px] text-[#FF6B1A]">Contractor Splits</span>
+            <h3 class="font-heading text-base font-bold text-white">Add Approved Contractor</h3>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Contractor Name *</label>
+            <input id="ws-ct-name" type="text" required placeholder="e.g. Jordan Lee" class="ws-input"/>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">PayPal Email / ID *</label>
+            <input id="ws-ct-email" type="email" required placeholder="jordan@contractors.io" class="ws-input"/>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Default Split %</label>
+            <input id="ws-ct-split" type="number" step="1" min="0" max="100" value="15" class="ws-input"/>
+          </div>
+          <div>
+            <label class="block text-[11px] text-[#9BB0C7] mb-1">Role / Notes</label>
+            <input id="ws-ct-notes" type="text" placeholder="Backend Engineer" class="ws-input"/>
+          </div>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold cursor-pointer">
+            Add Contractor
+          </button>
+        </form>
+
+        <div class="lg:col-span-8 space-y-6">
+          <div class="ws-card p-5 space-y-3">
+            <h3 class="font-heading text-base font-bold text-white">Contractors &amp; Payouts</h3>
+            <div id="ws-contractors-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs"></div>
+            <div id="ws-payouts-list" class="space-y-2 pt-2 border-t border-[#A7C7E7]/15 text-xs"></div>
+          </div>
+
+          <div class="ws-card p-5 space-y-3">
+            <h3 class="font-heading text-base font-bold text-white">Disputes &amp; Carrier Proof Verification</h3>
+            <div id="ws-disputes-list" class="space-y-3 text-xs"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: POLICY & AUDIT LEDGER -->
+    <div id="ws-pane-policy" class="ws-pane hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-5 ws-card p-5 space-y-4 h-fit">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="font-satoshi-cap text-[11px] text-[#FF6B1A]">Deterministic Guardrails</span>
+              <h3 class="font-heading text-base font-bold text-white">Workspace Policy Rules</h3>
+            </div>
+            <button id="ws-kill-switch-btn" type="button" class="px-3 py-1.5 rounded-lg font-mono text-xs font-bold border cursor-pointer">
+              Kill Switch: OFF
+            </button>
+          </div>
+
+          <form id="ws-policy-form" class="space-y-3 text-xs">
+            <div>
+              <label class="block text-[#9BB0C7] mb-1">Auto-Approve Invoices Up To ($)</label>
+              <input id="ws-pol-approval-above" type="number" step="10" min="0" class="ws-input"/>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[#9BB0C7] mb-1">Max Payout / Tx ($)</label>
+                <input id="ws-pol-max-tx" type="number" step="50" min="0" class="ws-input"/>
+              </div>
+              <div>
+                <label class="block text-[#9BB0C7] mb-1">Max Payout / Day ($)</label>
+                <input id="ws-pol-max-day" type="number" step="50" min="0" class="ws-input"/>
+              </div>
+            </div>
+            <div>
+              <label class="block text-[#9BB0C7] mb-1">Max Early-Pay Discount (%)</label>
+              <input id="ws-pol-max-discount" type="number" step="0.5" min="0" max="50" class="ws-input"/>
+            </div>
+            <label class="flex items-center gap-2 text-[#C8DAEC] cursor-pointer">
+              <input id="ws-pol-auto-reminders" type="checkbox" class="rounded bg-[#11161E] border-[#A7C7E7]/40 text-[#FF6B1A]"/>
+              <span>Auto-approve scheduled reminders within quiet-hours &amp; frequency rules</span>
+            </label>
+            <button type="submit" class="w-full py-2.5 rounded-xl bg-[#FF6B1A] hover:bg-[#FF8238] text-[#1A0F06] font-satoshi-cap text-xs font-bold cursor-pointer">
+              Save Policy Rules
+            </button>
+          </form>
+        </div>
+
+        <div class="lg:col-span-7 ws-card p-5 space-y-3 overflow-x-auto">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="font-heading text-base font-bold text-white">Workspace SHA-256 Audit Ledger</h3>
+              <p id="ws-audit-verify-status" class="text-xs font-mono text-emerald-300">Click verify to check hash chain</p>
+            </div>
+            <button id="ws-verify-chain-btn" type="button" class="px-3 py-1.5 rounded-lg bg-[#A7C7E7]/15 hover:bg-[#A7C7E7]/25 border border-[#A7C7E7]/35 text-[#A7C7E7] font-satoshi-cap text-[11px] cursor-pointer">
+              Verify Hash Chain
+            </button>
+          </div>
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="text-[#9BB0C7] border-b border-[#A7C7E7]/15 font-satoshi-cap text-[10.5px]">
+                <th class="py-2 pr-3">#</th>
+                <th class="py-2 pr-3">Actor</th>
+                <th class="py-2 pr-3">Event</th>
+                <th class="py-2 pr-3">Entity</th>
+                <th class="py-2">Hash</th>
+              </tr>
+            </thead>
+            <tbody id="ws-audit-tbody" class="divide-y divide-[#A7C7E7]/10"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -2069,62 +2585,827 @@ container._cleanup = function() {
 <!-- INTERACTIVE SCENARIOS JAVASCRIPT LOGIC -->
 <script>
     (function initMandateDemo() {
-      // Auth Handlers & Merchant Session Management
+      const TOKEN_KEY = 'mandate_ws_token';
+      const USER_KEY = 'mandate_ws_user';
+      const MODE_KEY = 'mandate_ws_mode';
+
       const loggedOutControls = document.getElementById('logged-out-header-controls');
       const merchantControls = document.getElementById('merchant-auth-controls');
-      const loginModal = document.getElementById('paypal-login-modal');
       const openLoginBtn = document.getElementById('open-paypal-login-btn');
+      const exploreDemoBtn = document.getElementById('explore-demo-btn');
+      const openWorkspaceBtn = document.getElementById('open-workspace-btn');
       const closeLoginBtn = document.getElementById('close-login-modal-btn');
       const cancelLoginBtn = document.getElementById('cancel-login-btn');
-      const confirmLoginBtn = document.getElementById('confirm-login-btn');
       const logoutBtn = document.getElementById('merchant-logout-btn');
+      const modalExploreBtn = document.getElementById('modal-explore-btn');
 
-      function updateAuthUI() {
-        const isLoggedIn = localStorage.getItem('copilot_logged_in') === 'true';
-        if (isLoggedIn) {
-          if (loggedOutControls) loggedOutControls.classList.add('hidden');
-          if (merchantControls) {
-            merchantControls.classList.remove('hidden');
-            merchantControls.classList.add('flex');
-          }
+      const tabLoginBtn = document.getElementById('auth-tab-login');
+      const tabSignupBtn = document.getElementById('auth-tab-signup');
+      const loginForm = document.getElementById('auth-login-form');
+      const signupForm = document.getElementById('auth-signup-form');
+      const authErrorEl = document.getElementById('auth-error-msg');
+
+      let wsState = {
+        token: localStorage.getItem(TOKEN_KEY) || '',
+        mode: localStorage.getItem(MODE_KEY) || 'public',
+        user: (() => { try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch { return null; } })(),
+        clients: [],
+        invoices: [],
+        approvals: [],
+        runs: [],
+        contractors: [],
+        payouts: [],
+        disputes: [],
+        policy: {},
+        audit: [],
+        invFilter: '',
+      };
+
+      function escHtml(v) {
+        return String(v ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+      }
+      function fmtMoney(val, curr) {
+        const num = Number(val || 0);
+        const c = (curr || 'USD').toUpperCase();
+        const sym = { USD: '$', EUR: '€', GBP: '£', CAD: 'CA$' }[c] || (c + ' ');
+        return sym + num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+      function showAuthError(msg) {
+        if (!authErrorEl) return;
+        if (!msg) { authErrorEl.classList.add('hidden'); authErrorEl.textContent = ''; return; }
+        authErrorEl.textContent = msg;
+        authErrorEl.classList.remove('hidden');
+      }
+      function showWsBanner(msg, kind) {
+        const el = document.getElementById('ws-banner');
+        const txt = document.getElementById('ws-banner-text');
+        if (!el || !txt) return;
+        txt.textContent = msg;
+        el.className = 'mx-5 lg:mx-8 mt-3 px-4 py-2.5 rounded-xl text-xs font-medium flex items-center justify-between gap-3 border ' +
+          (kind === 'error'
+            ? 'bg-rose-500/15 border-rose-400/40 text-rose-200'
+            : 'bg-emerald-500/15 border-emerald-400/35 text-emerald-200');
+      }
+
+      async function wsFetch(path, opts = {}) {
+        const headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+        if (wsState.token) headers['X-Workspace-Token'] = wsState.token;
+        const res = await fetch(path, Object.assign({}, opts, { headers }));
+        let data = null;
+        try { data = await res.json(); } catch {}
+        if (!res.ok) {
+          const detail = data && data.detail;
+          const errMsg = typeof detail === 'string'
+            ? detail
+            : (detail && (detail.message || JSON.stringify(detail))) || ('Request failed (' + res.status + ')');
+          throw new Error(errMsg);
+        }
+        return data;
+      }
+
+      function saveSession(token, mode, user) {
+        wsState.token = token || '';
+        wsState.mode = mode || 'public';
+        wsState.user = user || null;
+        if (token) {
+          localStorage.setItem(TOKEN_KEY, token);
+          localStorage.setItem(MODE_KEY, mode);
+          localStorage.setItem(USER_KEY, JSON.stringify(user));
         } else {
-          if (loggedOutControls) loggedOutControls.classList.remove('hidden');
-          if (merchantControls) {
-            merchantControls.classList.add('hidden');
-            merchantControls.classList.remove('flex');
-          }
+          localStorage.removeItem(TOKEN_KEY);
+          localStorage.removeItem(MODE_KEY);
+          localStorage.removeItem(USER_KEY);
+        }
+        updateAuthUI();
+      }
+
+      function switchAuthTab(tab) {
+        showAuthError('');
+        const isSignup = tab === 'signup';
+        if (loginForm) loginForm.classList.toggle('hidden', isSignup);
+        if (loginForm) loginForm.classList.toggle('flex', !isSignup);
+        if (signupForm) signupForm.classList.toggle('hidden', !isSignup);
+        if (signupForm) signupForm.classList.toggle('flex', isSignup);
+        if (tabLoginBtn) {
+          tabLoginBtn.className = 'py-2 rounded-lg text-xs font-satoshi-cap transition-all cursor-pointer ' +
+            (!isSignup ? 'bg-[#FF6B1A] text-[#1A0F06] font-bold' : 'text-[#C8DAEC] hover:text-white');
+        }
+        if (tabSignupBtn) {
+          tabSignupBtn.className = 'py-2 rounded-lg text-xs font-satoshi-cap transition-all cursor-pointer ' +
+            (isSignup ? 'bg-[#FF6B1A] text-[#1A0F06] font-bold' : 'text-[#C8DAEC] hover:text-white');
         }
       }
 
-      if (openLoginBtn) {
-        openLoginBtn.addEventListener('click', () => {
-          (window.openModal ? window.openModal('paypal-login-modal') : document.getElementById('paypal-login-modal').classList.remove('hidden'));
+      window.togglePasswordVisibility = function(inputId, btn) {
+        const inp = document.getElementById(inputId);
+        if (!inp) return;
+        const show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        const icon = btn && btn.querySelector('.material-symbols-outlined');
+        if (icon) icon.textContent = show ? 'visibility_off' : 'visibility';
+        if (btn) {
+          btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+          btn.setAttribute('title', show ? 'Hide password' : 'Show password');
+        }
+      };
+
+      window.openAuthModal = function(tab) {
+        switchAuthTab(tab || 'login');
+        if (window.openModal) window.openModal('paypal-login-modal');
+      };
+
+      window.openPrimaryWorkspaceCTA = function() {
+        if (wsState.token && wsState.user) {
+          window.openWorkspaceModal();
+          refreshWorkspace();
+        } else {
+          window.openAuthModal('signup');
+        }
+      };
+
+      window.startExploreWorkspace = async function() {
+        try {
+          const data = await wsFetch('/auth/explore', { method: 'POST' });
+          saveSession(data.token, 'explore', data.user);
+          if (window.closeModal) window.closeModal('paypal-login-modal');
+          window.openWorkspaceModal();
+          await refreshWorkspace();
+          showWsBanner('Explore Mode active: loaded with realistic seed data so you can test every feature.', 'ok');
+        } catch (err) {
+          alert('Failed to start Explore Demo: ' + err.message);
+        }
+      };
+
+      function updateAuthUI() {
+        const active = Boolean(wsState.token && wsState.user);
+        if (loggedOutControls) loggedOutControls.classList.toggle('hidden', active);
+        if (merchantControls) {
+          merchantControls.classList.toggle('hidden', !active);
+          merchantControls.classList.toggle('flex', active);
+        }
+        const heroCta = document.getElementById('hero-workspace-cta-label');
+        if (heroCta) heroCta.textContent = active ? 'Open My Workspace' : 'Create Personal Workspace';
+
+        if (active && wsState.user) {
+          const name = wsState.user.full_name || 'User';
+          const initials = name.split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase() || 'WS';
+          const isExplore = wsState.mode === 'explore';
+          const setTxt = (id, t) => { const e = document.getElementById(id); if (e) e.textContent = t; };
+          setTxt('ws-user-initials', initials);
+          setTxt('ws-user-name', name);
+          setTxt('ws-user-sub', isExplore ? 'Explore Seed Data' : (wsState.user.workspace_name || 'Personal'));
+          setTxt('ws-logout-label', isExplore ? 'Exit Explore' : 'Sign Out');
+          setTxt('ws-header-title', wsState.user.workspace_name || 'Personal Workspace');
+          setTxt('ws-header-subtitle', `${name} • ${wsState.user.email} • Tenant ${wsState.user.tenant_id}`);
+
+          const badge = document.getElementById('ws-mode-badge');
+          if (badge) {
+            badge.textContent = isExplore ? 'EXPLORE MODE • SEED DATA' : 'PERSONAL WORKSPACE';
+            badge.className = 'px-2 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase border ' +
+              (isExplore
+                ? 'bg-sky-500/15 text-sky-300 border-sky-400/35'
+                : 'bg-emerald-500/15 text-emerald-300 border-emerald-400/35');
+          }
+          const upgradeBtn = document.getElementById('ws-upgrade-account-btn');
+          if (upgradeBtn) upgradeBtn.classList.toggle('hidden', !isExplore);
+        }
+      }
+
+      if (tabLoginBtn) tabLoginBtn.addEventListener('click', () => switchAuthTab('login'));
+      if (tabSignupBtn) tabSignupBtn.addEventListener('click', () => switchAuthTab('signup'));
+      if (openLoginBtn) openLoginBtn.addEventListener('click', () => window.openAuthModal('login'));
+      if (exploreDemoBtn) exploreDemoBtn.addEventListener('click', () => window.startExploreWorkspace());
+      if (modalExploreBtn) modalExploreBtn.addEventListener('click', () => window.startExploreWorkspace());
+      if (openWorkspaceBtn) openWorkspaceBtn.addEventListener('click', () => { window.openWorkspaceModal(); refreshWorkspace(); });
+      if (closeLoginBtn) closeLoginBtn.addEventListener('click', () => window.closeModal && window.closeModal('paypal-login-modal'));
+      if (cancelLoginBtn) cancelLoginBtn.addEventListener('click', () => window.closeModal && window.closeModal('paypal-login-modal'));
+
+      if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          showAuthError('');
+          const email = document.getElementById('auth-login-email').value.trim();
+          const password = document.getElementById('auth-login-password').value;
+          try {
+            const data = await wsFetch('/auth/login', {
+              method: 'POST',
+              body: JSON.stringify({ email, password }),
+            });
+            saveSession(data.token, 'authenticated', data.user);
+            if (window.closeModal) window.closeModal('paypal-login-modal');
+            window.openWorkspaceModal();
+            await refreshWorkspace();
+          } catch (err) {
+            showAuthError(err.message);
+          }
         });
       }
-      if (closeLoginBtn) {
-        closeLoginBtn.addEventListener('click', () => {
-          (window.closeModal ? window.closeModal('paypal-login-modal') : document.getElementById('paypal-login-modal').classList.add('hidden'));
+
+      if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          showAuthError('');
+          const full_name = document.getElementById('auth-signup-name').value.trim();
+          const workspace_name = document.getElementById('auth-signup-workspace').value.trim();
+          const email = document.getElementById('auth-signup-email').value.trim();
+          const password = document.getElementById('auth-signup-password').value;
+          const seed_mock_data = Boolean(document.getElementById('auth-signup-seed').checked);
+          try {
+            const data = await wsFetch('/auth/signup', {
+              method: 'POST',
+              body: JSON.stringify({ full_name, workspace_name, email, password, seed_mock_data }),
+            });
+            saveSession(data.token, 'authenticated', data.user);
+            if (window.closeModal) window.closeModal('paypal-login-modal');
+            window.openWorkspaceModal();
+            await refreshWorkspace();
+            showWsBanner(
+              seed_mock_data
+                ? 'Personal workspace created and populated with sample mock data.'
+                : 'Personal workspace created! It starts empty — add your first client & invoice or load mock data anytime.',
+              'ok'
+            );
+          } catch (err) {
+            showAuthError(err.message);
+          }
         });
       }
-      if (cancelLoginBtn) {
-        cancelLoginBtn.addEventListener('click', () => {
-          (window.closeModal ? window.closeModal('paypal-login-modal') : document.getElementById('paypal-login-modal').classList.add('hidden'));
-        });
-      }
-      if (confirmLoginBtn) {
-        confirmLoginBtn.addEventListener('click', () => {
-          localStorage.setItem('copilot_logged_in', 'true');
-          (window.closeModal ? window.closeModal('paypal-login-modal') : document.getElementById('paypal-login-modal').classList.add('hidden'));
-          updateAuthUI();
-        });
-      }
+
       if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-          localStorage.removeItem('copilot_logged_in');
-          updateAuthUI();
+          saveSession('', 'public', null);
+          if (window.closeWorkspaceModal) window.closeWorkspaceModal();
         });
       }
-      updateAuthUI();
+
+      // Workspace Tabs
+      window.switchWorkspaceTab = function(tabName) {
+        document.querySelectorAll('[data-ws-tab]').forEach(btn => {
+          btn.classList.toggle('is-active', btn.dataset.wsTab === tabName);
+        });
+        document.querySelectorAll('.ws-pane').forEach(p => {
+          p.classList.toggle('hidden', p.id !== 'ws-pane-' + tabName);
+        });
+      };
+      document.querySelectorAll('[data-ws-tab]').forEach(btn => {
+        btn.addEventListener('click', () => window.switchWorkspaceTab(btn.dataset.wsTab));
+      });
+
+      window.wsSeedMockData = async function(forceReset) {
+        if (forceReset && wsState.clients.length > 0 && !confirm('Reset and populate workspace with fresh sample mock data?')) return;
+        try {
+          await wsFetch('/workspace/seed-mock', { method: 'POST', body: JSON.stringify({ reset: Boolean(forceReset) }) });
+          await refreshWorkspace();
+          showWsBanner('Sample mock data loaded into your workspace.', 'ok');
+        } catch (err) {
+          showWsBanner(err.message, 'error');
+        }
+      };
+
+      const loadMockBtn = document.getElementById('ws-load-mock-btn');
+      if (loadMockBtn) loadMockBtn.addEventListener('click', () => window.wsSeedMockData(wsState.clients.length > 0));
+
+      const clearBtn = document.getElementById('ws-clear-data-btn');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', async () => {
+          if (!confirm('Clear all clients, invoices, payouts, disputes, and ledger entries in this workspace?')) return;
+          try {
+            await wsFetch('/workspace/clear', { method: 'POST' });
+            await refreshWorkspace();
+            showWsBanner('Workspace cleared to a clean empty state.', 'ok');
+          } catch (err) {
+            showWsBanner(err.message, 'error');
+          }
+        });
+      }
+
+      const refreshBtn = document.getElementById('ws-refresh-btn');
+      if (refreshBtn) refreshBtn.addEventListener('click', () => refreshWorkspace());
+
+      async function refreshWorkspace() {
+        if (!wsState.token) return;
+        try {
+          const [summary, cashflow, aging, agentStats, clients, invResp, approvals, runs, contractors, payouts, disputes, policy, auditResp] = await Promise.all([
+            wsFetch('/analytics/summary'),
+            wsFetch('/analytics/cashflow?days=30'),
+            wsFetch('/analytics/aging'),
+            wsFetch('/analytics/agent-stats'),
+            wsFetch('/clients?limit=100'),
+            wsFetch('/invoices?limit=100'),
+            wsFetch('/approvals?status=pending_approval'),
+            wsFetch('/agent/runs?limit=10'),
+            wsFetch('/contractors'),
+            wsFetch('/payouts'),
+            wsFetch('/disputes'),
+            wsFetch('/policy'),
+            wsFetch('/audit?limit=30'),
+          ]);
+
+          wsState.clients = clients || [];
+          wsState.invoices = (invResp && invResp.items) || [];
+          wsState.approvals = approvals || [];
+          wsState.runs = runs || [];
+          wsState.contractors = contractors || [];
+          wsState.payouts = payouts || [];
+          wsState.disputes = disputes || [];
+          wsState.policy = policy || {};
+          wsState.audit = (auditResp && auditResp.items) || [];
+
+          renderWorkspace(summary, cashflow, aging, agentStats);
+        } catch (err) {
+          showWsBanner(err.message, 'error');
+        }
+      }
+
+      function renderWorkspace(summary, cashflow, aging, agentStats) {
+        const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+        setTxt('ws-count-clients', wsState.clients.length);
+        setTxt('ws-count-invoices', wsState.invoices.length);
+        setTxt('ws-count-approvals', wsState.approvals.length);
+        setTxt('ws-count-disputes', wsState.disputes.length);
+
+        const emptyBanner = document.getElementById('ws-empty-onboarding');
+        if (emptyBanner) emptyBanner.classList.toggle('hidden', wsState.clients.length > 0 || wsState.invoices.length > 0);
+
+        setTxt('ws-kpi-outstanding', fmtMoney(summary.total_outstanding));
+        setTxt('ws-kpi-overdue', fmtMoney(summary.total_overdue));
+        setTxt('ws-kpi-collected', fmtMoney(summary.collected_this_month));
+        setTxt('ws-kpi-dso', (summary.dso_days || 0) + 'd');
+        setTxt('ws-kpi-risk', summary.invoices_at_risk_count || 0);
+        setTxt('ws-kpi-approvals', agentStats.pending_approval || wsState.approvals.length);
+
+        // Cashflow & Aging
+        const cfEl = document.getElementById('ws-cashflow-list');
+        if (cfEl) {
+          const weeks = (cashflow && cashflow.weekly_timeline) || [];
+          cfEl.innerHTML = weeks.length
+            ? weeks.map(w => `
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/10">
+                <span class="text-[#C8DAEC]">${escHtml(w.label)}</span>
+                <span class="font-mono text-emerald-300">+${fmtMoney(w.expected_inflows)} <span class="text-rose-300">/ -${fmtMoney(w.scheduled_outflows)}</span></span>
+              </div>`).join('')
+            : '<p class="text-[#9BB0C7]">No open invoices or scheduled payouts yet.</p>';
+        }
+
+        const agEl = document.getElementById('ws-aging-grid');
+        if (agEl) {
+          const b = (aging && aging.aging_buckets) || {};
+          agEl.innerHTML = ['0-30', '31-60', '61-90', '90+'].map(k => {
+            const item = b[k] || { count: 0, total: 0 };
+            return `<div class="p-2.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/15 text-center">
+              <div class="text-[10px] font-mono text-[#9BB0C7]">${k}d</div>
+              <div class="font-heading text-sm font-bold text-white mt-0.5">${fmtMoney(item.total)}</div>
+              <div class="text-[10px] text-[#A7C7E7]">${item.count} inv</div>
+            </div>`;
+          }).join('');
+        }
+
+        // Clients Table + Invoice client dropdown
+        const cMap = {};
+        wsState.clients.forEach(c => { cMap[c.id] = c; });
+        setTxt('ws-clients-total-label', `${wsState.clients.length} client${wsState.clients.length === 1 ? '' : 's'}`);
+        const cTbody = document.getElementById('ws-clients-tbody');
+        if (cTbody) {
+          cTbody.innerHTML = wsState.clients.length
+            ? wsState.clients.map(c => {
+                const riskCls = c.risk_label === 'risky' ? 'bg-rose-500/15 text-rose-300 border-rose-400/35' :
+                  (c.risk_label === 'watch' ? 'bg-amber-500/15 text-amber-300 border-amber-400/35' : 'bg-emerald-500/15 text-emerald-300 border-emerald-400/35');
+                return `<tr>
+                  <td class="py-2.5 pr-3">
+                    <div class="font-semibold text-white">${escHtml(c.name)}</div>
+                    <div class="text-[11px] text-[#9BB0C7]">${escHtml(c.company || '')} ${c.email ? '• ' + escHtml(c.email) : ''}</div>
+                  </td>
+                  <td class="py-2.5 pr-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase border ${riskCls}">${escHtml(c.risk_label)} (${Math.round(c.risk_score)})</span></td>
+                  <td class="py-2.5 pr-3 font-mono text-white">${fmtMoney(c.total_billed, c.currency)}</td>
+                  <td class="py-2.5 pr-3 font-mono text-emerald-300">${fmtMoney(c.total_paid, c.currency)}</td>
+                  <td class="py-2.5 pr-3 font-mono text-[#9BB0C7]">Net ${c.default_terms_days}</td>
+                  <td class="py-2.5 text-right">
+                    <button type="button" onclick="quickInvoiceForClient('${escHtml(c.id)}')" class="px-2.5 py-1 rounded-lg bg-[#A7C7E7]/15 hover:bg-[#A7C7E7]/25 text-[#A7C7E7] text-[11px] font-satoshi-cap cursor-pointer">New Invoice</button>
+                  </td>
+                </tr>`;
+              }).join('')
+            : '<tr><td colspan="6" class="py-8 text-center text-[#9BB0C7]">No clients yet. Use the form on the left to add your first client.</td></tr>';
+        }
+
+        const invSel = document.getElementById('ws-inv-client');
+        if (invSel) {
+          const prev = invSel.value;
+          invSel.innerHTML = wsState.clients.length
+            ? wsState.clients.map(c => `<option value="${escHtml(c.id)}">${escHtml(c.name)} (${escHtml(c.currency)})</option>`).join('')
+            : '<option value="">-- Add a client first in Clients tab --</option>';
+          if (prev && cMap[prev]) invSel.value = prev;
+        }
+
+        // Invoices Table
+        const filteredInvs = wsState.invFilter
+          ? wsState.invoices.filter(i => i.status === wsState.invFilter)
+          : wsState.invoices;
+        const iTbody = document.getElementById('ws-invoices-tbody');
+        if (iTbody) {
+          iTbody.innerHTML = filteredInvs.length
+            ? filteredInvs.map(inv => {
+                const cli = cMap[inv.client_id];
+                const stCls = inv.status === 'paid' ? 'bg-emerald-500/15 text-emerald-300 border-emerald-400/35' :
+                  (inv.status === 'overdue' || inv.status === 'disputed' ? 'bg-rose-500/15 text-rose-300 border-rose-400/35' :
+                  (inv.status === 'draft' ? 'bg-slate-500/20 text-slate-300 border-slate-400/30' : 'bg-sky-500/15 text-sky-300 border-sky-400/35'));
+                const dueStr = inv.due_date ? String(inv.due_date).slice(0, 10) : '-';
+                return `<tr>
+                  <td class="py-2.5 pr-3">
+                    <div class="font-mono font-bold text-white">${escHtml(inv.paypal_invoice_number || inv.id.slice(0,8))}</div>
+                    ${inv.payer_view_url ? `<a href="${escHtml(inv.payer_view_url)}" target="_blank" class="text-[10px] text-[#A7C7E7] underline">PayPal Link</a>` : ''}
+                  </td>
+                  <td class="py-2.5 pr-3 text-[#EAF2FA]">${escHtml(cli ? cli.name : 'Client')}</td>
+                  <td class="py-2.5 pr-3 font-mono">
+                    <div class="text-white">${fmtMoney(inv.total, inv.currency)}</div>
+                    <div class="text-[10px] text-[#9BB0C7]">Due: ${fmtMoney(inv.amount_due, inv.currency)}</div>
+                  </td>
+                  <td class="py-2.5 pr-3"><span class="px-2 py-0.5 rounded text-[10px] font-mono uppercase border ${stCls}">${escHtml(inv.status)}</span></td>
+                  <td class="py-2.5 pr-3 font-mono text-[#9BB0C7]">${escHtml(dueStr)}</td>
+                  <td class="py-2.5 text-right space-x-1 whitespace-nowrap">
+                    ${inv.status === 'draft' ? `<button type="button" onclick="wsSendInvoice('${escHtml(inv.id)}')" class="px-2 py-1 rounded bg-[#FF6B1A] text-[#1A0F06] font-bold text-[10.5px] cursor-pointer">Send</button>` : ''}
+                    ${['sent','viewed','partially_paid','overdue'].includes(inv.status) ? `<button type="button" onclick="wsRemindInvoice('${escHtml(inv.id)}')" class="px-2 py-1 rounded bg-[#232B38] border border-[#A7C7E7]/30 text-[#A7C7E7] text-[10.5px] cursor-pointer">Remind</button>` : ''}
+                    ${inv.amount_due > 0 && inv.status !== 'cancelled' ? `<button type="button" onclick="wsPayInvoice('${escHtml(inv.id)}', ${Number(inv.amount_due)})" class="px-2 py-1 rounded bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[10.5px] cursor-pointer">Record Pay</button>` : ''}
+                    ${inv.currency !== 'USD' && inv.amount_due > 0 ? `<button type="button" onclick="wsCheckFx('${escHtml(inv.id)}')" class="px-2 py-1 rounded bg-sky-500/15 border border-sky-400/35 text-sky-200 text-[10.5px] cursor-pointer">FX</button>` : ''}
+                  </td>
+                </tr>`;
+              }).join('')
+            : '<tr><td colspan="6" class="py-8 text-center text-[#9BB0C7]">No invoices match this filter. Create your first invoice on the left.</td></tr>';
+        }
+
+        // Approvals & Agent Runs
+        setTxt('ws-approvals-badge', `${wsState.approvals.length} pending`);
+        const appEl = document.getElementById('ws-approvals-list');
+        if (appEl) {
+          appEl.innerHTML = wsState.approvals.length
+            ? wsState.approvals.map(a => `
+              <div class="p-3.5 rounded-xl bg-[#11161E] border border-[#FF6B1A]/35 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="space-y-1 text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded bg-[#FF6B1A]/20 text-[#FF6B1A] font-mono text-[10px] font-bold uppercase">${escHtml(a.tool_name)}</span>
+                    <span class="text-[10px] font-mono text-[#9BB0C7]">Risk: ${escHtml(a.risk_tier)}</span>
+                  </div>
+                  <p class="text-white">${escHtml(a.reasoning)}</p>
+                </div>
+                <div class="flex items-center gap-2 shrink-0">
+                  <button type="button" onclick="wsApproveAction('${escHtml(a.id)}')" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 text-emerald-200 font-satoshi-cap text-[11px] cursor-pointer">Approve</button>
+                  <button type="button" onclick="wsRejectAction('${escHtml(a.id)}')" class="px-3 py-1.5 rounded-lg bg-rose-500/15 hover:bg-rose-500/25 border border-rose-400/40 text-rose-200 font-satoshi-cap text-[11px] cursor-pointer">Reject</button>
+                </div>
+              </div>`).join('')
+            : '<p class="text-xs text-[#9BB0C7]">No actions awaiting approval.</p>';
+        }
+
+        const runsEl = document.getElementById('ws-runs-list');
+        if (runsEl) {
+          runsEl.innerHTML = wsState.runs.length
+            ? wsState.runs.slice(0, 6).map(r => `
+              <div class="p-3 rounded-xl bg-[#11161E] border border-[#A7C7E7]/10">
+                <div class="flex items-center justify-between text-[11px] font-mono text-[#9BB0C7]">
+                  <span>${escHtml(r.trigger)} • ${r.tool_calls_count || 0} tools</span>
+                  <span>${Math.round(r.latency_ms || 0)}ms</span>
+                </div>
+                <p class="text-white mt-1">${escHtml(r.input)}</p>
+                ${r.final_message ? `<p class="text-[#A7C7E7] mt-1">${escHtml(r.final_message)}</p>` : ''}
+              </div>`).join('')
+            : '<p class="text-[#9BB0C7]">No agent runs yet. Send a directive on the left.</p>';
+        }
+
+        // Contractors, Payouts & Disputes
+        const ctEl = document.getElementById('ws-contractors-list');
+        if (ctEl) {
+          ctEl.innerHTML = wsState.contractors.length
+            ? wsState.contractors.map(ct => `
+              <div class="p-3 rounded-xl bg-[#11161E] border border-[#A7C7E7]/15">
+                <div class="flex items-center justify-between">
+                  <span class="font-semibold text-white">${escHtml(ct.name)}</span>
+                  <span class="font-mono text-[#FF6B1A]">${ct.default_split_pct}% split</span>
+                </div>
+                <div class="text-[11px] text-[#9BB0C7] mt-0.5">${escHtml(ct.email_or_paypal_id)}</div>
+              </div>`).join('')
+            : '<p class="col-span-2 text-[#9BB0C7]">No contractors added yet.</p>';
+        }
+
+        const pyEl = document.getElementById('ws-payouts-list');
+        if (pyEl) {
+          pyEl.innerHTML = wsState.payouts.length
+            ? wsState.payouts.map(p => `
+              <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/15">
+                <div>
+                  <span class="font-mono font-bold text-white">${fmtMoney(p.amount, p.currency)}</span>
+                  <span class="ml-2 text-[11px] font-mono text-[#A7C7E7]">Status: ${escHtml(p.status)}</span>
+                </div>
+                ${['proposed','pending_approval'].includes(p.status)
+                  ? `<button type="button" onclick="wsApprovePayout('${escHtml(p.id)}')" class="px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-[11px] cursor-pointer">Approve Payout</button>`
+                  : ''}
+              </div>`).join('')
+            : '<p class="text-[#9BB0C7]">No payouts queued yet.</p>';
+        }
+
+        const dpEl = document.getElementById('ws-disputes-list');
+        if (dpEl) {
+          dpEl.innerHTML = wsState.disputes.length
+            ? wsState.disputes.map(d => {
+                const trk = (d.evidence_pack && d.evidence_pack.tracking_number) || '789234891023';
+                const hasProof = Boolean(d.evidence_pack && Array.isArray(d.evidence_pack.uploaded_evidence) && d.evidence_pack.uploaded_evidence.length);
+                return `
+                  <div class="p-3.5 rounded-xl bg-[#11161E] border border-[#A7C7E7]/15 space-y-2">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                      <span class="font-mono font-bold text-white">${escHtml(d.paypal_dispute_id)} • ${fmtMoney(d.amount)}</span>
+                      <span class="px-2 py-0.5 rounded text-[10px] font-mono ${hasProof ? 'bg-emerald-500/15 text-emerald-300' : 'bg-amber-500/15 text-amber-300'}">${escHtml(d.status)}${hasProof ? ' • PROOF ATTACHED' : ''}</span>
+                    </div>
+                    <p class="text-[#9BB0C7]">Reason: ${escHtml(d.reason)}</p>
+                    <div class="flex gap-2">
+                      <input id="trk-${escHtml(d.id)}" type="text" value="${escHtml(trk)}" class="ws-input flex-1 text-xs font-mono"/>
+                      <button type="button" onclick="wsVerifyCarrier('${escHtml(d.id)}')" class="px-3 py-1.5 rounded-lg bg-[#FF6B1A] text-[#1A0F06] font-satoshi-cap text-[11px] font-bold shrink-0 cursor-pointer">Verify Carrier Proof</button>
+                    </div>
+                  </div>`;
+              }).join('')
+            : '<p class="text-[#9BB0C7]">No open disputes in this workspace.</p>';
+        }
+
+        // Policy & Audit
+        const pol = wsState.policy || {};
+        const setVal = (id, v) => { const e = document.getElementById(id); if (e && v !== undefined) e.value = v; };
+        setVal('ws-pol-approval-above', pol.POLICY_REQUIRE_APPROVAL_ABOVE ?? 250);
+        setVal('ws-pol-max-tx', pol.POLICY_MAX_PAYOUT_PER_TX ?? 500);
+        setVal('ws-pol-max-day', pol.POLICY_MAX_PAYOUT_PER_DAY ?? 1500);
+        setVal('ws-pol-max-discount', pol.POLICY_MAX_DISCOUNT_PCT ?? 10);
+        const autoRemEl = document.getElementById('ws-pol-auto-reminders');
+        if (autoRemEl) autoRemEl.checked = Boolean(pol.POLICY_AUTO_APPROVE_REMINDERS ?? true);
+
+        const ksBtn = document.getElementById('ws-kill-switch-btn');
+        if (ksBtn) {
+          const on = Boolean(pol.KILL_SWITCH);
+          ksBtn.textContent = 'Kill Switch: ' + (on ? 'ACTIVE (BLOCKED)' : 'OFF');
+          ksBtn.className = 'px-3 py-1.5 rounded-lg font-mono text-xs font-bold border cursor-pointer ' +
+            (on ? 'bg-rose-500/25 border-rose-400 text-rose-200' : 'bg-emerald-500/15 border-emerald-400/40 text-emerald-200');
+        }
+
+        const auEl = document.getElementById('ws-audit-tbody');
+        if (auEl) {
+          auEl.innerHTML = wsState.audit.length
+            ? wsState.audit.map(row => `
+              <tr>
+                <td class="py-2 pr-3 font-mono text-white">#${row.seq}</td>
+                <td class="py-2 pr-3 font-mono text-[#A7C7E7]">${escHtml(row.actor)}</td>
+                <td class="py-2 pr-3 text-white">${escHtml(row.event)}</td>
+                <td class="py-2 pr-3 font-mono text-[#9BB0C7]">${escHtml(row.entity_type)}</td>
+                <td class="py-2 font-mono text-[#9BB0C7]">${escHtml(String(row.hash || '').slice(0, 14))}…</td>
+              </tr>`).join('')
+            : '<tr><td colspan="5" class="py-6 text-center text-[#9BB0C7]">No audit blocks recorded yet.</td></tr>';
+        }
+      }
+
+      // Workspace Actions
+      window.quickInvoiceForClient = function(clientId) {
+        window.switchWorkspaceTab('invoices');
+        const sel = document.getElementById('ws-inv-client');
+        if (sel) sel.value = clientId;
+      };
+      window.fillAgentPrompt = function(txt) {
+        const el = document.getElementById('ws-agent-input');
+        if (el) el.value = txt;
+      };
+      window.askWorkspaceQA = async function(q) {
+        const inp = document.getElementById('ws-qa-input');
+        if (inp) inp.value = q;
+        const out = document.getElementById('ws-qa-output');
+        try {
+          const res = await wsFetch('/analytics/ask', { method: 'POST', body: JSON.stringify({ question: q }) });
+          if (out) {
+            out.innerHTML = `<p class="text-white font-semibold">${escHtml(res.answer)}</p>` +
+              (res.data ? `<pre class="mt-2 text-[11px] font-mono text-[#A7C7E7] overflow-x-auto">${escHtml(JSON.stringify(res.data, null, 2))}</pre>` : '');
+          }
+        } catch (err) {
+          if (out) out.textContent = 'Error: ' + err.message;
+        }
+      };
+
+      const qaForm = document.getElementById('ws-qa-form');
+      if (qaForm) qaForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const q = document.getElementById('ws-qa-input').value.trim();
+        if (q) window.askWorkspaceQA(q);
+      });
+
+      const addClientForm = document.getElementById('ws-add-client-form');
+      if (addClientForm) addClientForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          await wsFetch('/clients', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: document.getElementById('ws-client-name').value.trim(),
+              company: document.getElementById('ws-client-company').value.trim() || null,
+              email: document.getElementById('ws-client-email').value.trim() || null,
+              currency: document.getElementById('ws-client-currency').value,
+              default_terms_days: Number(document.getElementById('ws-client-terms').value || 15),
+              notes: document.getElementById('ws-client-notes').value.trim() || null,
+            }),
+          });
+          addClientForm.reset();
+          await refreshWorkspace();
+          showWsBanner('Client added to your workspace.', 'ok');
+        } catch (err) {
+          showWsBanner(err.message, 'error');
+        }
+      });
+
+      const addInvoiceForm = document.getElementById('ws-add-invoice-form');
+      if (addInvoiceForm) addInvoiceForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const client_id = document.getElementById('ws-inv-client').value;
+        if (!client_id) { showWsBanner('Please add and select a client first.', 'error'); return; }
+        try {
+          const item = document.getElementById('ws-inv-item').value.trim();
+          const qty = Number(document.getElementById('ws-inv-qty').value || 1);
+          const price = Number(document.getElementById('ws-inv-price').value || 0);
+          await wsFetch('/invoices', {
+            method: 'POST',
+            body: JSON.stringify({
+              client_id,
+              currency: document.getElementById('ws-inv-currency').value,
+              terms_days: Number(document.getElementById('ws-inv-terms').value || 15),
+              discount_percent: Number(document.getElementById('ws-inv-discount').value || 0),
+              memo: document.getElementById('ws-inv-memo').value.trim() || null,
+              line_items: [{ name: item, description: item, quantity: qty, unit_amount: price }],
+            }),
+          });
+          addInvoiceForm.reset();
+          await refreshWorkspace();
+          showWsBanner('Invoice draft created and synced.', 'ok');
+        } catch (err) {
+          showWsBanner('Invoice error: ' + err.message, 'error');
+        }
+      });
+
+      document.querySelectorAll('.ws-inv-filter').forEach(btn => {
+        btn.addEventListener('click', () => {
+          wsState.invFilter = btn.dataset.invFilter || '';
+          document.querySelectorAll('.ws-inv-filter').forEach(b => {
+            const on = (b.dataset.invFilter || '') === wsState.invFilter;
+            b.className = 'ws-inv-filter px-2.5 py-1 rounded-lg text-[11px] font-mono cursor-pointer ' +
+              (on ? 'bg-[#FF6B1A] text-[#1A0F06] font-bold' : 'bg-[#11161E] text-[#C8DAEC]');
+          });
+          refreshWorkspace();
+        });
+      });
+
+      window.wsSendInvoice = async function(id) {
+        try {
+          await wsFetch(`/invoices/${id}/send`, { method: 'POST' });
+          await refreshWorkspace();
+          showWsBanner('Invoice sent.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+      window.wsRemindInvoice = async function(id) {
+        try {
+          await wsFetch(`/invoices/${id}/remind`, { method: 'POST', body: JSON.stringify({ subject: 'Payment Reminder', note: 'Friendly reminder to settle your invoice via PayPal.' }) });
+          await refreshWorkspace();
+          showWsBanner('Payment reminder dispatched.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+      window.wsPayInvoice = async function(id, defaultAmt) {
+        const raw = prompt('Enter payment amount received:', String(defaultAmt));
+        if (!raw) return;
+        const amt = Number(raw);
+        if (!(amt > 0)) return;
+        try {
+          await wsFetch(`/invoices/${id}/payments`, { method: 'POST', body: JSON.stringify({ amount: amt, method: 'PAYPAL' }) });
+          await refreshWorkspace();
+          showWsBanner('Payment recorded and client metrics updated.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+      window.wsCheckFx = async function(id) {
+        try {
+          const res = await wsFetch(`/invoices/${id}/fx-risk`);
+          showWsBanner(`FX Risk (${res.invoice_currency}): USD Value $${res.current_usd_value}, Projected Loss $${res.projected_currency_loss_usd} — ${res.recommendation}`, 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+
+      const agentForm = document.getElementById('ws-agent-form');
+      if (agentForm) agentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById('ws-agent-input').value.trim();
+        if (!msg) return;
+        const out = document.getElementById('ws-agent-result');
+        const btn = document.getElementById('ws-agent-submit');
+        if (btn) { btn.disabled = true; btn.textContent = 'Running Policy Engine...'; }
+        try {
+          const res = await wsFetch('/agent/message', { method: 'POST', body: JSON.stringify({ message: msg }) });
+          if (out) { out.textContent = res.final_message || 'Completed.'; out.classList.remove('hidden'); }
+          await refreshWorkspace();
+        } catch (err) {
+          if (out) { out.textContent = 'Error: ' + err.message; out.classList.remove('hidden'); }
+        } finally {
+          if (btn) { btn.disabled = false; btn.textContent = 'Run Policy-Bound Agent'; }
+        }
+      });
+
+      window.wsApproveAction = async function(id) {
+        try {
+          await wsFetch(`/approvals/${id}/approve`, { method: 'POST' });
+          await refreshWorkspace();
+          showWsBanner('Action approved and executed.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+      window.wsRejectAction = async function(id) {
+        const reason = prompt('Reason for rejection:', 'Denied by merchant operator');
+        if (!reason) return;
+        try {
+          await wsFetch(`/approvals/${id}/reject`, { method: 'POST', body: JSON.stringify({ reason }) });
+          await refreshWorkspace();
+          showWsBanner('Action rejected.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+
+      const addCtForm = document.getElementById('ws-add-contractor-form');
+      if (addCtForm) addCtForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          await wsFetch('/contractors', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: document.getElementById('ws-ct-name').value.trim(),
+              email_or_paypal_id: document.getElementById('ws-ct-email').value.trim(),
+              default_split_pct: Number(document.getElementById('ws-ct-split').value || 0),
+              notes: document.getElementById('ws-ct-notes').value.trim() || null,
+            }),
+          });
+          addCtForm.reset();
+          await refreshWorkspace();
+          showWsBanner('Contractor added to approved allowlist.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      });
+
+      window.wsApprovePayout = async function(id) {
+        try {
+          await wsFetch(`/payouts/${id}/approve`, { method: 'POST' });
+          await refreshWorkspace();
+          showWsBanner('Contractor payout submitted.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+
+      window.wsVerifyCarrier = async function(id) {
+        const inp = document.getElementById('trk-' + id);
+        const tracking_number = inp ? inp.value.trim() : '789234891023';
+        try {
+          const res = await wsFetch(`/disputes/${id}/carrier-verify`, { method: 'POST', body: JSON.stringify({ tracking_number }) });
+          await refreshWorkspace();
+          showWsBanner(`Carrier verified (${res.carrier_proof.carrier})! Win probability updated to ${Math.round(res.win_probability * 100)}%.`, 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      };
+
+      const polForm = document.getElementById('ws-policy-form');
+      if (polForm) polForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          const updates = [
+            ['POLICY_REQUIRE_APPROVAL_ABOVE', Number(document.getElementById('ws-pol-approval-above').value)],
+            ['POLICY_MAX_PAYOUT_PER_TX', Number(document.getElementById('ws-pol-max-tx').value)],
+            ['POLICY_MAX_PAYOUT_PER_DAY', Number(document.getElementById('ws-pol-max-day').value)],
+            ['POLICY_MAX_DISCOUNT_PCT', Number(document.getElementById('ws-pol-max-discount').value)],
+            ['POLICY_AUTO_APPROVE_REMINDERS', Boolean(document.getElementById('ws-pol-auto-reminders').checked)],
+          ];
+          for (const [key, value] of updates) {
+            await wsFetch('/policy', { method: 'PUT', body: JSON.stringify({ key, value }) });
+          }
+          await refreshWorkspace();
+          showWsBanner('Workspace policy guardrails saved and audited.', 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      });
+
+      const ksBtn = document.getElementById('ws-kill-switch-btn');
+      if (ksBtn) ksBtn.addEventListener('click', async () => {
+        try {
+          const next = !Boolean(wsState.policy && wsState.policy.KILL_SWITCH);
+          await wsFetch('/policy/kill-switch', { method: 'POST', body: JSON.stringify({ active: next }) });
+          await refreshWorkspace();
+          showWsBanner(`Kill switch ${next ? 'ACTIVATED' : 'DEACTIVATED'}.`, next ? 'error' : 'ok');
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      });
+
+      const wsVerifyChainBtn = document.getElementById('ws-verify-chain-btn');
+      if (wsVerifyChainBtn) wsVerifyChainBtn.addEventListener('click', async () => {
+        try {
+          const res = await wsFetch('/audit/verify');
+          const el = document.getElementById('ws-audit-verify-status');
+          if (el) el.textContent = res.valid ? `VALID (${res.count || 0} blocks verified)` : `TAMPER DETECTED: ${res.reason}`;
+        } catch (err) { showWsBanner(err.message, 'error'); }
+      });
+
+      // Validate saved session token on boot
+      (async () => {
+        updateAuthUI();
+        if (wsState.token) {
+          try {
+            const me = await wsFetch('/auth/me');
+            if (!me || !me.user) saveSession('', 'public', null);
+            else saveSession(wsState.token, me.mode, me.user);
+          } catch {
+            saveSession('', 'public', null);
+          }
+        }
+      })();
 
       const scenario1Btn = document.getElementById('scenario-1-btn');
       const scenario2Btn = document.getElementById('scenario-2-btn');
@@ -2926,7 +4207,7 @@ container._cleanup = function() {
       revealEls.forEach(el => el.classList.add('revealed'));
     }
 
-    const MODAL_NAV = { 'sandbox-modal': 'autonomous-sandbox', 'ledger-modal': 'audit-ledger', 'toolkit-modal': null };
+    const MODAL_NAV = { 'sandbox-modal': 'autonomous-sandbox', 'ledger-modal': 'audit-ledger', 'toolkit-modal': null, 'workspace-modal': 'overview' };
     const openModals = new Set();
     window.isModalOpen = () => openModals.size > 0;
 
@@ -3003,13 +4284,15 @@ container._cleanup = function() {
     window.closeToolkitModal = () => closeModal('toolkit-modal');
     window.openLedgerModal = () => openModal('ledger-modal');
     window.closeLedgerModal = () => closeModal('ledger-modal');
+    window.openWorkspaceModal = () => openModal('workspace-modal');
+    window.closeWorkspaceModal = () => closeModal('workspace-modal');
 
     ['toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal'].forEach(id => {
       const el = $(id);
       if (el) el.addEventListener('click', (e) => { if (e.target === el) closeModal(id); });
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') ['sandbox-modal', 'toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal'].forEach(closeModal);
+      if (e.key === 'Escape') ['sandbox-modal', 'workspace-modal', 'toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal'].forEach(closeModal);
     });
 
     /* ---------- nav clicks ---------- */
