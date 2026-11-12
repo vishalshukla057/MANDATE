@@ -363,7 +363,7 @@ class FakePayPalGateway(PayPalGateway):
             "links": [
                 {
                     "rel": "payer-view",
-                    "href": f"https://www.sandbox.paypal.com/invoice/p/#{inv_id}",
+                    "href": f"/invoices/{inv_id}/view",
                     "method": "GET"
                 },
                 {

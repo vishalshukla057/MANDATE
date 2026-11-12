@@ -3568,7 +3568,7 @@ container._cleanup = function() {
 
       const paypalLink = document.getElementById('modal-inv-paypal-link');
       if (paypalLink) {
-        paypalLink.href = inv.payer_view_url || ('https://www.sandbox.paypal.com/invoice/p/#' + (inv.paypal_invoice_id || ''));
+        paypalLink.href = '/invoices/' + (inv.id || inv.paypal_invoice_id) + '/view';
       }
 
       const itemsBody = document.getElementById('modal-inv-line-items');

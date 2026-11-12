@@ -5,14 +5,17 @@ import uuid
 from contextlib import asynccontextmanager
 from typing import Optional
 
-from fastapi import FastAPI, Request, Response, Security, HTTPException, status
+from fastapi import FastAPI, Request, Response, Security, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.security import APIKeyHeader
 from starlette.middleware.base import BaseHTTPMiddleware
+from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.db import init_db
+from app.db import init_db, get_db
+from app.models.invoice import Invoice
+from app.models.client import Client
 from app.services.clock import ClockService
 from app.paypal.client import get_paypal_gateway, PayPalError
 from app.api import (
@@ -124,6 +127,213 @@ app.include_router(jobs.router, dependencies=[Security(verify_api_key)])
 app.include_router(mcp.router)  # Model Context Protocol (MCP) tool server
 app.include_router(simulate.router)  # Simulation tools for hackathon demo
 app.include_router(webhooks.router)  # Public, signature verified
+
+
+@app.get("/pay/{id}", response_class=HTMLResponse, tags=["Payer View"])
+@app.get("/invoices/{id}/view", response_class=HTMLResponse, tags=["Payer View"])
+def public_payer_invoice_view(id: str, db: Session = Depends(get_db)):
+    """Serves an authentic PayPal Sandbox Payer Checkout & Invoice Receipt interface without requiring internal API headers."""
+    invoice = db.query(Invoice).filter((Invoice.id == id) | (Invoice.paypal_invoice_id == id)).first()
+    if not invoice:
+        return HTMLResponse("""
+            <!DOCTYPE html><html><head><title>PayPal Sandbox - Not Found</title>
+            <script src="https://cdn.tailwindcss.com"></script></head>
+            <body class="bg-slate-50 flex items-center justify-center min-h-screen">
+                <div class="bg-white p-8 rounded-2xl shadow-xl max-w-md text-center">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2">Invoice Not Found</h2>
+                    <p class="text-slate-500 mb-6 text-sm">We couldn't locate this invoice record in the system.</p>
+                    <a href="/" class="px-5 py-2.5 bg-[#0070ba] text-white font-bold text-sm rounded-lg">Return to Console</a>
+                </div>
+            </body></html>
+        """, status_code=404)
+
+    client = db.query(Client).filter(Client.id == invoice.client_id).first()
+    client_name = client.name if client else "Enterprise Client"
+    client_email = client.email if client else "billing@example.com"
+
+    line_items_html = ""
+    items = invoice.line_items or [{"description": "Professional Services", "quantity": 1, "unit": "item", "unit_price": invoice.total}]
+    for it in items:
+        qty = it.get("quantity", 1)
+        rate = it.get("unit_price", 0.0)
+        tot = round(qty * rate, 2)
+        desc = it.get("description", "Item")
+        unit = it.get("unit", "")
+        line_items_html += f"""
+            <tr class="border-b border-slate-100">
+                <td class="py-3 px-4 text-slate-800 font-medium">{desc}</td>
+                <td class="py-3 px-4 text-center text-slate-600 font-mono">{qty} {unit}</td>
+                <td class="py-3 px-4 text-right text-slate-600 font-mono">${rate:,.2f}</td>
+                <td class="py-3 px-4 text-right text-slate-900 font-bold font-mono">${tot:,.2f}</td>
+            </tr>
+        """
+
+    is_paid = (invoice.status == "paid")
+    status_color = "bg-emerald-100 text-emerald-800 border-emerald-300" if is_paid else "bg-amber-100 text-amber-800 border-amber-300"
+    issue_date_str = invoice.issue_date.strftime("%b %d, %Y") if invoice.issue_date else "Today"
+    due_date_str = invoice.due_date.strftime("%b %d, %Y") if invoice.due_date else "Net 15"
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPal Sandbox - Invoice #{invoice.paypal_invoice_number}</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23003087'/%3E%3Cpath d='M9 6h7.5c4.5 0 6.5 2.2 5.5 6.5-1.2 5.2-4.5 7.5-9 7.5H11l-1.5 6H7L9 6z' fill='%230079C1'/%3E%3Cpath d='M13 10h6.5c3.5 0 5 1.7 4.2 5.2-.9 4.2-3.5 6-7 6H14.5l-1.2 4.8H11l2-16z' fill='%23FFC439'/%3E%3C/svg%3E"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+        body {{ font-family: 'Inter', sans-serif; }}
+    </style>
+</head>
+<body class="bg-[#f5f7fa] text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- PayPal Sandbox Top Banner -->
+    <header class="bg-[#003087] text-white px-6 py-4 shadow-md sticky top-0 z-30">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="flex items-center font-black tracking-tighter text-2xl select-none">
+                    <span class="text-white">Pay</span><span class="text-[#0079c1]">Pal</span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-[#ffc439] text-[#00174b] text-[11px] font-black uppercase tracking-wider">Sandbox Test</span>
+            </div>
+            <a href="/" class="text-xs text-sky-200 hover:text-white flex items-center gap-1 transition-colors font-medium">
+                <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                <span>Back to Merchant Console</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Invoice Card -->
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-8 flex-1">
+        <div class="bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-slate-200/80 overflow-hidden">
+            
+            <!-- Invoice Header Bar -->
+            <div class="bg-gradient-to-r from-[#001c48] to-[#003087] text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="text-xs font-mono uppercase tracking-widest text-sky-300">Invoice Reference</span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider border {status_color}">{invoice.status.upper()}</span>
+                    </div>
+                    <h1 class="text-3xl font-extrabold tracking-tight">{invoice.paypal_invoice_number}</h1>
+                    <p class="text-xs text-sky-200/80 font-mono mt-1">PayPal Internal ID: {invoice.paypal_invoice_id}</p>
+                </div>
+                <div class="text-left sm:text-right">
+                    <span class="text-xs text-sky-200/80 uppercase tracking-wider block">Amount Due</span>
+                    <div class="text-3xl font-black text-[#ffc439] font-mono">${invoice.amount_due:,.2f} <span class="text-sm text-white font-sans">{invoice.currency}</span></div>
+                </div>
+            </div>
+
+            <!-- Party Details Grid -->
+            <div class="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-2 gap-8 border-b border-slate-100">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">Merchant (Invoicer)</span>
+                    <div class="font-bold text-slate-900 text-base">Collections Copilot Merchant</div>
+                    <div class="text-slate-500 text-sm">{settings.PAYPAL_MERCHANT_EMAIL}</div>
+                    <div class="text-xs text-slate-400 mt-2 font-mono">PayPal Verified Business Sandbox</div>
+                </div>
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">Billed To (Payer)</span>
+                    <div class="font-bold text-slate-900 text-base">{client_name}</div>
+                    <div class="text-slate-500 text-sm">{client_email}</div>
+                    <div class="text-xs text-slate-500 mt-2 flex items-center gap-4">
+                        <span>Issued: <strong>{issue_date_str}</strong></span>
+                        <span>Due: <strong class="text-[#0070ba]">{due_date_str}</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Line Items Table -->
+            <div class="p-6 sm:p-8">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Itemized Services</h3>
+                <div class="overflow-x-auto rounded-xl border border-slate-200/70">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 text-slate-500 text-xs font-semibold uppercase tracking-wider border-b border-slate-200/70">
+                            <tr>
+                                <th class="py-3 px-4">Description</th>
+                                <th class="py-3 px-4 text-center">Quantity</th>
+                                <th class="py-3 px-4 text-right">Unit Price</th>
+                                <th class="py-3 px-4 text-right">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {line_items_html}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Totals Section -->
+                <div class="mt-6 flex flex-col items-end gap-1.5 text-sm font-mono">
+                    <div class="flex justify-between w-64 text-slate-600">
+                        <span>Subtotal:</span>
+                        <span>${invoice.subtotal:,.2f}</span>
+                    </div>
+                    {f'<div class="flex justify-between w-64 text-emerald-600"><span>Discount:</span><span>-${invoice.discount_total:,.2f}</span></div>' if invoice.discount_total > 0 else ''}
+                    <div class="flex justify-between w-64 text-slate-900 font-bold text-lg pt-2 border-t border-slate-200">
+                        <span class="font-sans">Total:</span>
+                        <span>${invoice.total:,.2f} {invoice.currency}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action & Payment Simulation Footer -->
+            <div class="p-6 sm:p-8 bg-slate-50 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="material-symbols-outlined text-[18px] text-emerald-600">lock</span>
+                    <span>256-bit Encrypted Mock Sandbox Checkout</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="window.print()" type="button" class="px-4 py-2.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 font-semibold text-xs transition-all shadow-sm cursor-pointer">
+                        Print Invoice
+                    </button>
+                    {
+                        '<div class="px-5 py-2.5 rounded-xl bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1.5"><span class="material-symbols-outlined text-[16px]">check_circle</span><span>Paid in Full</span></div>'
+                        if is_paid else
+                        f'<button id="simulate-pay-btn" onclick="simulatePayment(\'{invoice.id}\')" type="button" class="px-6 py-2.5 rounded-xl bg-[#ffc439] hover:bg-[#f5b324] text-[#00174b] font-extrabold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition-all active:scale-95 cursor-pointer"><span class="material-symbols-outlined text-[18px]">payments</span><span>Pay ${invoice.amount_due:,.2f} with PayPal Sandbox</span></button>'
+                    }
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400">
+        <p>© 2025 PayPal Inc. • Autonomous Invoicing Copilot Sandbox</p>
+    </footer>
+
+    <script>
+        async function simulatePayment(id) {{
+            const btn = document.getElementById('simulate-pay-btn');
+            if (btn) {{
+                btn.disabled = true;
+                btn.innerText = 'Processing via PayPal Sandbox...';
+            }}
+            try {{
+                const res = await fetch('/simulate/client-pays', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{ invoice_id: id, mode: 'full' }})
+                }});
+                if (res.ok) {{
+                    alert('✓ Payment settled successfully via PayPal Sandbox! Status flipped to PAID.');
+                    window.location.reload();
+                }} else {{
+                    const err = await res.json();
+                    alert('Payment Error: ' + (err.detail || 'Could not process payment'));
+                    if (btn) btn.disabled = false;
+                }}
+            }} catch (e) {{
+                alert('Network Error: ' + e.message);
+                if (btn) btn.disabled = false;
+            }}
+        }}
+    </script>
+</body>
+</html>
+"""
+    return HTMLResponse(content=html)
 
 
 @app.get("/health", tags=["System"])

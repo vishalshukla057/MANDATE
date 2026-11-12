@@ -77,7 +77,7 @@ class ToneEngine:
             "invoice_number": invoice.paypal_invoice_number or invoice.id[:8],
             "amount_due": invoice.amount_due,
             "currency": invoice.currency,
-            "payer_view_url": invoice.payer_view_url or f"https://www.sandbox.paypal.com/invoice/p/#{invoice.paypal_invoice_id}",
+            "payer_view_url": invoice.payer_view_url or f"/invoices/{invoice.id}/view",
         }
 
     @classmethod
