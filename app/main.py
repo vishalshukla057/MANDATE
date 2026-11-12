@@ -349,14 +349,28 @@ async def health_check():
     }
 
 
+def _resolve_ui_path(folder: str, filename: str) -> str:
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    p1 = os.path.join(root, folder, filename)
+    if os.path.exists(p1):
+        return p1
+    p2 = os.path.join(os.getcwd(), folder, filename)
+    if os.path.exists(p2):
+        return p2
+    p3 = os.path.join("/var/task", folder, filename)
+    if os.path.exists(p3):
+        return p3
+    return p1
+
+
 @app.get("/", response_class=HTMLResponse, tags=["UI"])
 @app.get("/ui", response_class=HTMLResponse, tags=["UI"])
 async def serve_ui(request: Request, theme: Optional[str] = None):
     """Serves the frontend UI (defaulting cleanly to light mode, clearing any stale dark mode cookies)."""
     if theme and theme.lower() == "dark":
-        ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "code.html")
+        ui_path = _resolve_ui_path("frontend", "code.html")
     else:
-        ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend_light", "code.html")
+        ui_path = _resolve_ui_path("frontend_light", "code.html")
 
     if os.path.exists(ui_path):
         with open(ui_path, "r", encoding="utf-8") as f:
@@ -372,7 +386,7 @@ async def serve_ui(request: Request, theme: Optional[str] = None):
 @app.get("/ui/light", response_class=HTMLResponse, tags=["UI"])
 async def serve_ui_light():
     """Serves the PayPal Global Design System Light Mode UI."""
-    ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend_light", "code.html")
+    ui_path = _resolve_ui_path("frontend_light", "code.html")
     if os.path.exists(ui_path):
         with open(ui_path, "r", encoding="utf-8") as f:
             resp = HTMLResponse(content=f.read())
@@ -384,7 +398,7 @@ async def serve_ui_light():
 @app.get("/ui/dark", response_class=HTMLResponse, tags=["UI"])
 async def serve_ui_dark():
     """Serves the Sovereign Heritage Dark Mode UI."""
-    ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "code.html")
+    ui_path = _resolve_ui_path("frontend", "code.html")
     if os.path.exists(ui_path):
         with open(ui_path, "r", encoding="utf-8") as f:
             resp = HTMLResponse(content=f.read())
@@ -396,7 +410,7 @@ async def serve_ui_dark():
 @app.get("/privacy", response_class=HTMLResponse, tags=["Legal"])
 async def serve_privacy():
     """Serves the Enterprise Privacy Policy."""
-    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "privacy.html")
+    path = _resolve_ui_path("frontend", "privacy.html")
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
@@ -406,7 +420,7 @@ async def serve_privacy():
 @app.get("/terms", response_class=HTMLResponse, tags=["Legal"])
 async def serve_terms():
     """Serves the Enterprise Terms and Conditions."""
-    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend", "terms.html")
+    path = _resolve_ui_path("frontend", "terms.html")
     if os.path.exists(path):
         with open(path, "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())

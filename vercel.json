@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "includeFiles": [
+          "frontend/**",
+          "frontend_light/**",
+          "app/**"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "api/index.py"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "PAYPAL_MODE": "fake",
+    "API_KEY": "copilot-secret-key-12345",
+    "DATABASE_URL": "sqlite:////tmp/copilot.db"
+  }
+}
