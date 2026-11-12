@@ -1,5 +1,6 @@
 .git
 .github
+.env
 venv
 __pycache__
 *.pyc
@@ -9,4 +10,5 @@ tests
 htmlcov
 scratch
 *.db
-
+*.db-shm
+*.db-wal

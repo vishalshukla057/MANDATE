@@ -3,17 +3,11 @@ from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-def get_default_database_url() -> str:
-    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("LAMBDA_TASK_ROOT"):
-        return "sqlite:////tmp/copilot.db"
-    return "sqlite:///./copilot.db"
-
-
 class Settings(BaseSettings):
     APP_ENV: str = "dev"
     PAYPAL_MODE: str = "fake"  # 'live' (sandbox API) or 'fake' (deterministic offline)
     API_KEY: str = "copilot-secret-key-12345"
-    DATABASE_URL: str = get_default_database_url()
+    DATABASE_URL: str = "sqlite:///./copilot.db"
     PUBLIC_BASE_URL: str = "http://localhost:8000"
 
     PAYPAL_CLIENT_ID: Optional[str] = "mock_client_id"
@@ -35,6 +29,17 @@ class Settings(BaseSettings):
     KILL_SWITCH: bool = False
 
     DEFAULT_TENANT_ID: str = "tenant_default"
+
+    @property
+    def effective_database_url(self) -> str:
+        is_serverless = bool(
+            os.environ.get("VERCEL")
+            or os.environ.get("AWS_LAMBDA_FUNCTION_NAME")
+            or os.environ.get("LAMBDA_TASK_ROOT")
+        )
+        if is_serverless and self.DATABASE_URL.startswith("sqlite") and not self.DATABASE_URL.startswith("sqlite:////tmp"):
+            return "sqlite:////tmp/copilot.db"
+        return self.DATABASE_URL
 
     model_config = SettingsConfigDict(
         env_file=".env",
