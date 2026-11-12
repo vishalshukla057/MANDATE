@@ -1,7 +1,7 @@
 import asyncio
 import json
 from datetime import datetime
-from typing import Any, AsyncGenerator, Dict, List
+from typing import Any, AsyncGenerator, Dict, List, Optional
 from app.services.clock import ClockService
 
 class FeedBroker:
