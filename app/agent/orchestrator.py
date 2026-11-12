@@ -4,6 +4,7 @@ import logging
 import time
 import uuid
 from typing import Any, AsyncGenerator, Dict, List, Optional
+import httpx
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -57,15 +58,26 @@ class AgentOrchestrator:
 
         feed_broker.publish("agent_run_started", {"run_id": run_id, "trigger": trigger, "message": user_message})
 
-        # Check if live Anthropic key is available
+        # Prioritize Google Gemini if configured, then Anthropic, otherwise deterministic offline loop
+        has_gemini = bool(settings.GEMINI_API_KEY) and settings.GEMINI_API_KEY != "mock_gemini_key"
         has_anthropic = (
             anthropic is not None
             and bool(settings.ANTHROPIC_API_KEY)
             and settings.ANTHROPIC_API_KEY != "mock_anthropic_key"
         )
 
-        if has_anthropic:
-            final_message = await cls._run_anthropic_loop(db, agent_run, user_message)
+        if has_gemini:
+            try:
+                final_message = await cls._run_gemini_loop(db, agent_run, user_message)
+            except Exception as exc:
+                logger.warning(f"Gemini loop failed ({exc}); falling back to offline loop.")
+                final_message = await cls._run_offline_loop(db, agent_run, user_message)
+        elif has_anthropic:
+            try:
+                final_message = await cls._run_anthropic_loop(db, agent_run, user_message)
+            except Exception as exc:
+                logger.warning(f"Anthropic loop failed ({exc}); falling back to offline loop.")
+                final_message = await cls._run_offline_loop(db, agent_run, user_message)
         else:
             final_message = await cls._run_offline_loop(db, agent_run, user_message)
 
@@ -117,7 +129,7 @@ class AgentOrchestrator:
         else:
             # Action allowed: execute now
             try:
-                result_payload = await tool.handler(db, args, idempotency_key=idempotency_key)
+                result_payload = await tool.handler(db, args, idempotency_key=idempotency_key, tenant_id=agent_run.tenant_id)
                 action_status = "auto_executed"
             except Exception as exc:
                 action_status = "failed"
@@ -149,6 +161,7 @@ class AgentOrchestrator:
             event=f"tool_action_{action_status}",
             entity_type="agent_action",
             entity_id=action_record.id,
+            tenant_id=agent_run.tenant_id,
             payload={
                 "tool_name": tool_name,
                 "status": action_status,
@@ -241,6 +254,68 @@ class AgentOrchestrator:
             )
         else:
             return f"Draft created for {client_name}, but dispatch was blocked: {'; '.join(send_policy.get('reasons', []))}"
+
+    @classmethod
+    async def _run_gemini_loop(cls, db: Session, agent_run: AgentRun, prompt: str) -> str:
+        """Google Gemini tool-use orchestrator loop via REST API."""
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent"
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": settings.GEMINI_API_KEY or "",
+        }
+        declarations = [tool.to_gemini_declaration() for tool in TOOL_REGISTRY.values()]
+        contents: List[Dict[str, Any]] = [{"role": "user", "parts": [{"text": prompt}]}]
+        iterations = 0
+
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            while iterations < settings.LLM_MAX_TOOL_ITERATIONS:
+                iterations += 1
+                body = {
+                    "systemInstruction": {
+                        "parts": [{"text": "You are Collections Copilot, a policy-bound financial agent. Every action you propose is vetted by the Policy Engine."}]
+                    },
+                    "tools": [{"functionDeclarations": declarations}],
+                    "contents": contents,
+                }
+                res = await client.post(url, headers=headers, json=body)
+                if res.status_code >= 400:
+                    raise RuntimeError(f"Gemini API error {res.status_code}: {res.text[:250]}")
+
+                data = res.json()
+                usage = data.get("usageMetadata", {})
+                agent_run.tokens_in += int(usage.get("promptTokenCount", 0))
+                agent_run.tokens_out += int(usage.get("candidatesTokenCount", 0))
+
+                candidates = data.get("candidates") or []
+                if not candidates:
+                    raise RuntimeError("Gemini returned no candidates")
+                parts = candidates[0].get("content", {}).get("parts", [])
+                contents.append({"role": "model", "parts": parts})
+
+                fn_calls = [p["functionCall"] for p in parts if "functionCall" in p]
+                if not fn_calls:
+                    text_parts = [p["text"] for p in parts if "text" in p]
+                    return " ".join(text_parts).strip() or "Completed."
+
+                fn_responses = []
+                for fc in fn_calls:
+                    fc_args = fc.get("args") or {}
+                    step_res = await cls._execute_tool_step(
+                        db=db,
+                        agent_run=agent_run,
+                        tool_name=fc["name"],
+                        args=fc_args,
+                        reasoning=fc_args.get("reasoning", "Agent initiated tool step"),
+                    )
+                    fn_responses.append({
+                        "functionResponse": {
+                            "name": fc["name"],
+                            "response": {"result": step_res},
+                        }
+                    })
+                contents.append({"role": "user", "parts": fn_responses})
+
+        return "Agent reached maximum tool iterations."
 
     @classmethod
     async def _run_anthropic_loop(cls, db: Session, agent_run: AgentRun, prompt: str) -> str:

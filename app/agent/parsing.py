@@ -1,6 +1,7 @@
 import json
 import re
 from typing import Any, Dict, List, Optional
+import httpx
 from pydantic import BaseModel, Field, computed_field
 from sqlalchemy.orm import Session
 from app.models.client import Client
@@ -178,12 +179,33 @@ def parse_messy_input_heuristically(raw_text: str) -> ParsedInvoiceDraft:
 async def parse_invoice_input_string(raw_text: str, db: Optional[Session] = None) -> ParsedInvoiceDraft:
     """
     Parses messy text into structured invoice draft.
-    Uses Anthropic Claude if API key is provided; otherwise uses deterministic heuristic parser.
+    Uses Google Gemini (or Anthropic Claude if configured); otherwise falls back to deterministic heuristic parser.
     Fuzzy-matches against existing clients in the DB when available.
     """
     parsed: Optional[ParsedInvoiceDraft] = None
 
-    if settings.ANTHROPIC_API_KEY and settings.ANTHROPIC_API_KEY != "mock_anthropic_key" and anthropic is not None:
+    if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY != "mock_gemini_key":
+        try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent"
+            headers = {"Content-Type": "application/json", "x-goog-api-key": settings.GEMINI_API_KEY}
+            body = {
+                "systemInstruction": {"parts": [{"text": SYSTEM_PARSER_PROMPT}]},
+                "contents": [{"role": "user", "parts": [{"text": raw_text}]}],
+                "generationConfig": {"responseMimeType": "application/json"},
+            }
+            async with httpx.AsyncClient(timeout=20.0) as client:
+                res = await client.post(url, headers=headers, json=body)
+                if res.status_code < 400:
+                    candidates = res.json().get("candidates") or []
+                    parts = candidates[0].get("content", {}).get("parts", []) if candidates else []
+                    content_text = "".join(p.get("text", "") for p in parts)
+                    json_match = re.search(r"\{.*\}", content_text, re.DOTALL)
+                    if json_match:
+                        parsed = ParsedInvoiceDraft(**json.loads(json_match.group(0)))
+        except Exception:
+            parsed = None
+
+    if not parsed and settings.ANTHROPIC_API_KEY and settings.ANTHROPIC_API_KEY != "mock_anthropic_key" and anthropic is not None:
         try:
             client = anthropic.AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
             response = await client.messages.create(

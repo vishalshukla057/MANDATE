@@ -15,6 +15,8 @@ class Settings(BaseSettings):
     PAYPAL_WEBHOOK_ID: Optional[str] = "mock_webhook_id"
     PAYPAL_MERCHANT_EMAIL: Optional[str] = "sb-merchant@business.example.com"
 
+    GEMINI_API_KEY: Optional[str] = "mock_gemini_key"
+    GEMINI_MODEL: str = "gemini-2.5-flash"
     ANTHROPIC_API_KEY: Optional[str] = "mock_anthropic_key"
     LLM_MODEL: str = "claude-3-5-sonnet-20241022"
     LLM_MAX_TOOL_ITERATIONS: int = 8

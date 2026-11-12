@@ -3,6 +3,7 @@ import json
 from typing import Any, Callable, Dict, List, Optional
 from sqlalchemy.orm import Session
 
+from app.config import settings
 from app.models.client import Client
 from app.models.invoice import Invoice
 from app.models.payment import Payment
@@ -41,6 +42,25 @@ class ToolDefinition:
             "input_schema": self.parameters,
         }
 
+    @staticmethod
+    def _clean_gemini_schema(node: Any) -> Any:
+        if isinstance(node, dict):
+            return {
+                k: ToolDefinition._clean_gemini_schema(v)
+                for k, v in node.items()
+                if k not in ("default", "additionalProperties")
+            }
+        if isinstance(node, list):
+            return [ToolDefinition._clean_gemini_schema(item) for item in node]
+        return node
+
+    def to_gemini_declaration(self) -> Dict[str, Any]:
+        return {
+            "name": self.name,
+            "description": self.description,
+            "parameters": self._clean_gemini_schema(self.parameters),
+        }
+
 
 # Handlers
 async def handle_parse_invoice_input(db: Session, args: Dict[str, Any], **kwargs) -> Dict[str, Any]:
@@ -50,9 +70,10 @@ async def handle_parse_invoice_input(db: Session, args: Dict[str, Any], **kwargs
 
 
 async def handle_lookup_client(db: Session, args: Dict[str, Any], **kwargs) -> Dict[str, Any]:
+    tenant_id = kwargs.get("tenant_id") or settings.DEFAULT_TENANT_ID
     client_id = args.get("client_id")
     name = args.get("name")
-    query = db.query(Client)
+    query = db.query(Client).filter(Client.tenant_id == tenant_id)
     if client_id:
         c = query.filter(Client.id == client_id).first()
     elif name:
@@ -81,9 +102,10 @@ async def handle_lookup_client(db: Session, args: Dict[str, Any], **kwargs) -> D
 
 
 async def handle_list_invoices(db: Session, args: Dict[str, Any], **kwargs) -> Dict[str, Any]:
+    tenant_id = kwargs.get("tenant_id") or settings.DEFAULT_TENANT_ID
     status_filter = args.get("status")
     client_id = args.get("client_id")
-    query = db.query(Invoice)
+    query = db.query(Invoice).filter(Invoice.tenant_id == tenant_id)
     if status_filter:
         query = query.filter(Invoice.status == status_filter.lower())
     if client_id:
@@ -135,6 +157,7 @@ async def handle_get_invoice(db: Session, args: Dict[str, Any], **kwargs) -> Dic
 
 
 async def handle_create_invoice_draft(db: Session, args: Dict[str, Any], **kwargs) -> Dict[str, Any]:
+    tenant_id = kwargs.get("tenant_id") or settings.DEFAULT_TENANT_ID
     client_name = args.get("client_name")
     client_email = args.get("client_email")
     client_id = args.get("client_id")
@@ -144,13 +167,19 @@ async def handle_create_invoice_draft(db: Session, args: Dict[str, Any], **kwarg
 
     client = None
     if client_id:
-        client = db.query(Client).filter(Client.id == client_id).first()
+        client = db.query(Client).filter(Client.id == client_id, Client.tenant_id == tenant_id).first()
     elif client_name:
-        client = db.query(Client).filter(Client.name.ilike(f"%{client_name}%")).first()
+        client = db.query(Client).filter(Client.tenant_id == tenant_id, Client.name.ilike(f"%{client_name}%")).first()
 
     if not client:
         # Create new client automatically if not found
-        client = Client(name=client_name or "New Client", email=client_email, currency=currency, default_terms_days=terms_days)
+        client = Client(
+            tenant_id=tenant_id,
+            name=client_name or "New Client",
+            email=client_email,
+            currency=currency,
+            default_terms_days=terms_days,
+        )
         db.add(client)
         db.commit()
         db.refresh(client)
@@ -161,7 +190,14 @@ async def handle_create_invoice_draft(db: Session, args: Dict[str, Any], **kwarg
 
     subtotal = sum(float(item.get("quantity", 1)) * float(item.get("unit_price", 0)) for item in line_items)
     gateway = get_paypal_gateway()
-    inv_num = await gateway.generate_next_invoice_number()
+    try:
+        inv_num = await gateway.generate_next_invoice_number()
+    except Exception:
+        inv_num = f"INV-{now_dt.strftime('%Y%m%d%H%M%S')}"
+
+    invoicer_obj = {"name": {"given_name": "Collections Copilot"}}
+    if settings.PAYPAL_MERCHANT_EMAIL and settings.PAYPAL_MERCHANT_EMAIL != "sb-merchant@business.example.com":
+        invoicer_obj["email_address"] = settings.PAYPAL_MERCHANT_EMAIL
 
     paypal_draft_body = {
         "detail": {
@@ -170,7 +206,7 @@ async def handle_create_invoice_draft(db: Session, args: Dict[str, Any], **kwarg
             "currency_code": currency,
             "payment_term": {"term_type": f"NET_{terms_days}", "due_date": due_dt.strftime("%Y-%m-%d")},
         },
-        "invoicer": {"name": {"given_name": "Collections Copilot"}, "email_address": "merchant@copilot.io"},
+        "invoicer": invoicer_obj,
         "primary_recipients": [{"billing_info": {"name": {"given_name": client.name}, "email_address": client.email or "client@example.com"}}],
         "items": [
             {
@@ -189,6 +225,7 @@ async def handle_create_invoice_draft(db: Session, args: Dict[str, Any], **kwarg
             payer_link = link.get("href")
 
     invoice = Invoice(
+        tenant_id=tenant_id,
         client_id=client.id,
         paypal_invoice_id=paypal_res.get("id"),
         paypal_invoice_number=inv_num,
