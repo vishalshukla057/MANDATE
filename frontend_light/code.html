@@ -1950,6 +1950,86 @@ container._cleanup = function() {
   </div>
 </div>
 
+<!-- INVOICE DETAILS & PAYPAL RECEIPT MODAL (On-Demand) -->
+<div id="invoice-detail-modal" class="modal-fade hidden fixed inset-0 z-[70] bg-[#070b12]/80 backdrop-blur-xl overflow-y-auto p-4 sm:p-6 lg:p-10 transition-all duration-300">
+  <div class="max-w-4xl mx-auto relative bg-[#0e1626]/95 border border-sky-400/30 rounded-3xl shadow-[0_30px_90px_rgba(0,10,30,0.9)] p-6 lg:p-8 flex flex-col gap-6 text-white my-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between pb-4 border-b border-white/[0.08]">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-[#ffc439]">
+          <span class="material-symbols-outlined text-[24px]">receipt_long</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 class="font-heading text-xl font-bold text-white tracking-tight" id="modal-inv-number">INV-1001</h3>
+            <span id="modal-inv-status-badge" class="px-2.5 py-0.5 rounded text-[10px] font-bold font-mono border bg-sky-500/20 text-sky-300 border-sky-400/30">SENT</span>
+          </div>
+          <p class="text-xs text-sky-200/70 font-mono mt-0.5">PayPal ID: <span id="modal-inv-paypal-id" class="text-sky-300 font-bold">--</span></p>
+        </div>
+      </div>
+      <button onclick="closeInvoiceModal()" type="button" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer" title="Close (Esc)">
+        <span class="material-symbols-outlined text-[20px]">close</span>
+      </button>
+    </div>
+
+    <!-- Client & Meta Info Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-2xl bg-[#000d24]/80 border border-sky-400/20 font-mono text-xs">
+      <div>
+        <span class="text-sky-300/70 block text-[11px] uppercase tracking-wider mb-1">Billed Client</span>
+        <div id="modal-inv-client-name" class="text-white font-bold font-sans text-sm">Acme Corp</div>
+        <div id="modal-inv-client-email" class="text-sky-200/60 text-[11px]">billing@example.com</div>
+      </div>
+      <div>
+        <span class="text-sky-300/70 block text-[11px] uppercase tracking-wider mb-1">Issue &amp; Due Date</span>
+        <div class="text-white">Issued: <span id="modal-inv-issue-date" class="text-slate-300">--</span></div>
+        <div class="text-white">Due: <span id="modal-inv-due-date" class="text-[#ffc439] font-bold">--</span> (<span id="modal-inv-terms">Net 15</span>)</div>
+      </div>
+      <div>
+        <span class="text-sky-300/70 block text-[11px] uppercase tracking-wider mb-1">Payment Status</span>
+        <div class="text-white">Amount Due: <span id="modal-inv-amount-due" class="text-[#ffc439] font-bold text-sm">--</span></div>
+        <div class="text-slate-400 text-[11px]">Currency: <span id="modal-inv-currency">USD</span></div>
+      </div>
+    </div>
+
+    <!-- Line Items Table -->
+    <div class="flex flex-col gap-2">
+      <span class="text-xs uppercase font-mono tracking-wider text-sky-300 font-bold">Invoice Line Items Breakdown</span>
+      <div class="overflow-x-auto rounded-xl border border-white/[0.08]">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-[#000d24] text-sky-300 font-mono uppercase tracking-wider text-[11px] border-b border-white/[0.08]">
+            <tr>
+              <th class="py-2.5 px-3">Description</th>
+              <th class="py-2.5 px-3 text-center">Qty / Hours</th>
+              <th class="py-2.5 px-3 text-right">Unit Rate</th>
+              <th class="py-2.5 px-3 text-right">Line Total</th>
+            </tr>
+          </thead>
+          <tbody id="modal-inv-line-items" class="divide-y divide-white/[0.04] text-slate-200 font-mono text-[11px]">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Totals Summary Card -->
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-[#000d24]/90 border border-sky-400/20">
+      <div class="flex items-center gap-3">
+        <a id="modal-inv-paypal-link" href="#" target="_blank" class="px-4 py-2 rounded-xl bg-[#0070ba] hover:bg-[#005ea6] text-white font-bold text-xs flex items-center gap-2 shadow-md transition-all">
+          <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+          <span>View on PayPal Sandbox</span>
+        </a>
+        <button onclick="copyInvoiceJson()" type="button" class="px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-mono transition-all cursor-pointer">
+          Copy JSON
+        </button>
+      </div>
+      <div class="text-right font-mono">
+        <div class="text-xs text-sky-200/70">Grand Total:</div>
+        <div id="modal-inv-grand-total" class="text-2xl font-black text-[#ffc439]">$0.00 USD</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- DEVELOPER TOOLKIT & POLICY SPECIFICATION MODAL (On-Demand) -->
 <div id="toolkit-modal" class="modal-fade hidden fixed inset-0 z-50 bg-[#12161E]/75 overflow-y-auto p-4 sm:p-6 lg:p-10 transition-all duration-300">
   <div class="max-w-6xl mx-auto relative bg-gradient-to-br from-[#232A36]/95 via-[#1B212B]/95 to-[#1F2735]/95 border border-[#A7C7E7]/30 rounded-2xl shadow-[0_28px_80px_rgba(0,0,0,0.6)] p-6 lg:p-8 flex flex-col gap-6 text-white animate-in fade-in zoom-in-95 duration-200">
@@ -3235,12 +3315,12 @@ container._cleanup = function() {
     window.openLedgerModal = () => openModal('ledger-modal');
     window.closeLedgerModal = () => closeModal('ledger-modal');
 
-    ['toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal'].forEach(id => {
+    ['toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal', 'invoice-detail-modal'].forEach(id => {
       const el = $(id);
       if (el) el.addEventListener('click', (e) => { if (e.target === el) closeModal(id); });
     });
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') ['sandbox-modal', 'toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal'].forEach(closeModal);
+      if (e.key === 'Escape') ['sandbox-modal', 'toolkit-modal', 'ledger-modal', 'voice-modal', 'paypal-login-modal', 'mcp-modal', 'invoice-detail-modal'].forEach(closeModal);
     });
 
     /* ---------- nav clicks ---------- */
@@ -3430,13 +3510,21 @@ container._cleanup = function() {
         const dueDate = inv.due_date ? new Date(inv.due_date).toLocaleDateString() : 'Net 15';
 
         return `
-          <tr class="hover:bg-white/[0.02] transition-colors">
-            <td class="py-2.5 px-3 font-bold text-sky-300">${inv.paypal_invoice_number || 'INV-DRAFT'}</td>
+          <tr class="hover:bg-white/[0.04] transition-colors border-b border-white/[0.04]">
+            <td class="py-2.5 px-3">
+              <button onclick="viewInvoiceDetails('${inv.id}')" type="button" class="font-bold text-sky-300 hover:text-[#ffc439] hover:underline flex items-center gap-1 cursor-pointer" title="Click to view full invoice receipt">
+                <span>${inv.paypal_invoice_number || 'INV-DRAFT'}</span>
+                <span class="material-symbols-outlined text-[13px] opacity-70">open_in_new</span>
+              </button>
+            </td>
             <td class="py-2.5 px-3 text-white font-sans font-medium">${clientName}</td>
             <td class="py-2.5 px-3 font-bold text-[#ffc439]">${totalFmt}</td>
             <td class="py-2.5 px-3">${statusBadge}</td>
             <td class="py-2.5 px-3 text-slate-400">${dueDate}</td>
-            <td class="py-2.5 px-3 text-right">
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              <button onclick="viewInvoiceDetails('${inv.id}')" type="button" class="px-2.5 py-1 rounded bg-[#ffc439]/15 hover:bg-[#ffc439]/30 text-[#ffc439] border border-[#ffc439]/40 text-[10px] uppercase font-bold tracking-wider transition-all cursor-pointer mr-1.5" title="View Full Invoice Receipt">
+                View
+              </button>
               <button onclick="triggerInvoiceRemind('${inv.id}', '${inv.paypal_invoice_number}')" type="button" class="px-2.5 py-1 rounded bg-sky-500/15 hover:bg-sky-500/30 text-sky-200 border border-sky-400/20 text-[10px] uppercase font-bold tracking-wider transition-all cursor-pointer">
                 Remind
               </button>
@@ -3444,6 +3532,72 @@ container._cleanup = function() {
           </tr>
         `;
       }).join('');
+    };
+
+    window.__currentViewingInvoice = null;
+
+    window.viewInvoiceDetails = function(id) {
+      const inv = window.__allInvoices.find(x => x.id === id);
+      if (!inv) {
+        alert('Invoice not found in current ledger');
+        return;
+      }
+      window.__currentViewingInvoice = inv;
+      const client = window.__clientsMap[inv.client_id];
+
+      document.getElementById('modal-inv-number').textContent = inv.paypal_invoice_number || 'INV-DRAFT';
+      
+      const badge = document.getElementById('modal-inv-status-badge');
+      const status = (inv.status || 'draft').toLowerCase();
+      badge.textContent = status.toUpperCase();
+      badge.className = 'px-2.5 py-0.5 rounded text-[10px] font-bold font-mono border ' + 
+        (status === 'paid' ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' : 
+         status === 'sent' ? 'bg-sky-500/20 text-sky-300 border-sky-400/30' : 
+         status === 'refunded' ? 'bg-amber-500/20 text-amber-300 border-amber-400/30' : 
+         'bg-slate-500/20 text-slate-300 border-slate-400/20');
+
+      document.getElementById('modal-inv-paypal-id').textContent = inv.paypal_invoice_id || 'MOCK-PAYPAL-ID';
+      document.getElementById('modal-inv-client-name').textContent = client?.name || 'Enterprise Client';
+      document.getElementById('modal-inv-client-email').textContent = client?.email || 'ap@enterprise.com';
+      document.getElementById('modal-inv-issue-date').textContent = inv.issue_date ? new Date(inv.issue_date).toLocaleDateString() : 'Today';
+      document.getElementById('modal-inv-due-date').textContent = inv.due_date ? new Date(inv.due_date).toLocaleDateString() : 'Net 15';
+      document.getElementById('modal-inv-terms').textContent = `Net ${inv.terms_days || 15}`;
+      document.getElementById('modal-inv-currency').textContent = inv.currency || 'USD';
+      document.getElementById('modal-inv-amount-due').textContent = '$' + (inv.amount_due ?? inv.total ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      document.getElementById('modal-inv-grand-total').textContent = '$' + (inv.total || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + (inv.currency || 'USD');
+
+      const paypalLink = document.getElementById('modal-inv-paypal-link');
+      if (paypalLink) {
+        paypalLink.href = inv.payer_view_url || ('https://www.sandbox.paypal.com/invoice/p/#' + (inv.paypal_invoice_id || ''));
+      }
+
+      const itemsBody = document.getElementById('modal-inv-line-items');
+      if (itemsBody) {
+        const items = inv.line_items && inv.line_items.length ? inv.line_items : [
+          { description: 'Enterprise Professional Services', quantity: 1, unit: 'contract', unit_price: inv.total || 0 }
+        ];
+        itemsBody.innerHTML = items.map(it => `
+          <tr class="hover:bg-white/[0.02]">
+            <td class="py-2.5 px-3 font-sans text-white">${it.description || 'Services'}</td>
+            <td class="py-2.5 px-3 text-center text-slate-300">${it.quantity || 1} ${it.unit || ''}</td>
+            <td class="py-2.5 px-3 text-right text-slate-300">$${(it.unit_price || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-[#ffc439]">$${((it.quantity || 1) * (it.unit_price || 0)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+          </tr>
+        `).join('');
+      }
+
+      openModal('invoice-detail-modal');
+    };
+
+    window.closeInvoiceModal = function() {
+      closeModal('invoice-detail-modal');
+    };
+
+    window.copyInvoiceJson = function() {
+      if (window.__currentViewingInvoice) {
+        navigator.clipboard.writeText(JSON.stringify(window.__currentViewingInvoice, null, 2));
+        alert('✓ Invoice JSON copied to clipboard!');
+      }
     };
 
     window.generateAiInvoice = async function() {
@@ -3488,6 +3642,11 @@ container._cleanup = function() {
 
         // Reload invoices table immediately to reveal the new invoice
         await window.loadLiveInvoicesTable();
+
+        if (window.__allInvoices.length > 0 && telemMsg) {
+          const newest = window.__allInvoices[0];
+          telemMsg.innerHTML = `<div>${data.final_message || 'Completed'}</div><div class="mt-2.5 pt-2 border-t border-white/10 flex items-center gap-2"><button onclick="viewInvoiceDetails('${newest.id}')" type="button" class="px-3 py-1.5 rounded-lg bg-[#ffc439] hover:bg-[#f5b324] text-[#00174b] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"><span class="material-symbols-outlined text-[15px]">receipt_long</span><span>Inspect Invoice (${newest.paypal_invoice_number || 'INV'})</span></button><span class="text-[11px] text-emerald-400 font-mono">● Added to Live Ledger</span></div>`;
+        }
       } catch (err) {
         alert('AI Orchestration Error: ' + err.message);
       } finally {
