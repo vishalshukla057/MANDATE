@@ -1,12 +1,19 @@
+import os
 from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def get_default_database_url() -> str:
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("LAMBDA_TASK_ROOT"):
+        return "sqlite:////tmp/copilot.db"
+    return "sqlite:///./copilot.db"
 
 
 class Settings(BaseSettings):
     APP_ENV: str = "dev"
     PAYPAL_MODE: str = "fake"  # 'live' (sandbox API) or 'fake' (deterministic offline)
     API_KEY: str = "copilot-secret-key-12345"
-    DATABASE_URL: str = "sqlite:///./copilot.db"
+    DATABASE_URL: str = get_default_database_url()
     PUBLIC_BASE_URL: str = "http://localhost:8000"
 
     PAYPAL_CLIENT_ID: Optional[str] = "mock_client_id"

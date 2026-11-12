@@ -18,11 +18,5 @@
       "src": "/(.*)",
       "dest": "api/index.py"
     }
-  ],
-  "env": {
-    "APP_ENV": "production",
-    "PAYPAL_MODE": "fake",
-    "API_KEY": "copilot-secret-key-12345",
-    "DATABASE_URL": "sqlite:////tmp/copilot.db"
-  }
+  ]
 }
