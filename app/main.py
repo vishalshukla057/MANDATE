@@ -158,7 +158,10 @@ async def serve_ui(request: Request, theme: Optional[str] = None):
 
     if os.path.exists(ui_path):
         with open(ui_path, "r", encoding="utf-8") as f:
-            resp = HTMLResponse(content=f.read())
+            resp = HTMLResponse(
+                content=f.read(),
+                headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
+            )
             if theme:
                 resp.set_cookie("copilot_theme", theme, max_age=31536000, path="/")
             else:
@@ -173,7 +176,10 @@ async def serve_ui_light():
     ui_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend_light", "code.html")
     if os.path.exists(ui_path):
         with open(ui_path, "r", encoding="utf-8") as f:
-            resp = HTMLResponse(content=f.read())
+            resp = HTMLResponse(
+                content=f.read(),
+                headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"},
+            )
             resp.set_cookie("copilot_theme", "light", max_age=31536000, path="/")
             return resp
     return HTMLResponse("<h2>Light Mode UI not found</h2>", status_code=404)

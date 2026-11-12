@@ -1,6 +1,20 @@
+import re
 from datetime import datetime
 from typing import Any, Dict, List, Optional
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+_CLIENT_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+def _normalize_client_email(v: Optional[str]) -> Optional[str]:
+    if v is None:
+        return None
+    cleaned = v.strip()
+    if not cleaned:
+        return None
+    if not _CLIENT_EMAIL_RE.match(cleaned):
+        raise ValueError("Invalid email address. Please enter a full email (e.g. name@company.com) or leave blank.")
+    return cleaned
 
 
 class ClientCreateRequest(BaseModel):
@@ -10,6 +24,11 @@ class ClientCreateRequest(BaseModel):
     default_terms_days: int = 15
     currency: str = "USD"
     notes: Optional[str] = None
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, v: Optional[str]) -> Optional[str]:
+        return _normalize_client_email(v)
 
 
 class ClientUpdateRequest(BaseModel):
@@ -21,6 +40,11 @@ class ClientUpdateRequest(BaseModel):
     notes: Optional[str] = None
     risk_score: Optional[float] = None
     risk_label: Optional[str] = None
+
+    @field_validator("email")
+    @classmethod
+    def validate_email(cls, v: Optional[str]) -> Optional[str]:
+        return _normalize_client_email(v)
 
 
 class ClientResponse(BaseModel):

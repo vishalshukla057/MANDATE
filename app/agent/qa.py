@@ -2,6 +2,7 @@ import json
 import re
 from datetime import timedelta, timezone
 from typing import Any, Dict, List, Optional
+import httpx
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -158,7 +159,27 @@ class AnalyticsQAEngine:
                 "summary": f"Total outstanding is ${total_outstanding:.2f}, of which ${total_overdue:.2f} is currently overdue.",
             }
 
-        # 6. Payouts
+        # 6. Collected payments
+        elif intent == "collected":
+            payments = db.query(Payment).filter(Payment.tenant_id == tenant).order_by(Payment.paid_at.desc()).all()
+            total_collected = round(sum(p.amount for p in payments), 2)
+            rows = []
+            for p in payments[:plan.limit]:
+                inv = db.query(Invoice).filter(Invoice.id == p.invoice_id).first()
+                cli = db.query(Client).filter(Client.id == inv.client_id).first() if inv else None
+                rows.append({
+                    "client": cli.name if cli else "Client",
+                    "invoice": inv.paypal_invoice_number if inv else "-",
+                    "amount": p.amount,
+                    "method": p.method,
+                })
+            return {
+                "chart_hint": "table",
+                "data": rows,
+                "summary": f"Total collected is ${total_collected:,.2f} across {len(payments)} payment(s).",
+            }
+
+        # 7. Payouts
         elif intent == "payouts":
             payouts = db.query(Payout).filter(Payout.tenant_id == tenant).all()
             total_paid_out = sum(p.amount for p in payouts if p.status in ["submitted", "succeeded"])
@@ -186,11 +207,34 @@ class AnalyticsQAEngine:
         """Translates NL query into constrained query plan and returns structured data + prose summary."""
         plan = cls.resolve_intent_heuristically(question)
         result = cls.execute_query_plan(db, plan, tenant_id=tenant_id)
+        answer_text = result["summary"]
+
+        if settings.GEMINI_API_KEY and settings.GEMINI_API_KEY != "mock_gemini_key":
+            try:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent"
+                headers = {"Content-Type": "application/json", "x-goog-api-key": settings.GEMINI_API_KEY}
+                prompt = (
+                    f"User question: {question}\n"
+                    f"Computed summary: {result['summary']}\n"
+                    f"Ledger data: {json.dumps(result['data'], default=str)}\n\n"
+                    "Answer the user's question in 1-3 clear, concise sentences in plain English using ONLY the ledger data above. Do not output JSON or code blocks."
+                )
+                body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}]}
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    res = await client.post(url, headers=headers, json=body)
+                    if res.status_code < 400:
+                        cands = res.json().get("candidates") or []
+                        parts = cands[0].get("content", {}).get("parts", []) if cands else []
+                        txt = "".join(p.get("text", "") for p in parts).strip()
+                        if txt:
+                            answer_text = txt
+            except Exception:
+                pass
 
         return {
             "question": question,
             "intent": plan.intent,
-            "answer": result["summary"],
+            "answer": answer_text,
             "data": result["data"],
             "chart_hint": result["chart_hint"],
         }

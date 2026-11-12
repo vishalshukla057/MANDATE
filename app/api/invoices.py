@@ -1,3 +1,4 @@
+import re
 from datetime import timedelta
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -61,19 +62,33 @@ async def create_invoice(payload: InvoiceCreateRequest, tenant_id: str = Depends
         discount_val = round(subtotal * (payload.discount_percent / 100.0), 2)
     total = round(subtotal - discount_val, 2)
 
+    currency_code = (payload.currency or "USD").strip().upper()[:3]
+    recipient_email = (client.email or "").strip() or "billing@example.com"
+    if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", recipient_email):
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Client '{client.name}' has an invalid billing email ('{recipient_email}') "
+                "for PayPal invoicing. Click Edit next to the client in the Clients tab and "
+                "set a full email (e.g. name@company.com) or leave it blank."
+            ),
+        )
+
     # Generate next invoice number via PayPal
     try:
-        inv_number = await gateway.generate_next_invoice_number()
-    except Exception as exc:
+        inv_number = (await gateway.generate_next_invoice_number() or "").strip()[:25]
+    except Exception:
+        inv_number = ""
+    if not inv_number:
         inv_number = f"INV-{now_dt.strftime('%Y%m%d%H%M%S')}"
 
     # Build PayPal draft payload
     paypal_items = [
         {
-            "name": item.name,
-            "description": item.description or item.name,
+            "name": item.name.strip()[:127],
+            "description": (item.description or item.name).strip()[:1000],
             "quantity": str(item.quantity),
-            "unit_amount": {"currency_code": payload.currency, "value": f"{item.unit_amount:.2f}"},
+            "unit_amount": {"currency_code": currency_code, "value": f"{item.unit_amount:.2f}"},
             "unit_of_measure": item.unit_of_measure or "QUANTITY",
         }
         for item in payload.line_items
@@ -81,14 +96,14 @@ async def create_invoice(payload: InvoiceCreateRequest, tenant_id: str = Depends
 
     invoicer_obj: dict = {"name": {"given_name": "Collections Copilot Merchant"}}
     if settings.PAYPAL_MERCHANT_EMAIL and settings.PAYPAL_MERCHANT_EMAIL != "sb-merchant@business.example.com":
-        invoicer_obj["email_address"] = settings.PAYPAL_MERCHANT_EMAIL
+        invoicer_obj["email_address"] = settings.PAYPAL_MERCHANT_EMAIL.strip()
 
-    paypal_draft_body = {
+    paypal_draft_body: dict = {
         "detail": {
             "invoice_number": inv_number,
             "invoice_date": now_dt.strftime("%Y-%m-%d"),
-            "currency_code": payload.currency,
-            "note": payload.memo or "Thank you for your business.",
+            "currency_code": currency_code,
+            "note": (payload.memo or "Thank you for your business.").strip()[:4000],
             "payment_term": {
                 "term_type": f"NET_{payload.terms_days}" if payload.terms_days in [10, 15, 30, 45, 60, 90] else "DUE_ON_DATE_SPECIFIED",
                 "due_date": due_dt.strftime("%Y-%m-%d"),
@@ -98,13 +113,22 @@ async def create_invoice(payload: InvoiceCreateRequest, tenant_id: str = Depends
         "primary_recipients": [
             {
                 "billing_info": {
-                    "name": {"given_name": client.name},
-                    "email_address": client.email or "billing@example.com",
+                    "name": {"given_name": (client.name or "Client").strip()[:140]},
+                    "email_address": recipient_email,
                 }
             }
         ],
         "items": paypal_items,
     }
+    if payload.discount_percent and payload.discount_percent > 0:
+        pct_str = f"{payload.discount_percent:.2f}".rstrip("0").rstrip(".") or "0"
+        paypal_draft_body["amount"] = {
+            "breakdown": {
+                "discount": {
+                    "invoice_discount": {"percent": pct_str}
+                }
+            }
+        }
 
     try:
         paypal_res = await gateway.create_draft_invoice(paypal_draft_body)

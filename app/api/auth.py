@@ -118,13 +118,13 @@ def login_workspace(payload: LoginRequest, db: Session = Depends(get_db)):
 
 @router.post("/auth/explore")
 def start_explore_session(reset: bool = False, db: Session = Depends(get_db)):
-    """Start a guest/judge Explore session backed by a dedicated seeded demo workspace."""
+    """Start a guest login Explore session backed by a dedicated seeded demo workspace."""
     seeded_info = seed_workspace_data(db, tenant_id=DEMO_TENANT_ID, reset=reset)
     token = create_session_token(
         user_id="demo-explorer",
         tenant_id=DEMO_TENANT_ID,
-        email="judge@mandate.demo",
-        full_name="Judge / Guest Explorer",
+        email="guest@mandate.demo",
+        full_name="Guest Login",
         workspace_name="Explore Sandbox (Seed Data)",
     )
     return {
@@ -132,8 +132,8 @@ def start_explore_session(reset: bool = False, db: Session = Depends(get_db)):
         "mode": "explore",
         "user": {
             "id": "demo-explorer",
-            "email": "judge@mandate.demo",
-            "full_name": "Judge / Guest Explorer",
+            "email": "guest@mandate.demo",
+            "full_name": "Guest Login",
             "workspace_name": "Explore Sandbox (Seed Data)",
             "tenant_id": DEMO_TENANT_ID,
         },

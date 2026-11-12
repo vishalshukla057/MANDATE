@@ -145,7 +145,7 @@ class LivePayPalGateway(PayPalGateway):
             data = {"grant_type": "client_credentials"}
             headers = {"Accept": "application/json", "Accept-Language": "en_US"}
 
-            async with httpx.AsyncClient(timeout=15.0) as client:
+            async with httpx.AsyncClient(timeout=30.0) as client:
                 res = await client.post(url, auth=auth, data=data, headers=headers)
                 if res.status_code != 200:
                     debug_id = res.headers.get("paypal-debug-id", "unknown")
@@ -182,7 +182,7 @@ class LivePayPalGateway(PayPalGateway):
         start_time = time.time()
 
         try:
-            async with httpx.AsyncClient(timeout=20.0) as client:
+            async with httpx.AsyncClient(timeout=30.0) as client:
                 response = await client.request(
                     method=method,
                     url=url,
@@ -234,7 +234,15 @@ class LivePayPalGateway(PayPalGateway):
         return res.get("invoice_number", f"INV-{uuid.uuid4().hex[:6].upper()}")
 
     async def create_draft_invoice(self, payload: Dict[str, Any], idempotency_key: Optional[str] = None) -> Dict[str, Any]:
-        return await self._request("POST", "/v2/invoicing/invoices", json_data=payload, idempotency_key=idempotency_key)
+        res = await self._request("POST", "/v2/invoicing/invoices", json_data=payload, idempotency_key=idempotency_key)
+        if isinstance(res, dict) and not res.get("id") and res.get("href"):
+            inv_id = str(res["href"]).rstrip("/").split("/")[-1]
+            res["id"] = inv_id
+            res.setdefault("links", [
+                {"rel": "payer-view", "href": f"https://www.sandbox.paypal.com/invoice/p/#{inv_id}", "method": "GET"},
+                {"rel": "self", "href": res["href"], "method": "GET"},
+            ])
+        return res
 
     async def send_invoice(self, invoice_id: str, idempotency_key: Optional[str] = None) -> Dict[str, Any]:
         return await self._request("POST", f"/v2/invoicing/invoices/{invoice_id}/send", idempotency_key=idempotency_key)
