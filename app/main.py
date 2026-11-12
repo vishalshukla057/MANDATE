@@ -436,8 +436,8 @@ async def serve_favicon():
 
 @app.api_route("/{full_path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def catch_all_fallback(request: Request, full_path: str = ""):
-    # If path is root or UI, serve UI directly
-    if not full_path or full_path in ["ui", "index.html"]:
+    # If path is root, UI, or vercel entrypoint, serve UI directly
+    if not full_path or full_path in ["ui", "index.html", "api/index.py", "api/index", "api"]:
         return await serve_ui(request)
     return JSONResponse({
         "msg": "catch_all_hit",
